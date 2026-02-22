@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Български за деца — Volledig Programma</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#f8fafc;color:#1e293b;-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+.app{min-height:100vh;max-width:520px;margin:0 auto;background:#f8fafc}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#fff;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:30}
+.nav-left{display:flex;align-items:center;gap:8px}
+.nav-title{font-size:18px;font-weight:700;background:linear-gradient(to right,#0d9488,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-sub{font-size:11px;color:#94a3b8;margin-top:2px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.pill{display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;font-size:13px;font-weight:600}
+.pill-xp{background:#fffbeb;color:#b45309}
+.pill-str{background:#fef2f2;color:#dc2626}
+.back-btn{padding:8px;border-radius:8px;font-size:20px;color:#64748b;transition:background .2s}
+.back-btn:hover{background:#f1f5f9}
+.scr{padding:24px 16px;max-width:520px;margin:0 auto}
+.ctr{text-align:center}
+.sy>*+*{margin-top:16px}.sy2>*+*{margin-top:12px}.sy3>*+*{margin-top:8px}
+.h1{font-size:22px;font-weight:700;color:#1e293b}
+.h2{font-size:18px;font-weight:700;color:#1e293b}
+.h3{font-size:15px;font-weight:600;color:#1e293b}
+.sub{font-size:13px;color:#64748b}
+.card{background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:16px;transition:box-shadow .2s}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.card-r{display:flex;align-items:center;gap:14px;text-align:left;width:100%}
+.card-i{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0}
+.card-b{flex:1;min-width:0}
+.card-t{font-weight:600;font-size:14px;color:#1e293b}
+.card-d{font-size:12px;color:#64748b;margin-top:2px}
+.pb{height:6px;background:#f1f5f9;border-radius:999px;overflow:hidden}
+.pf{height:100%;border-radius:999px;transition:width .5s}
+.fc{border-radius:16px;border:2px solid;padding:28px 20px;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow .2s;user-select:none}
+.fc:hover{box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.fc-big{font-size:64px;font-weight:800;line-height:1.1}
+.fc-hint{font-size:13px;color:#94a3b8;margin-top:16px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:12px;font-size:14px;font-weight:500;transition:all .2s}
+.btn-t{background:#14b8a6;color:#fff}.btn-t:hover{background:#0d9488}
+.btn-v{background:#8b5cf6;color:#fff}.btn-v:hover{background:#7c3aed}
+.btn-e{background:#10b981;color:#fff}.btn-e:hover{background:#059669}
+.btn-g{color:#64748b}.btn-g:hover{background:#f1f5f9}
+.btn-off{color:#cbd5e1;cursor:not-allowed}
+.qo{width:100%;padding:14px;border-radius:12px;border:2px solid #e2e8f0;text-align:left;font-weight:500;font-size:14px;transition:all .15s;background:#fff;display:flex;align-items:center;justify-content:space-between}
+.qo:hover:not(:disabled){border-color:#a78bfa;background:#f5f3ff}
+.qo-ok{background:#ecfdf5!important;border-color:#34d399!important;color:#065f46!important}
+.qo-no{background:#fef2f2!important;border-color:#f87171!important;color:#991b1b!important}
+.qo-x{background:#f8fafc!important;border-color:#e2e8f0!important;color:#94a3b8!important}
+.dots{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;transition:all .2s;background:#e2e8f0}
+.bg2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.badge{padding:14px;border-radius:16px;border:1px solid;text-align:center}
+.badge-y{background:linear-gradient(135deg,#fffbeb,#fefce8);border-color:#fbbf24}
+.badge-n{background:#f8fafc;border-color:#e2e8f0;opacity:.55}
+.fp{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.fpill{padding:5px 11px;border-radius:999px;font-size:12px;font-weight:500;transition:all .2s}
+.fp-on{background:#14b8a6;color:#fff}
+.fp-off{background:#f1f5f9;color:#64748b}.fp-off:hover{background:#e2e8f0}
+.nr{display:flex;align-items:center;justify-content:space-between}
+.fact{background:#f8fafc;border-radius:12px;padding:14px;border:1px solid #f1f5f9;display:flex;gap:8px;text-align:left}
+.streak{padding:2px 8px;background:#fef3c7;color:#b45309;border-radius:999px;font-size:12px;font-weight:700}
+.phase-h{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:600;margin-bottom:4px;display:inline-block}
+.ph1{background:#ecfdf5;color:#047857}
+.ph2{background:#ede9fe;color:#6d28d9}
+.lock-card{opacity:.5}
+.lock-card .card{pointer-events:none}
+.gram-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:16px}
+.gram-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.gram-tbl th{background:#e0f2fe;padding:8px;text-align:left;font-weight:600;border-radius:4px}
+.gram-tbl td{padding:8px;border-bottom:1px solid #e0f2fe}
+.gram-tbl tr:last-child td{border-bottom:none}
+.gram-tip{background:#fef3c7;border-radius:10px;padding:12px;font-size:13px;color:#92400e;margin-top:12px}
+.conv-line{display:flex;gap:10px;padding:10px;border-radius:12px;margin-bottom:6px}
+.conv-l{background:#f0fdf4;border:1px solid #bbf7d0}.conv-r{background:#f0f9ff;border:1px solid #bae6fd}
+.conv-speaker{font-weight:700;font-size:13px;min-width:50px}
+.conv-text{flex:1}
+.conv-bg{font-size:15px;font-weight:600;color:#1e293b}
+.conv-nl{font-size:12px;color:#64748b;margin-top:2px}
+.grad-t{background:linear-gradient(135deg,#2dd4bf,#10b981)}
+.grad-e{background:linear-gradient(135deg,#34d399,#22c55e)}
+.grad-v{background:linear-gradient(135deg,#a78bfa,#9333ea)}
+.grad-a{background:linear-gradient(135deg,#fbbf24,#f97316)}
+.grad-s{background:linear-gradient(135deg,#38bdf8,#0ea5e9)}
+.grad-p{background:linear-gradient(135deg,#f472b6,#ec4899)}
+.grad-r{background:linear-gradient(135deg,#fb923c,#f97316)}
+.grad-i{background:linear-gradient(135deg,#818cf8,#6366f1)}
+.g-em .fc{border-color:#a7f3d0;background:#ecfdf5}.g-em .fc-big{color:#047857}.g-em .ex{background:#d1fae5}.g-em .pf,.g-em .dot-a,.g-em .dot-d{background:#10b981}.g-em .btn-c{background:#10b981;color:#fff}
+.g-am .fc{border-color:#fde68a;background:#fffbeb}.g-am .fc-big{color:#b45309}.g-am .ex{background:#fef3c7}.g-am .pf,.g-am .dot-a,.g-am .dot-d{background:#f59e0b}.g-am .btn-c{background:#f59e0b;color:#fff}
+.g-sk .fc{border-color:#bae6fd;background:#f0f9ff}.g-sk .fc-big{color:#0369a1}.g-sk .ex{background:#e0f2fe}.g-sk .pf,.g-sk .dot-a,.g-sk .dot-d{background:#0ea5e9}.g-sk .btn-c{background:#0ea5e9;color:#fff}
+.g-vi .fc{border-color:#ddd6fe;background:#f5f3ff}.g-vi .fc-big{color:#6d28d9}.g-vi .ex{background:#ede9fe}.g-vi .pf,.g-vi .dot-a,.g-vi .dot-d{background:#8b5cf6}.g-vi .btn-c{background:#8b5cf6;color:#fff}
+.gc-em{background:#ecfdf5;border-color:#a7f3d0}.gc-am{background:#fffbeb;border-color:#fde68a}.gc-sk{background:#f0f9ff;border-color:#bae6fd}.gc-vi{background:#f5f3ff;border-color:#ddd6fe}
+.cc-em{color:#047857}.cc-am{color:#b45309}.cc-sk{color:#0369a1}.cc-vi{color:#6d28d9}
+.trick{display:inline-block;padding:4px 12px;background:#fef3c7;color:#92400e;border-radius:999px;font-size:13px;font-weight:500}
+.tab-row{display:flex;gap:4px;background:#f1f5f9;border-radius:12px;padding:3px;margin-bottom:12px}
+.tab{flex:1;padding:8px;border-radius:10px;font-size:13px;font-weight:500;text-align:center;transition:all .2s;color:#64748b}
+.tab-on{background:#fff;color:#1e293b;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script>
+const R=React,ce=R.createElement,{useState:uS,useEffect:uE}=R;
+
+// === ALPHABET DATA ===
+const ALPHA=[
+{id:"friends",t:"Vrienden",tb:"\u041f\u0440\u0438\u044f\u0442\u0435\u043b\u0438",d:"Letters die je al kent! Zelfde vorm, zelfde klank.",em:"\u{1f91d}",c:"em",
+ls:[{u:"\u0410",l:"\u0430",du:"a (als in 'dag')",ex:"\u0410\u043d\u0430",exN:"Ana"},{u:"\u0415",l:"\u0435",du:"e (als in 'pet')",ex:"\u0435\u043b\u0435\u043d",exN:"hert"},{u:"\u041a",l:"\u043a",du:"k (als in 'kat')",ex:"\u043a\u043e\u0442",exN:"kater"},{u:"\u041c",l:"\u043c",du:"m (als in 'mam')",ex:"\u043c\u0430\u043c\u0430",exN:"mama"},{u:"\u041e",l:"\u043e",du:"o (als in 'bos')",ex:"\u043e\u043a\u043e",exN:"oog"},{u:"\u0422",l:"\u0442",du:"t (als in 'top')",ex:"\u0442\u0430\u0442\u0430",exN:"papa"}]},
+{id:"tricksters",t:"Tricksters",tb:"\u0425\u0438\u0442\u0440\u0435\u0446\u0438",d:"Pas op! Lijken op bekende letters, maar klinken anders!",em:"\u{1f3ad}",c:"am",
+ls:[{u:"\u0412",l:"\u0432",du:"v (niet b!)",tr:"Lijkt op B, maar is V!",ex:"\u0432\u043e\u0434\u0430",exN:"water"},{u:"\u041d",l:"\u043d",du:"n (niet h!)",tr:"Lijkt op H, maar is N!",ex:"\u043d\u043e\u0441",exN:"neus"},{u:"\u0420",l:"\u0440",du:"r (niet p!)",tr:"Lijkt op P, maar is R!",ex:"\u0440\u0435\u043a\u0430",exN:"rivier"},{u:"\u0421",l:"\u0441",du:"s (niet c!)",tr:"Lijkt op C, maar is S!",ex:"\u0441\u043e\u043d",exN:"droom"},{u:"\u0423",l:"\u0443",du:"oe (als in 'boek')",tr:"Lijkt op Y, klinkt als OE!",ex:"\u0443\u0445\u043e",exN:"oor"},{u:"\u0425",l:"\u0445",du:"ch (als in 'lach')",tr:"Lijkt op X, klinkt als CH!",ex:"\u0445\u043b\u044f\u0431",exN:"brood"}]},
+{id:"newfaces",t:"Nieuwe Gezichten",tb:"\u041d\u043e\u0432\u0438 \u043b\u0438\u0446\u0430",d:"Nieuwe vormen, maar bekende klanken!",em:"\u{1f31f}",c:"sk",
+ls:[{u:"\u0411",l:"\u0431",du:"b (als in 'boot')",ex:"\u0431\u0430\u0431\u0430",exN:"oma"},{u:"\u0413",l:"\u0433",du:"g (zachte g, als Engels 'go')",ex:"\u0433\u0440\u0430\u0434",exN:"stad"},{u:"\u0414",l:"\u0434",du:"d (als in 'dag')",ex:"\u0434\u043e\u043c",exN:"huis"},{u:"\u0417",l:"\u0437",du:"z (als in 'zon')",ex:"\u0437\u0432\u0435\u0437\u0434\u0430",exN:"ster"},{u:"\u0418",l:"\u0438",du:"ie (als in 'bier')",ex:"\u0438\u043c\u0435",exN:"naam"},{u:"\u0419",l:"\u0439",du:"j (kort, als in 'ja')",ex:"\u0439\u043e\u0433\u0430",exN:"yoga"},{u:"\u041b",l:"\u043b",du:"l (als in 'lamp')",ex:"\u043b\u0443\u043d\u0430",exN:"maan"},{u:"\u041f",l:"\u043f",du:"p (als in 'pan')",ex:"\u043f\u0430\u0440\u043a",exN:"park"},{u:"\u0424",l:"\u0444",du:"f (als in 'fiets')",ex:"\u0444\u0438\u043b\u043c",exN:"film"}]},
+{id:"treasures",t:"Bulgaarse Schatten",tb:"\u0421\u044a\u043a\u0440\u043e\u0432\u0438\u0449\u0430",d:"De unieke klanken van het Bulgaars!",em:"\u{1f48e}",c:"vi",
+ls:[{u:"\u0416",l:"\u0436",du:"zj (als Frans 'jour')",ex:"\u0436\u0435\u043d\u0430",exN:"vrouw"},{u:"\u0426",l:"\u0446",du:"ts (als in 'fiets')",ex:"\u0446\u0432\u0435\u0442\u0435",exN:"bloem"},{u:"\u0427",l:"\u0447",du:"tsj (als 'tsjechisch')",ex:"\u0447\u043e\u0432\u0435\u043a",exN:"mens"},{u:"\u0428",l:"\u0448",du:"sj (als in 'sjaal')",ex:"\u0448\u043e\u043a\u043e\u043b\u0430\u0434",exN:"chocolade"},{u:"\u0429",l:"\u0449",du:"sjt (sj+t)",ex:"\u0449\u0430\u0441\u0442\u0438\u0435",exN:"geluk"},{u:"\u042a",l:"\u044a",du:"uh (als in 'de')",ex:"\u044a\u0433\u044a\u043b",exN:"hoek"},{u:"\u042c",l:"\u044c",du:"maakt vorige letter zacht",ex:"\u041a\u043e\u043b\u044c\u043e",exN:"Kolyo"},{u:"\u042e",l:"\u044e",du:"joe (als 'joepie')",ex:"\u044e\u043d\u0438",exN:"juni"},{u:"\u042f",l:"\u044f",du:"ja (als in 'ja!')",ex:"\u044f\u0431\u044a\u043b\u043a\u0430",exN:"appel"}]}
+];
+
+// === MODULE DATA ===
+const MODS=[
+{id:"w3",wk:"1-2",t:"Cyrillisch Alfabet",em:"\u{1f524}",gr:"grad-t",ph:1,type:"alpha",desc:"Alle 30 letters in 4 groepen"},
+{id:"w3v",wk:"3",t:"Familie & Begroetingen",em:"\u{1f46a}",gr:"grad-e",ph:1,type:"vocab",desc:"\u0411\u0430\u0431\u0430 bellen",
+ws:[
+{b:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439",p:"zdra-VEJ",n:"Hallo",e:"Hello",m:"\u{1f44b}"},
+{b:"\u0414\u043e\u0432\u0438\u0436\u0434\u0430\u043d\u0435",p:"do-VIZJ-da-ne",n:"Tot ziens",e:"Goodbye",m:"\u{1f44b}"},
+{b:"\u0414\u043e\u0431\u0440\u043e \u0443\u0442\u0440\u043e",p:"do-BRO OE-tro",n:"Goedemorgen",e:"Good morning",m:"\u{1f305}"},
+{b:"\u041b\u0435\u043a\u0430 \u043d\u043e\u0449",p:"LE-ka nosht",n:"Welterusten",e:"Good night",m:"\u{1f319}"},
+{b:"\u0414\u0430",p:"da",n:"Ja",e:"Yes",m:"\u2705"},
+{b:"\u041d\u0435",p:"ne",n:"Nee",e:"No",m:"\u274c"},
+{b:"\u041c\u043e\u043b\u044f",p:"MO-lja",n:"Alsjeblieft",e:"Please",m:"\u{1f64f}"},
+{b:"\u041c\u0435\u0440\u0441\u0438",p:"mer-SI",n:"Dankjewel",e:"Thank you",m:"\u{1f64f}"},
+{b:"\u0418\u0437\u0432\u0438\u043d\u044f\u0432\u0430\u0439",p:"iz-vi-NJA-vaj",n:"Sorry",e:"Sorry",m:"\u{1f614}"},
+{b:"\u041a\u0430\u043a \u0441\u0438?",p:"kak SI?",n:"Hoe gaat het?",e:"How are you?",m:"\u{1f60a}"},
+{b:"\u0414\u043e\u0431\u0440\u0435 \u0441\u044a\u043c",p:"do-BRE suhm",n:"Goed met mij",e:"I'm fine",m:"\u{1f60a}"},
+{b:"\u041c\u0430\u043c\u0430",p:"MA-ma",n:"Mama",e:"Mom",m:"\u{1f469}"},
+{b:"\u0422\u0430\u0442\u043a\u043e",p:"TAT-ko",n:"Papa",e:"Dad",m:"\u{1f468}"},
+{b:"\u0411\u0430\u0431\u0430",p:"BA-ba",n:"Oma",e:"Grandma",m:"\u{1f475}"},
+{b:"\u0414\u044f\u0434\u043e",p:"DJA-do",n:"Opa",e:"Grandpa",m:"\u{1f474}"},
+{b:"\u0411\u0440\u0430\u0442",p:"brat",n:"Broer",e:"Brother",m:"\u{1f466}"},
+{b:"\u0421\u0435\u0441\u0442\u0440\u0430",p:"ses-TRA",n:"Zus",e:"Sister",m:"\u{1f467}"},
+{b:"\u0410\u0437",p:"az",n:"Ik",e:"I",m:"\u{1f446}"},
+{b:"\u0422\u0438",p:"ti",n:"Jij",e:"You",m:"\u{1f449}"},
+{b:"\u041e\u0431\u0438\u0447\u0430\u043c \u0442\u0435",p:"o-BI-tsham te",n:"Ik hou van je",e:"I love you",m:"\u2764\ufe0f"},
+{b:"\u041a\u0430\u043a \u0441\u0435 \u043a\u0430\u0437\u0432\u0430\u0448?",p:"kak se KAZ-vash?",n:"Hoe heet je?",e:"What's your name?",m:"\u{1f4ac}"},
+{b:"\u041a\u0430\u0437\u0432\u0430\u043c \u0441\u0435...",p:"KAZ-vam se...",n:"Ik heet...",e:"My name is...",m:"\u{1f4ac}"},
+{b:"\u041f\u0440\u0438\u044f\u0442\u043d\u043e \u043c\u0438 \u0435",p:"pri-JAT-no mi e",n:"Aangenaam",e:"Nice to meet you",m:"\u{1f91d}"},
+{b:"\u041a\u044a\u0434\u0435",p:"kuh-DE",n:"Waar",e:"Where",m:"\u{1f50d}"},
+{b:"\u041a\u043e\u0433\u0430",p:"ko-GA",n:"Wanneer",e:"When",m:"\u23f0"}
+]},
+{id:"w4v",wk:"4",t:"Eten & Drinken",em:"\u{1f37d}\ufe0f",gr:"grad-r",ph:1,type:"vocab",desc:"In een Bulgaars restaurant",
+ws:[
+{b:"\u0412\u043e\u0434\u0430",p:"vo-DA",n:"Water",e:"Water",m:"\u{1f4a7}"},
+{b:"\u0425\u043b\u044f\u0431",p:"hljab",n:"Brood",e:"Bread",m:"\u{1f35e}"},
+{b:"\u041c\u043b\u044f\u043a\u043e",p:"MLJA-ko",n:"Melk",e:"Milk",m:"\u{1f95b}"},
+{b:"\u0421\u0438\u0440\u0435\u043d\u0435",p:"si-RE-ne",n:"Witte kaas",e:"White cheese",m:"\u{1f9c0}"},
+{b:"\u041a\u0430\u0448\u043a\u0430\u0432\u0430\u043b",p:"kash-ka-VAL",n:"Gele kaas",e:"Yellow cheese",m:"\u{1f9c0}"},
+{b:"\u041c\u0435\u0441\u043e",p:"me-SO",n:"Vlees",e:"Meat",m:"\u{1f356}"},
+{b:"\u0420\u0438\u0431\u0430",p:"RI-ba",n:"Vis",e:"Fish",m:"\u{1f41f}"},
+{b:"\u041f\u043b\u043e\u0434",p:"plod",n:"Fruit",e:"Fruit",m:"\u{1f34e}"},
+{b:"\u042f\u0431\u044a\u043b\u043a\u0430",p:"JA-buhl-ka",n:"Appel",e:"Apple",m:"\u{1f34f}"},
+{b:"\u0414\u043e\u043c\u0430\u0442",p:"do-MAT",n:"Tomaat",e:"Tomato",m:"\u{1f345}"},
+{b:"\u0421\u0430\u043b\u0430\u0442\u0430",p:"sa-LA-ta",n:"Salade",e:"Salad",m:"\u{1f957}"},
+{b:"\u0421\u0443\u043f\u0430",p:"SOE-pa",n:"Soep",e:"Soup",m:"\u{1f35c}"},
+{b:"\u0411\u0430\u043d\u0438\u0446\u0430",p:"BA-ni-tsa",n:"Banitsa (kaasgebak)",e:"Cheese pastry",m:"\u{1f950}"},
+{b:"\u0427\u0430\u0439",p:"tshaj",n:"Thee",e:"Tea",m:"\u{1f375}"},
+{b:"\u041a\u0430\u0444\u0435",p:"ka-FE",n:"Koffie",e:"Coffee",m:"\u2615"},
+{b:"\u0421\u043e\u043a",p:"sok",n:"Sap",e:"Juice",m:"\u{1f9c3}"},
+{b:"\u0412\u043a\u0443\u0441\u043d\u043e!",p:"VKOES-no",n:"Lekker!",e:"Delicious!",m:"\u{1f60b}"},
+{b:"\u0413\u043b\u0430\u0434\u0435\u043d \u0441\u044a\u043c",p:"GLA-den suhm",n:"Ik heb honger",e:"I'm hungry",m:"\u{1f60b}"},
+{b:"\u0416\u0430\u0434\u0435\u043d \u0441\u044a\u043c",p:"ZHA-den suhm",n:"Ik heb dorst",e:"I'm thirsty",m:"\u{1f4a7}"},
+{b:"\u0418\u0441\u043a\u0430\u043c",p:"IS-kam",n:"Ik wil",e:"I want",m:"\u{1f449}"},
+{b:"\u041c\u043e\u0436\u0435 \u043b\u0438?",p:"MO-zhe li?",n:"Mag het?",e:"May I?",m:"\u{1f64f}"},
+{b:"\u042f\u0441\u0442\u0438\u0435",p:"JAS-ti-e",n:"Gerecht",e:"Dish",m:"\u{1f37d}\ufe0f"},
+{b:"\u0421\u043c\u0435\u0442\u043a\u0430",p:"SMET-ka",n:"Rekening",e:"Bill",m:"\u{1f4b0}"},
+{b:"\u041e\u0449\u0435",p:"O-shte",n:"Nog meer",e:"More",m:"\u2795"},
+{b:"\u0414\u043e\u0441\u0442\u0430\u0442\u044a\u0447\u043d\u043e",p:"dos-ta-TUHCH-no",n:"Genoeg",e:"Enough",m:"\u270b"}
+]},
+{id:"w5v",wk:"5",t:"Emoties & Meningen",em:"\u{1f60a}",gr:"grad-p",ph:1,type:"vocab",desc:"Zeggen wat je vindt",
+ws:[
+{b:"\u0429\u0430\u0441\u0442\u043b\u0438\u0432",p:"SHTAST-liv",n:"Gelukkig",e:"Happy",m:"\u{1f60a}"},
+{b:"\u0422\u044a\u0436\u0435\u043d",p:"TUH-zhen",n:"Verdrietig",e:"Sad",m:"\u{1f622}"},
+{b:"\u042f\u0434\u043e\u0441\u0430\u043d",p:"ya-DO-san",n:"Boos",e:"Angry",m:"\u{1f620}"},
+{b:"\u0423\u043c\u043e\u0440\u0435\u043d",p:"oo-mo-REN",n:"Moe",e:"Tired",m:"\u{1f634}"},
+{b:"\u0414\u043e\u0431\u044a\u0440",p:"DO-buhr",n:"Goed",e:"Good",m:"\u{1f44d}"},
+{b:"\u041b\u043e\u0448",p:"losh",n:"Slecht",e:"Bad",m:"\u{1f44e}"},
+{b:"\u041a\u0440\u0430\u0441\u0438\u0432",p:"kra-SIV",n:"Mooi",e:"Beautiful",m:"\u{1f338}"},
+{b:"\u0413\u043e\u043b\u044f\u043c",p:"go-LYAM",n:"Groot",e:"Big",m:"\u{1f4aa}"},
+{b:"\u041c\u0430\u043b\u044a\u043a",p:"MA-luhk",n:"Klein",e:"Small",m:"\u{1f90f}"},
+{b:"\u0425\u0430\u0440\u0435\u0441\u0432\u0430\u043c",p:"ha-RES-vam",n:"Ik vind leuk",e:"I like",m:"\u2764\ufe0f"},
+{b:"\u041d\u0435 \u0445\u0430\u0440\u0435\u0441\u0432\u0430\u043c",p:"ne ha-RES-vam",n:"Ik vind niet leuk",e:"I don't like",m:"\u{1f645}"},
+{b:"\u041c\u0438\u0441\u043b\u044f",p:"MIS-lya",n:"Ik denk",e:"I think",m:"\u{1f914}"},
+{b:"\u0417\u043d\u0430\u043c",p:"znam",n:"Ik weet",e:"I know",m:"\u{1f4a1}"},
+{b:"\u041d\u0435 \u0437\u043d\u0430\u043c",p:"ne znam",n:"Ik weet niet",e:"I don't know",m:"\u{1f937}"},
+{b:"\u0420\u0430\u0437\u0431\u0438\u0440\u0430\u043c",p:"raz-BI-ram",n:"Ik begrijp",e:"I understand",m:"\u{1f4a1}"},
+{b:"\u041d\u0435 \u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043c",p:"ne raz-BI-ram",n:"Ik begrijp niet",e:"I don't understand",m:"\u{1f615}"},
+{b:"\u041c\u043d\u043e\u0433\u043e",p:"MNO-go",n:"Veel / erg",e:"A lot / very",m:"\u{1f4af}"},
+{b:"\u041c\u0430\u043b\u043a\u043e",p:"MAL-ko",n:"Een beetje",e:"A little",m:"\u{1f90f}"},
+{b:"\u0421\u0442\u0440\u0430\u0445\u043e\u0442\u043d\u043e!",p:"stra-HOT-no",n:"Geweldig!",e:"Awesome!",m:"\u{1f929}"},
+{b:"\u0418\u043d\u0442\u0435\u0440\u0435\u0441\u043d\u043e",p:"in-te-RES-no",n:"Interessant",e:"Interesting",m:"\u{1f9d0}"}
+]},
+{id:"w6c",wk:"6",t:"Eerste Gesprek",em:"\u{1f4de}",gr:"grad-i",ph:1,type:"conv",desc:"Bel met de familie!",
+conv:[
+{s:"\u0411\u0430\u0431\u0430",b:"\u0410\u043b\u043e? \u0417\u0434\u0440\u0430\u0432\u0435\u0439!",n:"Hallo? Hoi!",side:"l"},
+{s:"Jij",b:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439, \u0431\u0430\u0431\u043e! \u041a\u0430\u043a \u0441\u0438?",n:"Hoi oma! Hoe gaat het?",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u0414\u043e\u0431\u0440\u0435 \u0441\u044a\u043c! \u0410 \u0442\u0438?",n:"Goed! En jij?",side:"l"},
+{s:"Jij",b:"\u0414\u043e\u0431\u0440\u0435 \u0441\u044a\u043c, \u043c\u0435\u0440\u0441\u0438!",n:"Goed, dankjewel!",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u041e\u0431\u0438\u0447\u0430\u043c \u0442\u0435!",n:"Ik hou van je!",side:"l"},
+{s:"Jij",b:"\u0418 \u0430\u0437 \u0442\u0435 \u043e\u0431\u0438\u0447\u0430\u043c! \u0414\u043e\u0432\u0438\u0436\u0434\u0430\u043d\u0435!",n:"Ik hou ook van jou! Tot ziens!",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u0414\u043e\u0432\u0438\u0436\u0434\u0430\u043d\u0435, \u0441\u043a\u044a\u043f\u0438!",n:"Tot ziens, schat!",side:"l"}
+]},
+{id:"w78",wk:"7-8",t:"Over Jezelf",em:"\u{1f464}",gr:"grad-s",ph:2,type:"gramvocab",desc:"Voornaamwoorden + zijn (\u0441\u044a\u043c)",
+gram:{title:"Het werkwoord '\u0441\u044a\u043c' (zijn)",
+intro:"Net als Latijn 'sum, es, est' en Nederlands 'zijn':",
+rows:[["\u0410\u0437","\u0441\u044a\u043c","Ik ben"],["\u0422\u0438","\u0441\u0438","Jij bent"],["\u0422\u043e\u0439","\u0435","Hij is"],["\u0422\u044f","\u0435","Zij is"],["\u041d\u0438\u0435","\u0441\u043c\u0435","Wij zijn"],["\u0412\u0438\u0435","\u0441\u0442\u0435","Jullie zijn"],["\u0422\u0435","\u0441\u0430","Zij zijn"]],
+tip:"\u{1f4a1} Goed nieuws: Bulgaars heeft GEEN naamvallen (anders dan Latijn, Grieks of Duits). Dit maakt het veel makkelijker!"},
+ws:[
+{b:"\u0410\u0437 \u0441\u044a\u043c",p:"az SUHM",n:"Ik ben",e:"I am",m:"\u{1f446}"},
+{b:"\u0422\u0438 \u0441\u0438",p:"ti SI",n:"Jij bent",e:"You are",m:"\u{1f449}"},
+{b:"\u0422\u043e\u0439 \u0435",p:"toj E",n:"Hij is",e:"He is",m:"\u{1f468}"},
+{b:"\u0422\u044f \u0435",p:"tya E",n:"Zij is",e:"She is",m:"\u{1f469}"},
+{b:"\u041d\u0438\u0435 \u0441\u043c\u0435",p:"ni-E SME",n:"Wij zijn",e:"We are",m:"\u{1f46b}"},
+{b:"\u041d\u0430 ... \u0433\u043e\u0434\u0438\u043d\u0438",p:"na ... GO-di-ni",n:"... jaar oud",e:"... years old",m:"\u{1f382}"},
+{b:"\u0416\u0438\u0432\u0435\u044f \u0432",p:"zhi-VE-ya v",n:"Ik woon in",e:"I live in",m:"\u{1f3e0}"},
+{b:"\u0413\u043e\u0432\u043e\u0440\u044f",p:"go-vo-RYA",n:"Ik spreek",e:"I speak",m:"\u{1f5e3}\ufe0f"},
+{b:"\u0423\u0447\u0430",p:"OO-cha",n:"Ik leer/studeer",e:"I study",m:"\u{1f4da}"},
+{b:"\u0415\u0437\u0438\u043a",p:"e-ZIK",n:"Taal",e:"Language",m:"\u{1f30d}"},
+{b:"\u0411\u044a\u043b\u0433\u0430\u0440\u0438\u044f",p:"buhl-GA-ri-ya",n:"Bulgarije",e:"Bulgaria",m:"\u{1f1e7}\u{1f1ec}"},
+{b:"\u0425\u043e\u043b\u0430\u043d\u0434\u0438\u044f",p:"ho-LAN-di-ya",n:"Nederland",e:"Netherlands",m:"\u{1f1f3}\u{1f1f1}"},
+{b:"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438",p:"buhl-GAR-ski",n:"Bulgaars",e:"Bulgarian",m:"\u{1f1e7}\u{1f1ec}"},
+{b:"\u041f\u0440\u0438\u044f\u0442\u0435\u043b",p:"pri-YA-tel",n:"Vriend",e:"Friend",m:"\u{1f46b}"},
+{b:"\u0420\u043e\u0434\u0435\u043d \u0441\u044a\u043c",p:"RO-den suhm",n:"Ik ben geboren",e:"I was born",m:"\u{1f476}"}
+]},
+{id:"w910",wk:"9-10",t:"School & Hobby's",em:"\u{1f3eb}",gr:"grad-e",ph:2,type:"gramvocab",desc:"Werkwoorden tegenwoordige tijd",
+gram:{title:"Werkwoorden \u2014 Tegenwoordige tijd",
+intro:"Bulgaarse werkwoorden veranderen per persoon, net als in het Latijn:",
+rows:[["\u0410\u0437","\u0447\u0435\u0442\u0430 (lees)","\u043f\u0438\u0448\u0430 (schrijf)","\u0438\u0433\u0440\u0430\u044f (speel)"],["\u0422\u0438","\u0447\u0435\u0442\u0435\u0448","\u043f\u0438\u0448\u0435\u0448","\u0438\u0433\u0440\u0430\u0435\u0448"],["\u0422\u043e\u0439/\u0422\u044f","\u0447\u0435\u0442\u0435","\u043f\u0438\u0448\u0435","\u0438\u0433\u0440\u0430\u0435"],["\u041d\u0438\u0435","\u0447\u0435\u0442\u0435\u043c","\u043f\u0438\u0448\u0435\u043c","\u0438\u0433\u0440\u0430\u0435\u043c"],["\u0412\u0438\u0435","\u0447\u0435\u0442\u0435\u0442\u0435","\u043f\u0438\u0448\u0435\u0442\u0435","\u0438\u0433\u0440\u0430\u0435\u0442\u0435"],["\u0422\u0435","\u0447\u0435\u0442\u0430\u0442","\u043f\u0438\u0448\u0430\u0442","\u0438\u0433\u0440\u0430\u044f\u0442"]],
+tip:"\u{1f4a1} Zie je het patroon? De uitgangen -\u0430, -\u0435\u0448, -\u0435, -\u0435\u043c, -\u0430\u0442 lijken op Latijn -o, -s, -t, -mus, -tis, -nt!"},
+ws:[
+{b:"\u0423\u0447\u0438\u043b\u0438\u0449\u0435",p:"oo-CHI-lish-te",n:"School",e:"School",m:"\u{1f3eb}"},
+{b:"\u0423\u0447\u0438\u0442\u0435\u043b",p:"oo-CHI-tel",n:"Leraar",e:"Teacher",m:"\u{1f468}\u200d\u{1f3eb}"},
+{b:"\u041a\u043d\u0438\u0433\u0430",p:"KNI-ga",n:"Boek",e:"Book",m:"\u{1f4d6}"},
+{b:"\u041a\u043e\u043c\u043f\u044e\u0442\u044a\u0440",p:"kom-PYOO-tuhr",n:"Computer",e:"Computer",m:"\u{1f4bb}"},
+{b:"\u0421\u043f\u043e\u0440\u0442",p:"sport",n:"Sport",e:"Sport",m:"\u26bd"},
+{b:"\u0424\u0443\u0442\u0431\u043e\u043b",p:"foot-BOL",n:"Voetbal",e:"Football",m:"\u26bd"},
+{b:"\u041c\u0443\u0437\u0438\u043a\u0430",p:"MOO-zi-ka",n:"Muziek",e:"Music",m:"\u{1f3b5}"},
+{b:"\u0427\u0435\u0442\u0430",p:"che-TA",n:"Ik lees",e:"I read",m:"\u{1f4d6}"},
+{b:"\u041f\u0438\u0448\u0430",p:"PI-sha",n:"Ik schrijf",e:"I write",m:"\u270d\ufe0f"},
+{b:"\u0420\u0438\u0441\u0443\u0432\u0430\u043c",p:"ri-SOO-vam",n:"Ik teken",e:"I draw",m:"\u{1f3a8}"},
+{b:"\u0418\u0433\u0440\u0430\u044f",p:"ig-RA-ya",n:"Ik speel",e:"I play",m:"\u{1f3ae}"},
+{b:"\u041f\u0435\u044f",p:"PE-ya",n:"Ik zing",e:"I sing",m:"\u{1f3a4}"},
+{b:"\u0422\u0430\u043d\u0446\u0443\u0432\u0430\u043c",p:"tan-TSOO-vam",n:"Ik dans",e:"I dance",m:"\u{1f483}"},
+{b:"\u0422\u0438\u0447\u0430\u043c",p:"TI-cham",n:"Ik ren",e:"I run",m:"\u{1f3c3}"},
+{b:"\u041f\u043b\u0443\u0432\u0430\u043c",p:"PLOO-vam",n:"Ik zwem",e:"I swim",m:"\u{1f3ca}"},
+{b:"\u0413\u043e\u0442\u0432\u044f",p:"GOT-vya",n:"Ik kook",e:"I cook",m:"\u{1f373}"},
+{b:"\u0413\u043b\u0435\u0434\u0430\u043c",p:"GLE-dam",n:"Ik kijk",e:"I watch",m:"\u{1f4fa}"}
+]},
+{id:"w1112",wk:"11-12",t:"Winkelen & Getallen",em:"\u{1f6d2}",gr:"grad-a",ph:2,type:"gramvocab",desc:"Telwoorden en prijzen vragen",
+gram:{title:"Getallen 1\u201320",
+intro:"Bulgaarse getallen \u2014 leer ze als een reeks:",
+rows:[["1","\u0435\u0434\u043d\u043e (ed-NO)","11","\u0435\u0434\u0438\u043d\u0430\u0439\u0441\u0435\u0442"],["2","\u0434\u0432\u0435 (dve)","12","\u0434\u0432\u0430\u043d\u0430\u0439\u0441\u0435\u0442"],["3","\u0442\u0440\u0438 (tri)","13","\u0442\u0440\u0438\u043d\u0430\u0439\u0441\u0435\u0442"],["4","\u0447\u0435\u0442\u0438\u0440\u0438 (che-TI-ri)","14","\u0447\u0435\u0442\u0438\u0440\u0438\u043d\u0430\u0439\u0441\u0435\u0442"],["5","\u043f\u0435\u0442 (pet)","15","\u043f\u0435\u0442\u043d\u0430\u0439\u0441\u0435\u0442"],["6","\u0448\u0435\u0441\u0442 (shest)","20","\u0434\u0432\u0430\u0439\u0441\u0435\u0442"],["7","\u0441\u0435\u0434\u0435\u043c (SE-dem)","30","\u0442\u0440\u0438\u0439\u0441\u0435\u0442"],["8","\u043e\u0441\u0435\u043c (O-sem)","50","\u043f\u0435\u0442\u0434\u0435\u0441\u0435\u0442"],["9","\u0434\u0435\u0432\u0435\u0442 (DE-vet)","100","\u0441\u0442\u043e (sto)"],["10","\u0434\u0435\u0441\u0435\u0442 (DE-set)","0","\u043d\u0443\u043b\u0430"]],
+tip:"\u{1f4a1} Patroon: 11-19 = getal + \u043d\u0430\u0439\u0441\u0435\u0442 (nay-set). Tientallen: getal + \u0434\u0435\u0441\u0435\u0442/\u0439\u0441\u0435\u0442"},
+ws:[
+{b:"\u041a\u043e\u043b\u043a\u043e?",p:"KOL-ko?",n:"Hoeveel?",e:"How much?",m:"\u{1f522}"},
+{b:"\u041a\u043e\u043b\u043a\u043e \u0441\u0442\u0440\u0443\u0432\u0430?",p:"KOL-ko STROO-va?",n:"Hoeveel kost het?",e:"How much does it cost?",m:"\u{1f4b0}"},
+{b:"\u0421\u043a\u044a\u043f\u043e",p:"SKUH-po",n:"Duur",e:"Expensive",m:"\u{1f4b8}"},
+{b:"\u0415\u0432\u0442\u0438\u043d\u043e",p:"ev-TI-no",n:"Goedkoop",e:"Cheap",m:"\u{1f44d}"},
+{b:"\u041c\u0430\u0433\u0430\u0437\u0438\u043d",p:"ma-ga-ZIN",n:"Winkel",e:"Shop",m:"\u{1f6cd}\ufe0f"},
+{b:"\u041f\u0430\u0437\u0430\u0440",p:"pa-ZAR",n:"Markt",e:"Market",m:"\u{1f6d2}"},
+{b:"\u041f\u0430\u0440\u0438",p:"pa-RI",n:"Geld",e:"Money",m:"\u{1f4b0}"},
+{b:"\u041b\u0435\u0432",p:"lev",n:"Lev (munteenheid)",e:"Lev (currency)",m:"\u{1f1e7}\u{1f1ec}"},
+{b:"\u0418\u0441\u043a\u0430\u043c \u0434\u0430 \u043a\u0443\u043f\u044f",p:"IS-kam da KOO-pya",n:"Ik wil kopen",e:"I want to buy",m:"\u{1f6d2}"},
+{b:"\u0422\u043e\u0432\u0430",p:"to-VA",n:"Dit/dat",e:"This/that",m:"\u{1f449}"}
+]},
+{id:"w1314",wk:"13-14",t:"Weer & Seizoenen",em:"\u{1f326}\ufe0f",gr:"grad-s",ph:2,type:"gramvocab",desc:"Bijvoeglijke naamwoorden",
+gram:{title:"Bijvoeglijke naamwoorden (m/v/o)",
+intro:"Net als in het Frans: bijv.nw. past zich aan het geslacht aan:",
+rows:[["Mann.","\u043a\u0440\u0430\u0441\u0438\u0432","\u0433\u043e\u043b\u044f\u043c","\u0441\u0442\u0443\u0434\u0435\u043d"],["Vrouw.","\u043a\u0440\u0430\u0441\u0438\u0432\u0430","\u0433\u043e\u043b\u044f\u043c\u0430","\u0441\u0442\u0443\u0434\u0435\u043d\u0430"],["Onz.","\u043a\u0440\u0430\u0441\u0438\u0432\u043e","\u0433\u043e\u043b\u044f\u043c\u043e","\u0441\u0442\u0443\u0434\u0435\u043d\u043e"],["Meerv.","\u043a\u0440\u0430\u0441\u0438\u0432\u0438","\u0433\u043e\u043b\u0435\u043c\u0438","\u0441\u0442\u0443\u0434\u0435\u043d\u0438"]],
+tip:"\u{1f4a1} Mannelijk = geen uitgang, Vrouwelijk = -\u0430, Onzijdig = -\u043e, Meervoud = -\u0438. Simpeler dan Duits!"},
+ws:[
+{b:"\u0412\u0440\u0435\u043c\u0435\u0442\u043e",p:"VRE-me-to",n:"Het weer",e:"The weather",m:"\u{1f326}\ufe0f"},
+{b:"\u0421\u043b\u044a\u043d\u0446\u0435",p:"SLUHN-tse",n:"Zon",e:"Sun",m:"\u2600\ufe0f"},
+{b:"\u0414\u044a\u0436\u0434",p:"duhzhd",n:"Regen",e:"Rain",m:"\u{1f327}\ufe0f"},
+{b:"\u0421\u043d\u044f\u0433",p:"snyag",n:"Sneeuw",e:"Snow",m:"\u2744\ufe0f"},
+{b:"\u0412\u044f\u0442\u044a\u0440",p:"VYA-tuhr",n:"Wind",e:"Wind",m:"\u{1f32c}\ufe0f"},
+{b:"\u0413\u043e\u0440\u0435\u0449\u043e",p:"go-RESH-to",n:"Heet",e:"Hot",m:"\u{1f525}"},
+{b:"\u0421\u0442\u0443\u0434\u0435\u043d\u043e",p:"stoo-DE-no",n:"Koud",e:"Cold",m:"\u{1f976}"},
+{b:"\u0422\u043e\u043f\u043b\u043e",p:"TOP-lo",n:"Warm",e:"Warm",m:"\u{1f60c}"},
+{b:"\u0425\u0443\u0431\u0430\u0432\u043e",p:"hoo-BA-vo",n:"Mooi (weer)",e:"Nice",m:"\u{1f60d}"},
+{b:"\u041e\u0431\u043b\u0430\u0447\u043d\u043e",p:"OB-lach-no",n:"Bewolkt",e:"Cloudy",m:"\u2601\ufe0f"},
+{b:"\u041f\u0440\u043e\u043b\u0435\u0442",p:"pro-LET",n:"Lente",e:"Spring",m:"\u{1f33c}"},
+{b:"\u041b\u044f\u0442\u043e",p:"LYA-to",n:"Zomer",e:"Summer",m:"\u2600\ufe0f"},
+{b:"\u0415\u0441\u0435\u043d",p:"E-sen",n:"Herfst",e:"Autumn",m:"\u{1f342}"},
+{b:"\u0417\u0438\u043c\u0430",p:"ZI-ma",n:"Winter",e:"Winter",m:"\u2744\ufe0f"},
+{b:"\u0414\u043d\u0435\u0441",p:"dnes",n:"Vandaag",e:"Today",m:"\u{1f4c5}"},
+{b:"\u0423\u0442\u0440\u0435",p:"OO-tre",n:"Morgen",e:"Tomorrow",m:"\u{1f305}"},
+{b:"\u0412\u0447\u0435\u0440\u0430",p:"vche-RA",n:"Gisteren",e:"Yesterday",m:"\u{1f553}"}
+]},
+{id:"w1516",wk:"15-16",t:"Een Dagje Uit",em:"\u{1f3d6}\ufe0f",gr:"grad-v",ph:2,type:"gramconv",desc:"Toekomende tijd + plannen",
+gram:{title:"Toekomende tijd met '\u0449\u0435'",
+intro:"Super simpel! Zet \u0449\u0435 (shte) voor het werkwoord:",
+rows:[["\u0410\u0437","\u0449\u0435 \u043e\u0442\u0438\u0434\u0430","Ik zal gaan"],["\u0422\u0438","\u0449\u0435 \u043e\u0442\u0438\u0434\u0435\u0448","Jij zult gaan"],["\u0422\u043e\u0439/\u0422\u044f","\u0449\u0435 \u043e\u0442\u0438\u0434\u0435","Hij/Zij zal gaan"],["\u041d\u0438\u0435","\u0449\u0435 \u043e\u0442\u0438\u0434\u0435\u043c","Wij zullen gaan"],["\u0412\u0438\u0435","\u0449\u0435 \u043e\u0442\u0438\u0434\u0435\u0442\u0435","Jullie zullen gaan"],["\u0422\u0435","\u0449\u0435 \u043e\u0442\u0438\u0434\u0430\u0442","Zij zullen gaan"]],
+tip:"\u{1f4a1} Makkelijker dan Frans (geen apart werkwoord) en simpeler dan Engels! Gewoon \u0449\u0435 + werkwoord."},
+conv:[
+{s:"Kind 1",b:"\u0425\u0430\u0439\u0434\u0435 \u0434\u0430 \u043e\u0442\u0438\u0434\u0435\u043c \u043d\u0430 \u043a\u0438\u043d\u043e \u0443\u0442\u0440\u0435!",n:"Laten we morgen naar de bios gaan!",side:"l"},
+{s:"Kind 2",b:"\u0414\u0430! \u041a\u0430\u043a\u044a\u0432 \u0444\u0438\u043b\u043c \u0438\u0441\u043a\u0430\u0448 \u0434\u0430 \u0433\u043b\u0435\u0434\u0430\u0448?",n:"Ja! Welke film wil je zien?",side:"r"},
+{s:"Kind 1",b:"\u041d\u0435 \u0437\u043d\u0430\u043c. \u0422\u0438 \u0438\u0437\u0431\u0435\u0440\u0438!",n:"Weet ik niet. Kies jij!",side:"l"},
+{s:"Kind 2",b:"\u0414\u043e\u0431\u0440\u0435. \u0412 \u043a\u043e\u043b\u043a\u043e \u0447\u0430\u0441\u0430?",n:"Ok\u00e9. Hoe laat?",side:"r"},
+{s:"Kind 1",b:"\u0412 \u0442\u0440\u0438 \u0447\u0430\u0441\u0430?",n:"Om drie uur?",side:"l"},
+{s:"Kind 2",b:"\u0421\u0442\u0440\u0430\u0445\u043e\u0442\u043d\u043e! \u0429\u0435 \u0441\u0435 \u0432\u0438\u0434\u0438\u043c \u0443\u0442\u0440\u0435!",n:"Geweldig! Tot morgen!",side:"r"}
+],
+ws:[
+{b:"\u041e\u0442\u0438\u0432\u0430\u043c",p:"o-TI-vam",n:"Ik ga",e:"I go",m:"\u{1f6b6}"},
+{b:"\u0418\u0434\u0432\u0430\u043c",p:"ID-vam",n:"Ik kom",e:"I come",m:"\u{1f44b}"},
+{b:"\u0425\u0430\u0439\u0434\u0435 \u0434\u0430...",p:"HAY-de da",n:"Laten we...",e:"Let's...",m:"\u{1f91d}"},
+{b:"\u0418\u0441\u043a\u0430\u043c \u0434\u0430...",p:"IS-kam da",n:"Ik wil...",e:"I want to...",m:"\u{1f4ad}"},
+{b:"\u0429\u0435",p:"shte",n:"Zal (toekomst)",e:"Will (future)",m:"\u{1f52e}"},
+{b:"\u041a\u0438\u043d\u043e",p:"KI-no",n:"Bioscoop",e:"Cinema",m:"\u{1f3ac}"},
+{b:"\u0420\u0435\u0441\u0442\u043e\u0440\u0430\u043d\u0442",p:"res-to-RANT",n:"Restaurant",e:"Restaurant",m:"\u{1f37d}\ufe0f"},
+{b:"\u041f\u043b\u0430\u0436",p:"plazh",n:"Strand",e:"Beach",m:"\u{1f3d6}\ufe0f"},
+{b:"\u041f\u043b\u0430\u043d\u0438\u043d\u0430",p:"pla-ni-NA",n:"Berg",e:"Mountain",m:"\u26f0\ufe0f"},
+{b:"\u0417\u0430\u0431\u0430\u0432\u043d\u043e",p:"za-BAV-no",n:"Leuk",e:"Fun",m:"\u{1f389}"},
+{b:"\u0413\u043e\u0442\u0438\u043d\u043e!",p:"go-TI-no",n:"Cool!",e:"Cool!",m:"\u{1f60e}"},
+{b:"\u041a\u043e\u0433\u0430?",p:"ko-GA?",n:"Wanneer?",e:"When?",m:"\u23f0"},
+{b:"\u041a\u044a\u0434\u0435?",p:"kuh-DE?",n:"Waar?",e:"Where?",m:"\u{1f4cd}"},
+{b:"\u0417\u0430\u0449\u043e?",p:"zash-TO?",n:"Waarom?",e:"Why?",m:"\u2753"},
+{b:"\u041a\u0430\u043a?",p:"kak?",n:"Hoe?",e:"How?",m:"\u{1f914}"}
+]}
+];
+
+const BADGES=[
+{id:"l1",nm:"Eerste Letter",ic:"\u{1f524}",ds:"Je eerste letter geleerd",rq:s=>s.ll>=1},
+{id:"fr",nm:"Vrienden Meester",ic:"\u{1f91d}",ds:"Alle Vrienden-letters geleerd",rq:s=>(s.gd||[]).includes("friends")},
+{id:"tr",nm:"Trickster Temmer",ic:"\u{1f3ad}",ds:"Alle Tricksters doorgehad",rq:s=>(s.gd||[]).includes("tricksters")},
+{id:"am",nm:"Alfabet Meester",ic:"\u{1f451}",ds:"Alle 30 letters geleerd",rq:s=>s.ll>=30},
+{id:"w10",nm:"Woordenvanger",ic:"\u{1f4da}",ds:"10 woorden geleerd",rq:s=>s.wl>=10},
+{id:"w50",nm:"Taalheld",ic:"\u{1f31f}",ds:"50 woorden geleerd",rq:s=>s.wl>=50},
+{id:"w100",nm:"Woordenmeester",ic:"\u{1f4d6}",ds:"100 woorden geleerd",rq:s=>s.wl>=100},
+{id:"w150",nm:"Woordenwonder",ic:"\u{1f680}",ds:"150 woorden geleerd",rq:s=>s.wl>=150},
+{id:"q5",nm:"Quiz Kampioen",ic:"\u{1f3c6}",ds:"5 quizvragen goed",rq:s=>s.qo>=5},
+{id:"q20",nm:"Quiz Meester",ic:"\u{1f947}",ds:"20 quizvragen goed",rq:s=>s.qo>=20},
+{id:"qp",nm:"Perfectionist",ic:"\u{1f48e}",ds:"10 op rij goed",rq:s=>s.qb>=10},
+{id:"g1",nm:"Grammatica Starter",ic:"\u{1f4d0}",ds:"Eerste grammatica geleerd",rq:s=>s.gl>=1},
+{id:"c1",nm:"Eerste Gesprek",ic:"\u{1f4de}",ds:"Eerste gesprek gelezen",rq:s=>s.cl>=1},
+{id:"all",nm:"Oma's Favoriet",ic:"\u{1f475}\u2764\ufe0f",ds:"Alle modules afgerond",rq:s=>s.mc>=9},
+];
+
+function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+// All words from all modules for quiz
+function allWords(mods){return mods.filter(m=>m.ws).flatMap(m=>m.ws);}
+
+// === SPEECH ===
+var bgVoice=null;var speechReady=false;
+try{
+  if(typeof speechSynthesis!=="undefined"){
+    var findVoices=function(){try{var vs=speechSynthesis.getVoices();bgVoice=vs.find(function(v){return v.lang.indexOf("bg")===0;})||null;speechReady=vs.length>0;}catch(e){}};
+    findVoices();
+    if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=findVoices;}
+  }
+}catch(e){}
+
+function speak(text,e){
+  try{
+    if(e&&e.stopPropagation){e.stopPropagation();e.preventDefault();}
+    if(typeof speechSynthesis==="undefined")return;
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang="bg-BG";u.rate=0.85;u.pitch=1;
+    if(bgVoice)u.voice=bgVoice;
+    speechSynthesis.speak(u);
+  }catch(err){}
+}
+
+function SpeakBtn(props){
+  var text=props.text;var size=props.size;
+  var sz=size||"md";
+  var btnStyle=sz==="sm"?{fontSize:14,padding:"2px 6px"}:sz==="lg"?{fontSize:22,padding:"6px 10px"}:{fontSize:17,padding:"4px 8px"};
+  btnStyle.background="none";btnStyle.border="1px solid #e2e8f0";btnStyle.borderRadius=8;btnStyle.cursor="pointer";btnStyle.transition="all .15s";btnStyle.lineHeight=1;
+  return ce("button",{onClick:function(e){speak(text,e);},title:"Luister",style:btnStyle},"\uD83D\uDD0A");
+}
+
+// === COMPONENTS ===
+
+function Nav({scr,go,st}){
+  return ce("div",{className:"nav"},
+    ce("div",{className:"nav-left"},
+      scr!=="home"&&ce("button",{className:"back-btn",onClick:()=>go("home")},"\u2190"),
+      ce("span",{className:"nav-title"},"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438"),
+      ce("span",{className:"nav-sub"},"\u0437\u0430 \u0434\u0435\u0446\u0430")),
+    ce("div",{className:"nav-right"},
+      ce("span",{className:"pill pill-xp"},"\u26a1 "+st.xp),
+      ce("span",{className:"pill pill-str"},"\u2764\ufe0f "+st.sk)));
+}
+
+function Home({go,st}){
+  const tl=ALPHA.reduce((s,g)=>s+g.ls.length,0);
+  const tw=allWords(MODS).length;
+  const lp=Math.round(st.ll/tl*100);
+  const wp=Math.round(st.wl/tw*100);
+  const eb=BADGES.filter(b=>b.rq(st)).length;
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},ce("h1",{className:"h1"},"\u0414\u043e\u0431\u0440\u0435 \u0434\u043e\u0448\u043b\u0438! \u{1f1e7}\u{1f1ec}"),ce("p",{className:"sub",style:{marginTop:4}},"16 weken Bulgaars \u2014 kies een module")),
+    ce("div",{style:{background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)",borderRadius:16,padding:16,border:"1px solid #ccfbf1"}},
+      ce("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:12}},
+        ce("span",{style:{fontSize:13,fontWeight:500,color:"#134e4a"}},"Voortgang"),
+        ce("span",{style:{fontSize:12,color:"#0d9488"}},st.xp+" XP")),
+      ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}},
+        ce("div",{style:{background:"#fff",borderRadius:12,padding:10,textAlign:"center"}},
+          ce("div",{style:{fontSize:18,fontWeight:700,color:"#0d9488"}},st.ll+"/"+tl),
+          ce("div",{style:{fontSize:10,color:"#64748b"}},"Letters"),
+          ce("div",{className:"pb",style:{marginTop:6}},ce("div",{className:"pf",style:{width:lp+"%",background:"#14b8a6"}}))),
+        ce("div",{style:{background:"#fff",borderRadius:12,padding:10,textAlign:"center"}},
+          ce("div",{style:{fontSize:18,fontWeight:700,color:"#059669"}},st.wl+"/"+tw),
+          ce("div",{style:{fontSize:10,color:"#64748b"}},"Woorden"),
+          ce("div",{className:"pb",style:{marginTop:6}},ce("div",{className:"pf",style:{width:wp+"%",background:"#10b981"}}))),
+        ce("div",{style:{background:"#fff",borderRadius:12,padding:10,textAlign:"center"}},
+          ce("div",{style:{fontSize:18,fontWeight:700,color:"#8b5cf6"}},eb+"/"+BADGES.length),
+          ce("div",{style:{fontSize:10,color:"#64748b"}},"Badges")))),
+    !bgVoice&&speechReady&&ce("div",{style:{background:"#fef3c7",border:"1px solid #fde68a",borderRadius:12,padding:12,fontSize:12,color:"#92400e"}},
+      "\u{1f50a} Geen Bulgaarse stem gevonden. Op Mac: Systeeminstellingen \u2192 Toegankelijkheid \u2192 Gesproken materiaal \u2192 Beheer stemmen \u2192 zoek 'Bulgarian'. Op Chrome werkt het meestal automatisch."),
+    bgVoice&&ce("div",{style:{background:"#ecfdf5",border:"1px solid #a7f3d0",borderRadius:12,padding:10,fontSize:12,color:"#047857",display:"flex",alignItems:"center",gap:6}},
+      "\u{1f50a} Bulgaarse spraak actief! Tik op de ",ce("span",{style:{fontSize:16}},"\uD83D\uDD0A")," knop bij woorden om ze te horen."),
+    // Phase 1
+    ce("div",null,ce("span",{className:"phase-h ph1"},"Fase 1: Ontdekking (Week 1-6)")),
+    ce("div",{className:"sy3"},MODS.filter(m=>m.ph===1).map(m=>
+      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
+        ce("div",{className:"card-r"},
+          ce("div",{className:"card-i "+m.gr},m.em),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc)),
+          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    // Phase 2
+    ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h ph2"},"Fase 2: Gesprekken (Week 7-16)")),
+    ce("div",{className:"sy3"},MODS.filter(m=>m.ph===2).map(m=>
+      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
+        ce("div",{className:"card-r"},
+          ce("div",{className:"card-i "+m.gr},m.em),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc)),
+          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    // Quick links
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:8}},
+      ce("button",{className:"card",onClick:()=>go("quiz"),style:{textAlign:"center",padding:14}},
+        ce("div",{style:{fontSize:28}},"\u{1f3af}"),
+        ce("div",{className:"card-t",style:{marginTop:4}},"Quiz"),
+        ce("div",{className:"card-d"},"Test alles!")),
+      ce("button",{className:"card",onClick:()=>go("badges"),style:{textAlign:"center",padding:14}},
+        ce("div",{style:{fontSize:28}},"\u{1f3c6}"),
+        ce("div",{className:"card-t",style:{marginTop:4}},"Badges"),
+        ce("div",{className:"card-d"},eb+"/"+BADGES.length+" verdiend"))),
+    ce("div",{className:"fact"},
+      ce("span",null,"\u2728"),
+      ce("div",null,
+        ce("div",{style:{fontSize:11,fontWeight:600,color:"#475569",marginBottom:4}},"Wist je dat?"),
+        ce("div",{style:{fontSize:11,color:"#64748b"}},"Bulgaars is de enige Slavische taal zonder naamvallen! Dat maakt het makkelijker dan Russisch, Pools of Tsjechisch. En het Cyrillisch alfabet? Dat is in Bulgarije uitgevonden!")))
+  );
+}
+
+// === ALPHABET MODULE ===
+function AlphaList({go,st}){
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},ce("h2",{className:"h2"},"Cyrillisch Alfabet"),ce("p",{className:"sub"},"Kies een groep")),
+    ALPHA.map((g,gi)=>{
+      const dn=g.ls.filter(l=>(st.li||[]).includes(l.u)).length;
+      const pc=Math.round(dn/g.ls.length*100);
+      const cc=g.c;
+      return ce("button",{key:g.id,className:"g-"+cc,onClick:()=>go("ag:"+gi),style:{width:"100%"}},
+        ce("div",{className:"gc-"+cc,style:{padding:14,borderRadius:16,border:"1px solid",textAlign:"left"}},
+          ce("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6}},
+            ce("span",{style:{fontSize:22}},g.em),
+            ce("div",{style:{flex:1}},ce("div",{style:{fontWeight:600,fontSize:14}},g.t),ce("div",{style:{fontSize:11,color:"#64748b"}},g.tb+" \u2014 "+g.ls.length+" letters")),
+            ce("span",{className:"cc-"+cc,style:{fontSize:13,fontWeight:700}},dn+"/"+g.ls.length)),
+          ce("p",{style:{fontSize:11,color:"#64748b",marginBottom:6}},g.d),
+          ce("div",{className:"pb"},ce("div",{className:"pf",style:{width:pc+"%"}}))));
+    }));
+}
+
+function AlphaGrp({gi,go,st,sS}){
+  const g=ALPHA[gi];
+  const[ci,sCI]=uS(0);
+  const[fl,sFL]=uS(false);
+  const lt=g.ls[ci];
+  const ids=st.li||[];
+  const ld=ids.includes(lt.u);
+  const mk=()=>{
+    if(!ids.includes(lt.u)){
+      const ni=[...ids,lt.u];const ng=[...(st.gd||[])];
+      if(g.ls.every(l=>ni.includes(l.u))&&!ng.includes(g.id))ng.push(g.id);
+      sS(s=>({...s,ll:ni.length,li:ni,gd:ng,xp:s.xp+5}));}};
+
+  return ce("div",{className:"scr sy g-"+g.c},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:()=>go("mod:w3")},"\u2190 Terug"),
+      ce("span",{style:{fontSize:13,fontWeight:500}},(ci+1)+"/"+g.ls.length)),
+    ce("div",{className:"ctr"},ce("span",{style:{fontSize:22,marginRight:8}},g.em),ce("span",{style:{fontSize:17,fontWeight:700}},g.t)),
+    ce("div",{className:"dots"},g.ls.map((_,i)=>ce("div",{key:i,className:"dot"+(i===ci?" dot-a":"")+(ids.includes(g.ls[i].u)?" dot-d":""),style:{background:i===ci||ids.includes(g.ls[i].u)?undefined:"#e2e8f0",opacity:i===ci?1:ids.includes(g.ls[i].u)?.5:1}}))),
+    ce("div",{className:"fc",onClick:()=>sFL(!fl)},
+      !fl?ce(R.Fragment,null,ce("div",{className:"fc-big"},lt.u+" "+lt.l),ce("div",{style:{marginTop:12}},ce(SpeakBtn,{text:lt.ex,size:"lg"})),ce("div",{className:"fc-hint"},"Tik om te ontdekken \u2192")):
+      ce("div",{className:"ctr",style:{width:"100%"}},
+        ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginBottom:10}},
+          ce("div",{className:"fc-big",style:{fontSize:48}},lt.u+" "+lt.l),
+          ce(SpeakBtn,{text:lt.ex,size:"lg"})),
+        ce("div",{style:{fontSize:15,fontWeight:500,color:"#334155",marginBottom:6}},"Klinkt als: ",ce("strong",null,lt.du)),
+        lt.tr&&ce("div",{className:"trick",style:{marginBottom:10}},"\u26a0\ufe0f "+lt.tr),
+        ce("div",{className:"ex",style:{borderRadius:12,padding:10,marginBottom:6}},
+          ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
+            ce("div",{style:{fontSize:22,fontWeight:700,color:"#1e293b"}},lt.ex),
+            ce(SpeakBtn,{text:lt.ex,size:"sm"})),
+          ce("div",{style:{fontSize:12,color:"#475569"}},"= "+lt.exN)),
+        ld&&ce("div",{style:{color:"#059669",fontSize:13}},"\u2713 Geleerd!"))),
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn "+(ci===0?"btn-off":"btn-g"),disabled:ci===0,onClick:()=>{sCI(ci-1);sFL(false);}},"\u2190 Vorige"),
+      ci===g.ls.length-1?
+        ce("button",{className:"btn btn-c",onClick:()=>{mk();go("mod:w3");}},"\u2713 Klaar!"):
+        ce("button",{className:"btn btn-c",onClick:()=>{mk();sCI(ci+1);sFL(false);}},"Volgende \u2192")));
+}
+
+// === VOCAB MODULE ===
+function Vocab({mod,go,st,sS}){
+  const ws=mod.ws||[];
+  const[idx,sI]=uS(0);
+  const[fl,sF]=uS(false);
+  const w=ws[idx];if(!w)return null;
+  const wi=st.wi||[];const ld=wi.includes(w.b);
+  const mk=()=>{if(!wi.includes(w.b)){const n=[...wi,w.b];sS(s=>({...s,wl:n.length,wi:n,xp:s.xp+10}));}};
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},ce("h2",{className:"h2"},"Week "+mod.wk+": "+mod.t),ce("p",{className:"sub"},mod.desc)),
+    ce("div",{className:"ctr",style:{fontSize:13,color:"#64748b"}},(idx+1)+"/"+ws.length),
+    ce("div",{className:"fc",style:{borderColor:"#99f6e4",background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)"},onClick:()=>sF(!fl)},
+      !fl?ce(R.Fragment,null,
+        ce("div",{style:{fontSize:36,marginBottom:10}},w.m),
+        ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:6}},
+          ce("div",{style:{fontSize:32,fontWeight:700,color:"#0d9488"}},w.b),
+          ce(SpeakBtn,{text:w.b,size:"lg"})),
+        ce("div",{style:{fontSize:15,color:"#5eead4",fontStyle:"italic"}},"["+w.p+"]"),
+        ce("div",{className:"fc-hint"},"Tik om te vertalen \u2192")):
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:28,marginBottom:6}},w.m),
+        ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:10}},
+          ce("div",{style:{fontSize:26,fontWeight:700,color:"#0d9488"}},w.b),
+          ce(SpeakBtn,{text:w.b})),
+        ce("div",{style:{fontSize:12,color:"#5eead4",fontStyle:"italic",marginBottom:10}},"["+w.p+"]"),
+        ce("div",{style:{width:48,height:1,background:"#99f6e4",margin:"0 auto 10px"}}),
+        ce("div",{style:{fontSize:20,fontWeight:600,color:"#334155"}},"\u{1f1f3}\u{1f1f1} "+w.n),
+        ce("div",{style:{fontSize:16,color:"#64748b",marginTop:4}},"\u{1f1ec}\u{1f1e7} "+w.e),
+        ld&&ce("div",{style:{color:"#059669",fontSize:13,marginTop:8}},"\u2713 Geleerd!"))),
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn "+(idx===0?"btn-off":"btn-g"),disabled:idx===0,onClick:()=>{sI(idx-1);sF(false);}},"\u2190 Vorige"),
+      idx===ws.length-1?
+        ce("button",{className:"btn btn-t",onClick:()=>{mk();go("home");}},"\u2713 Klaar!"):
+        ce("button",{className:"btn btn-t",onClick:()=>{mk();sI(idx+1);sF(false);}},"Volgende \u2192")));
+}
+
+// === GRAMMAR ===
+function Gram({gram,st,sS}){
+  const g=gram;
+  const done=()=>{sS(s=>({...s,gl:(s.gl||0)+1,xp:s.xp+20}));};
+  uE(()=>{done();},[]);
+  const hdr=g.rows[0]&&g.rows[0].length>2;
+  return ce("div",{className:"gram-box sy2"},
+    ce("div",{className:"h3"},"\u{1f4d0} "+g.title),
+    ce("p",{style:{fontSize:13,color:"#334155"}},g.intro),
+    ce("table",{className:"gram-tbl"},
+      ce("tbody",null,g.rows.map((r,i)=>
+        ce("tr",{key:i},r.map((c,j)=>{
+          const isBg=j>0&&j<(hdr?r.length-1:r.length)&&i>0&&/[\u0400-\u04FF]/.test(c);
+          const txt=isBg?c.replace(/\s*\(.*?\)\s*/g,""):c;
+          return ce(i===0&&hdr?"th":"td",{key:j},
+            isBg?ce("span",{style:{display:"flex",alignItems:"center",gap:4}},c,ce(SpeakBtn,{text:txt,size:"sm"})):c);}))))),
+    g.tip&&ce("div",{className:"gram-tip"},g.tip));
+}
+
+// === CONVERSATION ===
+function Conv({lines,st,sS}){
+  const[show,sShow]=uS(1);
+  uE(()=>{sS(s=>({...s,cl:(s.cl||0)+1}));},[]);
+  return ce("div",{className:"sy2"},
+    ce("div",{className:"h3",style:{marginBottom:8}},"\u{1f4ac} Gesprek"),
+    ce("p",{style:{fontSize:12,color:"#64748b",marginBottom:12}},"Tik op 'Volgende' om het gesprek regel voor regel te zien."),
+    lines.slice(0,show).map((l,i)=>
+      ce("div",{key:i,className:"conv-line conv-"+(l.side||"l")},
+        ce("div",{className:"conv-speaker"},l.s+":"),
+        ce("div",{className:"conv-text"},
+          ce("div",{style:{display:"flex",alignItems:"center",gap:6}},
+            ce("div",{className:"conv-bg"},l.b),
+            ce(SpeakBtn,{text:l.b,size:"sm"})),
+          ce("div",{className:"conv-nl"},l.n)))),
+    show<lines.length&&ce("button",{className:"btn btn-t",style:{marginTop:8},onClick:()=>sShow(show+1)},"\u{1f4ac} Volgende regel"),
+    show>=lines.length&&ce("div",{style:{color:"#059669",fontSize:13,fontWeight:500,marginTop:8}},"\u2713 Gesprek compleet!"));
+}
+
+// === MODULE ROUTER ===
+function ModScreen({mod,go,st,sS}){
+  const[tab,sTab]=uS("learn");
+  if(mod.type==="alpha")return ce(AlphaList,{go,st});
+
+  const hasg=!!mod.gram;const hasw=!!mod.ws&&mod.ws.length>0;const hasc=!!mod.conv;
+  const tabs=[];
+  if(hasw)tabs.push(["learn","Woorden"]);
+  if(hasg)tabs.push(["gram","Grammatica"]);
+  if(hasc)tabs.push(["conv","Gesprek"]);
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:()=>go("home")},"\u2190 Home"),
+      ce("span",{style:{fontSize:13,color:"#64748b"}},"Week "+mod.wk)),
+    ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:36}},mod.em),
+      ce("h2",{className:"h2",style:{marginTop:4}},mod.t),
+      ce("p",{className:"sub"},mod.desc)),
+    tabs.length>1&&ce("div",{className:"tab-row"},
+      tabs.map(([k,l])=>ce("button",{key:k,className:"tab"+(tab===k?" tab-on":""),onClick:()=>sTab(k)},l))),
+    tab==="learn"&&hasw&&ce(Vocab,{mod,go,st,sS}),
+    tab==="gram"&&hasg&&ce(Gram,{gram:mod.gram,st,sS}),
+    tab==="conv"&&hasc&&ce(Conv,{lines:mod.conv,st,sS}),
+    !hasw&&!hasg&&hasc&&tab==="learn"&&ce(Conv,{lines:mod.conv,st,sS}));
+}
+
+// === QUIZ ===
+function Quiz({go,st,sS}){
+  const aw=allWords(MODS);
+  const al=ALPHA.flatMap(g=>g.ls);
+  const[qi,sQI]=uS(0);const[sc,sSC]=uS(0);const[sk,sSK]=uS(0);
+  const[sel,sSEL]=uS(null);const[sh2,sSH]=uS(false);
+  const[qs,sQS]=uS([]);const[dn,sDN]=uS(false);
+
+  const gen=()=>{
+    const q=[];
+    const sw=sh(aw);
+    for(let i=0;i<Math.min(8,sw.length);i++){
+      const c=sw[i];const wr=sh(aw.filter(w=>w.n!==c.n)).slice(0,3);
+      q.push({pr:c.b,hi:"["+c.p+"]",ans:c.n,ops:sh([c.n,...wr.map(w=>w.n)]),em:c.m});}
+    const sl=sh(al);
+    for(let i=0;i<Math.min(7,sl.length);i++){
+      const c=sl[i];const wr=sh(al.filter(l=>l.du!==c.du)).slice(0,3);
+      q.push({pr:c.u+" "+c.l,hi:"Welke klank?",ans:c.du,ops:sh([c.du,...wr.map(l=>l.du)]),em:"\u{1f524}"});}
+    sQS(sh(q));sQI(0);sSC(0);sSK(0);sSEL(null);sSH(false);sDN(false);};
+  uE(()=>{gen();},[]);
+
+  if(qs.length===0)return null;
+  const q=qs[qi];const ok=sel===q.ans;
+  const pick=(o)=>{if(sh2)return;sSEL(o);sSH(true);const g=o===q.ans;const ns=g?sk+1:0;sSK(ns);if(g)sSC(sc+1);
+    sS(s=>({...s,xp:s.xp+(g?15:0),qo:(s.qo||0)+(g?1:0),qb:Math.max(s.qb||0,ns)}));};
+  const nx=()=>{if(qi>=qs.length-1)sDN(true);else{sQI(qi+1);sSEL(null);sSH(false);}};
+
+  if(dn){const pc=Math.round(sc/qs.length*100);
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:56}},pc>=80?"\u{1f389}":pc>=50?"\u{1f44f}":"\u{1f4aa}"),
+      ce("h2",{className:"h1"},pc>=80?"Geweldig!":pc>=50?"Goed gedaan!":"Blijf oefenen!"),
+      ce("div",{className:"gradient-text",style:{fontSize:44,fontWeight:800}},sc+"/"+qs.length),
+      ce("p",{style:{color:"#64748b"}},pc>=80?"Je bent echt goed bezig!":pc>=50?"Goede basis!":"Oefening baart kunst!"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center"}},
+        ce("button",{className:"btn btn-v",onClick:gen},"\u{1f504} Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:()=>go("home"),style:{background:"#f1f5f9"}},"Home")));}
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("span",{style:{fontSize:13,color:"#64748b"}},"Vraag "+(qi+1)+"/"+qs.length),
+      ce("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        ce("span",{style:{fontSize:13,fontWeight:500,color:"#059669"}},sc+" goed"),
+        sk>1&&ce("span",{className:"streak"},"\u{1f525} "+sk+"x"))),
+    ce("div",{className:"pb"},ce("div",{style:{height:"100%",borderRadius:999,background:"linear-gradient(to right,#a78bfa,#9333ea)",width:((qi+1)/qs.length*100)+"%",transition:"width .3s"}})),
+    ce("div",{style:{background:"linear-gradient(135deg,#f5f3ff,#faf5ff)",borderRadius:16,padding:20,textAlign:"center",border:"1px solid #ede9fe"}},
+      ce("div",{style:{fontSize:26,marginBottom:6}},q.em),
+      ce("div",{style:{fontSize:32,fontWeight:700,color:"#6d28d9",marginBottom:4}},q.pr),
+      ce("div",{style:{fontSize:13,color:"#a78bfa"}},q.hi)),
+    ce("div",{className:"sy3"},q.ops.map((o,i)=>{
+      let cl="qo";if(sh2){if(o===q.ans)cl+=" qo-ok";else if(o===sel&&!ok)cl+=" qo-no";else cl+=" qo-x";}
+      return ce("button",{key:i,className:cl,disabled:sh2,onClick:()=>pick(o)},
+        ce("span",null,o),sh2&&o===q.ans&&ce("span",null,"\u2713"),sh2&&o===sel&&!ok&&o!==q.ans&&ce("span",null,"\u2717"));})),
+    sh2&&ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:13,fontWeight:500,color:ok?"#059669":"#dc2626",marginBottom:10}},ok?"\u2728 Goed zo!":"Het antwoord was: "+q.ans),
+      ce("button",{className:"btn btn-v",onClick:nx},qi>=qs.length-1?"Resultaat":"Volgende")));
+}
+
+// === BADGES ===
+function BadgScr({st}){
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},ce("h2",{className:"h1"},"Jouw Badges"),ce("p",{className:"sub"},"Blijf leren om ze allemaal te verdienen!")),
+    ce("div",{className:"bg2"},BADGES.map(b=>{
+      const ea=b.rq(st);
+      return ce("div",{key:b.id,className:"badge "+(ea?"badge-y":"badge-n")},
+        ce("div",{style:{fontSize:26,marginBottom:6,filter:ea?"none":"grayscale(1)",opacity:ea?1:.4}},b.ic),
+        ce("div",{style:{fontSize:12,fontWeight:600,color:ea?"#1e293b":"#94a3b8"}},b.nm),
+        ce("div",{style:{fontSize:10,color:"#64748b",marginTop:3}},b.ds),
+        ea?ce("div",{style:{fontSize:10,color:"#d97706",fontWeight:500,marginTop:6}},"Verdiend! \u2728"):
+          ce("div",{style:{fontSize:14,color:"#cbd5e1",marginTop:6}},"\u{1f512}"));})));
+}
+
+// === APP ===
+function App(){
+  const[scr,sScr]=uS("home");
+  const[st,sS]=uS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0});
+  const go=(s)=>sScr(s);
+
+  // Find module
+  const modId=scr.startsWith("mod:")?scr.slice(4):null;
+  const mod=modId?MODS.find(m=>m.id===modId):null;
+  const agIdx=scr.startsWith("ag:")?parseInt(scr.slice(3)):null;
+
+  return ce("div",{className:"app"},
+    ce(Nav,{scr,go,st}),
+    scr==="home"&&ce(Home,{go,st}),
+    mod&&mod.type==="alpha"&&ce(AlphaList,{go,st}),
+    mod&&mod.type!=="alpha"&&ce(ModScreen,{mod,go,st,sS}),
+    agIdx!==null&&ce(AlphaGrp,{gi:agIdx,go,st,sS}),
+    scr==="quiz"&&ce(Quiz,{go,st,sS}),
+    scr==="badges"&&ce(BadgScr,{st}));
+}
+
+try{
+  var root=document.getElementById("root");
+  if(ReactDOM.createRoot){ReactDOM.createRoot(root).render(ce(App));}
+  else{ReactDOM.render(ce(App),root);}
+}catch(err){
+  document.getElementById("root").innerHTML="<div style='padding:20px;font-family:sans-serif'><h2>Er ging iets mis</h2><p>"+err.message+"</p></div>";
+}
+</script>
+</body>
+</html>
