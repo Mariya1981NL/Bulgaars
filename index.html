@@ -99,6 +99,32 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .tab-row{display:flex;gap:4px;background:#f1f5f9;border-radius:12px;padding:3px;margin-bottom:12px}
 .tab{flex:1;padding:8px;border-radius:10px;font-size:13px;font-weight:500;text-align:center;transition:all .2s;color:#64748b}
 .tab-on{background:#fff;color:#1e293b;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* Memory Game */
+.mem-grid{display:grid;gap:10px;perspective:600px}
+.mem-grid-4{grid-template-columns:repeat(4,1fr)}
+.mem-grid-3{grid-template-columns:repeat(3,1fr)}
+.mem-card{aspect-ratio:3/4;cursor:pointer;perspective:600px}
+.mem-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.mem-card.flipped .mem-inner{transform:rotateY(180deg)}
+.mem-card.matched .mem-inner{transform:rotateY(180deg)}
+.mem-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;text-align:center;border:2px solid #e2e8f0;overflow:hidden}
+.mem-back{background:linear-gradient(135deg,#a78bfa,#8b5cf6);display:flex;align-items:center;justify-content:center}
+.mem-back span{font-size:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}
+.mem-front{background:#fff;transform:rotateY(180deg)}
+.mem-front-bg{border-color:#14b8a6;background:#f0fdfa}
+.mem-front-nl{border-color:#8b5cf6;background:#f5f3ff}
+.mem-card.matched .mem-face{opacity:.7;border-color:#86efac;background:#ecfdf5}
+.mem-card.matched .mem-front-bg{border-color:#86efac;background:#ecfdf5}
+.mem-card.matched .mem-front-nl{border-color:#86efac;background:#ecfdf5}
+.mem-card.wrong .mem-inner{animation:mem-shake .4s}
+@keyframes mem-shake{0%,100%{transform:rotateY(180deg)}25%{transform:rotateY(180deg) translateX(-6px)}75%{transform:rotateY(180deg) translateX(6px)}}
+.mem-word{font-size:14px;font-weight:700;line-height:1.2;word-break:break-word}
+.mem-hint{font-size:10px;color:#94a3b8;margin-top:2px}
+.mem-em{font-size:18px;margin-bottom:2px}
+.mem-stats{display:flex;justify-content:center;gap:16px;font-size:14px;font-weight:500;color:#64748b}
+.mem-stat-val{font-weight:700;color:#1e293b}
+.mem-complete{text-align:center;padding:20px}
 </style>
 </head>
 <body>
@@ -123,7 +149,7 @@ ls:[{u:"\u0416",l:"\u0436",du:"zj (als Frans 'jour')",ex:"\u0436\u0435\u043d\u04
 // === MODULE DATA ===
 const MODS=[
 {id:"w3",wk:"1-2",t:"Cyrillisch Alfabet",em:"\u{1f524}",gr:"grad-t",ph:1,type:"alpha",desc:"Alle 30 letters in 4 groepen"},
-{id:"w3v",wk:"3",t:"Familie & Begroetingen",em:"\u{1f46a}",gr:"grad-e",ph:1,type:"vocab",desc:"\u0411\u0430\u0431\u0430 bellen",
+{id:"w3v",wk:"3",t:"Familie & Begroetingen",em:"\u{1f46a}",gr:"grad-e",ph:1,type:"vocabconv",desc:"\u0411\u0430\u0431\u0430 bellen",
 ws:[
 {b:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439",p:"zdra-VEJ",n:"Hallo",e:"Hello",m:"\u{1f44b}"},
 {b:"\u0414\u043e\u0432\u0438\u0436\u0434\u0430\u043d\u0435",p:"do-VIZJ-da-ne",n:"Tot ziens",e:"Goodbye",m:"\u{1f44b}"},
@@ -165,16 +191,35 @@ ws:[
 {b:"\u041a\u0430\u043a \u0441\u0442\u0435?",p:"kak STE?",n:"Hoe gaat het? (formeel)",e:"How are you? (formal)",m:"\u{1f91d}"},
 {b:"\u0418\u0437\u0432\u0438\u043d\u0435\u0442\u0435",p:"iz-vi-NE-te",n:"Sorry/pardon",e:"Excuse me",m:"\u{1f64f}"},
 {b:"\u0420\u0430\u0437\u0431\u0438\u0440\u0430 \u0441\u0435",p:"raz-BI-ra se",n:"Natuurlijk",e:"Of course",m:"\u2705"},
-{b:"\u0420\u0430\u0434\u0432\u0430\u043c \u0441\u0435",p:"RAD-vam se",n:"Aangenaam",e:"Nice to meet you",m:"\u{1f60a}"}],
+{b:"\u0420\u0430\u0434\u0432\u0430\u043c \u0441\u0435",p:"RAD-vam se",n:"Aangenaam",e:"Nice to meet you",m:"\u{1f60a}"},
+{b:"\u041f\u0440\u0430\u0431\u0430\u0431\u0430",p:"pra-BA-ba",n:"Overgrootmoeder",e:"Great-grandmother",m:"\u{1f475}"},
+{b:"\u041f\u0440\u0430\u0434\u044f\u0434\u043e",p:"pra-DJA-do",n:"Overgrootvader",e:"Great-grandfather",m:"\u{1f474}"},
+{b:"\u0412\u043d\u0443\u043a",p:"vnuk",n:"Kleinzoon",e:"Grandson",m:"\u{1f466}"},
+{b:"\u0412\u043d\u0443\u0447\u043a\u0430",p:"VNUCH-ka",n:"Kleindochter",e:"Granddaughter",m:"\u{1f467}"},
+{b:"\u0412\u0443\u0439\u0447\u043e",p:"VOO-i-cho",n:"Oom (moeders broer)",e:"Uncle (maternal)",m:"\u{1f468}"},
+{b:"\u041a\u0440\u044a\u0441\u0442\u043d\u0438\u043a",p:"krust-NIK",n:"Peetvader",e:"Godfather",m:"\u{1f935}"},
+{b:"\u041a\u0440\u044a\u0441\u0442\u043d\u0438\u0446\u0430",p:"krust-NI-tsa",n:"Peetmoeder",e:"Godmother",m:"\u{1f470}"},
+{b:"\u041a\u0430\u043a\u0432\u043e \u043f\u0440\u0430\u0432\u0438\u0448?",p:"kak-VO PRA-vish?",n:"Wat ben je aan het doen?",e:"What are you doing?",m:"\u{1f914}"},
+{b:"\u0413\u043e\u0442\u0432\u044f",p:"GOT-vya",n:"Ik ben aan het koken",e:"I'm cooking",m:"\u{1f373}"},
+{b:"\u0427\u0430\u043a\u0430\u043c \u0432\u0438",p:"CHA-kam vi",n:"Ik wacht op jullie",e:"I'm waiting for you",m:"\u{1f917}"},
+{b:"\u041a\u043e\u0433\u0430 \u0449\u0435 \u0434\u043e\u0439\u0434\u0435\u0442\u0435?",p:"ko-GA shte DOI-de-te?",n:"Wanneer komen jullie?",e:"When are you coming?",m:"\u{2708}\ufe0f"},
+{b:"\u041a\u0430\u043a\u0432\u043e \u043d\u043e\u0432\u043e \u043d\u0430\u0443\u0447\u0438\u0445\u0442\u0435?",p:"kak-VO NO-vo na-u-CHIH-te?",n:"Wat hebben jullie geleerd?",e:"What have you learned?",m:"\u{1f4da}"},
+{b:"\u041b\u0438\u043f\u0441\u0432\u0430\u0442\u0435 \u043c\u0438",p:"LIPS-va-te mi",n:"Ik mis jullie",e:"I miss you (plural)",m:"\u{1f49d}"},
+{b:"\u041f\u0440\u0435\u0433\u044a\u0440\u043d\u0438 \u043c\u0435",p:"pre-GUR-ni me",n:"Geef me een knuffel",e:"Give me a hug",m:"\u{1f917}"},
+{b:"\u0426\u0435\u043b\u0443\u0432\u043a\u0430",p:"tse-LUV-ka",n:"Kus",e:"Kiss",m:"\u{1f48b}"}],
 conv:[
 {s:"\u0411\u0430\u0431\u0430",b:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439\u0442\u0435, \u0434\u0435\u0446\u0430! \u041a\u0430\u043a \u0441\u0442\u0435?",n:"Hallo, kinderen! Hoe gaat het?",side:"l"},
-{s:"Kind",b:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439, \u0431\u0430\u0431\u0430! \u0414\u043e\u0431\u0440\u0435 \u0441\u043c\u0435!",n:"Hallo, oma! Het gaat goed!",side:"r"},
-{s:"\u0411\u0430\u0431\u0430",b:"\u0415\u043b\u0430, \u043f\u0440\u0435\u0433\u044a\u0440\u043d\u0438 \u043c\u0435!",n:"Kom, geef me een knuffel!",side:"l"},
-{s:"Kind",b:"\u041c\u043d\u043e\u0433\u043e \u043c\u0438 \u043b\u0438\u043f\u0441\u0432\u0430\u0448\u0435, \u0431\u0430\u0431\u0430!",n:"Ik heb je heel erg gemist, oma!",side:"r"},
-{s:"\u0411\u0430\u0431\u0430",b:"\u041a\u044a\u0434\u0435 \u0435 \u043c\u0430\u043c\u0430?",n:"Waar is mama?",side:"l"},
-{s:"Kind",b:"\u041c\u0430\u043c\u0430 \u0435 \u0442\u0443\u043a! \u0422\u044f \u043f\u0430\u0440\u043a\u0438\u0440\u0430 \u043a\u043e\u043b\u0430\u0442\u0430.",n:"Mama is hier! Ze parkeert de auto.",side:"r"},
-{s:"\u0411\u0430\u0431\u0430",b:"\u0427\u0443\u0434\u0435\u0441\u043d\u043e! \u0412\u043b\u0435\u0437\u0442\u0435, \u0432\u043b\u0435\u0437\u0442\u0435!",n:"Geweldig! Kom binnen, kom binnen!",side:"l"},
-{s:"Kind",b:"\u0411\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f, \u0431\u0430\u0431\u0430! \u041a\u0430\u043a\u0432\u043e \u0445\u0443\u0431\u0430\u0432\u043e \u043c\u0438\u0440\u0438\u0448\u0435!",n:"Dank je, oma! Wat ruikt het lekker!",side:"r"}
+{s:"Kind",b:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439, \u0431\u0430\u0431\u043e! \u0414\u043e\u0431\u0440\u0435 \u0441\u043c\u0435!",n:"Hallo, oma! Het gaat goed!",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u041a\u0430\u043a\u0432\u043e \u043f\u0440\u0430\u0432\u0438\u0442\u0435?",n:"Wat zijn jullie aan het doen?",side:"l"},
+{s:"Kind",b:"\u0423\u0447\u0438\u043c \u0431\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438!",n:"We leren Bulgaars!",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u041a\u0430\u043a\u0432\u043e \u043d\u043e\u0432\u043e \u043d\u0430\u0443\u0447\u0438\u0445\u0442\u0435?",n:"Wat hebben jullie nieuw geleerd?",side:"l"},
+{s:"Kind",b:"\u0417\u043d\u0430\u0435\u043c \u043c\u043d\u043e\u0433\u043e \u0434\u0443\u043c\u0438 \u0432\u0435\u0447\u0435!",n:"We kennen al veel woorden!",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u041a\u043e\u0433\u0430 \u0449\u0435 \u0434\u043e\u0439\u0434\u0435\u0442\u0435?",n:"Wanneer komen jullie?",side:"l"},
+{s:"Kind",b:"\u0421\u043a\u043e\u0440\u043e, \u0431\u0430\u0431\u043e! \u041b\u0438\u043f\u0441\u0432\u0430\u0448 \u043d\u0438!",n:"Snel, oma! We missen je!",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u0427\u0430\u043a\u0430\u043c \u0432\u0438! \u0413\u043e\u0442\u0432\u044f \u0431\u0430\u043d\u0438\u0446\u0430.",n:"Ik wacht op jullie! Ik maak banitsa.",side:"l"},
+{s:"Kind",b:"\u041e\u0431\u0438\u0447\u0430\u043c\u0435 \u0442\u0435, \u0431\u0430\u0431\u043e!",n:"We houden van je, oma!",side:"r"},
+{s:"\u0411\u0430\u0431\u0430",b:"\u0418 \u0430\u0437 \u0432\u0438 \u043e\u0431\u0438\u0447\u0430\u043c! \u041f\u0440\u0435\u0433\u044a\u0440\u043d\u0438 \u043c\u0435!",n:"Ik hou ook van jullie! Geef me een knuffel!",side:"l"},
+{s:"Kind",b:"\u0426\u0435\u043b\u0443\u0432\u043a\u0430 \u043e\u0442 \u043d\u0430\u0441!",n:"Een kus van ons!",side:"r"}
 ]},
 {id:"w4v",wk:"4",t:"Eten & Drinken",em:"\u{1f37d}\ufe0f",gr:"grad-r",ph:1,type:"vocabconv",desc:"In een Bulgaars restaurant",
 ws:[
@@ -218,7 +263,26 @@ ws:[
 {b:"\u0422\u043e\u0440\u0442\u0430",p:"TOR-ta",n:"Taart",e:"Cake",m:"\u{1f382}"},
 {b:"\u041e\u0440\u0438\u0437\u043e\u0432\u0430 \u0447\u043e\u0440\u0431\u0430",p:"o-RI-zo-va CHOR-ba",n:"Rijstsoep",e:"Rice soup",m:"\u{1f35a}"},
 {b:"\u0428\u043e\u043f\u0441\u043a\u0430 \u0441\u0430\u043b\u0430\u0442\u0430",p:"SHOP-ska sa-LA-ta",n:"Shopska salade",e:"Shopska salad",m:"\u{1f957}"},
-{b:"\u041c\u043e\u043b\u044f",p:"MO-lya",n:"Alsjeblieft",e:"Please",m:"\u{1f64f}"}],
+{b:"\u041c\u043e\u043b\u044f",p:"MO-lya",n:"Alsjeblieft",e:"Please",m:"\u{1f64f}"},
+{b:"\u041f\u0438\u043b\u0435\u0448\u043a\u043e",p:"pi-LESH-ko",n:"Kip",e:"Chicken",m:"\u{1f357}"},
+{b:"\u0421\u0432\u0438\u043d\u0441\u043a\u043e",p:"svin-SKO",n:"Varkensvlees",e:"Pork",m:"\u{1f969}"},
+{b:"\u0417\u0435\u043b\u0435\u043d\u0447\u0443\u043a",p:"ze-len-CHOOK",n:"Groente",e:"Vegetable",m:"\u{1f966}"},
+{b:"\u041e\u0440\u0438\u0437",p:"o-RIZ",n:"Rijst",e:"Rice",m:"\u{1f35a}"},
+{b:"\u041c\u0430\u043a\u0430\u0440\u043e\u043d\u0438",p:"ma-ka-RO-ni",n:"Pasta",e:"Pasta",m:"\u{1f35d}"},
+{b:"\u041a\u0435\u0431\u0430\u043f\u0447\u0435",p:"ke-BAP-che",n:"Kebapche (gehaktrolletje)",e:"Kebapche",m:"\u{1f356}"},
+{b:"\u041a\u044e\u0444\u0442\u0435",p:"KYUF-te",n:"Kyufte (gehaktbal)",e:"Meatball",m:"\u{1f356}"},
+{b:"\u041b\u044e\u0442\u0435\u043d\u0438\u0446\u0430",p:"lyu-te-NI-tsa",n:"Ljutenitsa (paprikaspread)",e:"Pepper spread",m:"\u{1f336}\ufe0f"},
+{b:"\u041a\u0438\u0441\u0435\u043b\u043e \u043c\u043b\u044f\u043a\u043e",p:"KI-se-lo MLJA-ko",n:"Bulgaarse yoghurt",e:"Bulgarian yogurt",m:"\u{1f95b}"},
+{b:"\u041b\u0438\u043c\u043e\u043d\u0430\u0434\u0430",p:"li-mo-NA-da",n:"Limonade",e:"Lemonade",m:"\u{1f34b}"},
+{b:"\u0411\u043e\u0437\u0430",p:"BO-za",n:"Boza (graandrank)",e:"Boza drink",m:"\u{1f943}"},
+{b:"\u0413\u0440\u043e\u0437\u0434\u0435",p:"GROZ-de",n:"Druiven",e:"Grapes",m:"\u{1f347}"},
+{b:"\u0427\u0435\u0440\u0435\u0448\u0430",p:"che-RE-sha",n:"Kers",e:"Cherry",m:"\u{1f352}"},
+{b:"\u041b\u0443\u043a",p:"look",n:"Ui",e:"Onion",m:"\u{1f9c5}"},
+{b:"\u0427\u0435\u0441\u044a\u043d",p:"CHE-suhn",n:"Knoflook",e:"Garlic",m:"\u{1f9c4}"},
+{b:"\u041c\u0435\u0434",p:"med",n:"Honing",e:"Honey",m:"\u{1f36f}"},
+{b:"\u0417\u0430\u043a\u0443\u0441\u043a\u0430",p:"za-KOOS-ka",n:"Ontbijt",e:"Breakfast",m:"\u{1f373}"},
+{b:"\u0412\u0435\u0447\u0435\u0440\u044f",p:"ve-CHE-rya",n:"Avondeten",e:"Dinner",m:"\u{1f37d}\ufe0f"},
+{b:"\u0413\u043b\u0430\u0434\u043d\u0430 \u0441\u044a\u043c",p:"GLAD-na suhm",n:"Ik heb honger (v)",e:"I'm hungry (f)",m:"\u{1f60b}"}],
 conv:[
 {s:"\u0411\u0430\u0431\u0430",b:"\u0413\u043b\u0430\u0434\u043d\u0438 \u043b\u0438 \u0441\u0442\u0435, \u0434\u0435\u0446\u0430?",n:"Hebben jullie honger, kinderen?",side:"l"},
 {s:"Kind",b:"\u0414\u0430, \u0431\u0430\u0431\u0430! \u041c\u043d\u043e\u0433\u043e \u0441\u043c\u0435 \u0433\u043b\u0430\u0434\u043d\u0438!",n:"Ja, oma! We hebben heel veel honger!",side:"r"},
@@ -263,7 +327,24 @@ ws:[
 {b:"\u0421\u043a\u0443\u0447\u043d\u043e \u043c\u0438 \u0435",p:"SKOOCH-no mi e",n:"Ik verveel me",e:"I'm bored",m:"\u{1f610}"},
 {b:"\u0412\u0435\u0441\u0435\u043b",p:"VE-sel",n:"Vrolijk",e:"Cheerful",m:"\u{1f601}"},
 {b:"\u0421\u044a\u0440\u0434\u0438\u0442",p:"suhr-DIT",n:"Boos",e:"Angry",m:"\u{1f620}"},
-{b:"\u041f\u0440\u0438\u0442\u0435\u0441\u043d\u0435\u043d",p:"pri-tes-NEN",n:"Bezorgd",e:"Worried",m:"\u{1f61f}"}],
+{b:"\u041f\u0440\u0438\u0442\u0435\u0441\u043d\u0435\u043d",p:"pri-tes-NEN",n:"Bezorgd",e:"Worried",m:"\u{1f61f}"},
+{b:"\u0418\u0437\u043d\u0435\u043d\u0430\u0434\u0430\u043d",p:"iz-ne-na-DAN",n:"Verrast",e:"Surprised",m:"\u{1f62e}"},
+{b:"\u0414\u043e\u0432\u043e\u043b\u0435\u043d",p:"do-VO-len",n:"Tevreden",e:"Satisfied",m:"\u{1f60c}"},
+{b:"\u0421\u043c\u0435\u043b",p:"smel",n:"Dapper",e:"Brave",m:"\u{1f4aa}"},
+{b:"\u041f\u043b\u0430\u0445",p:"plah",n:"Verlegen",e:"Shy",m:"\u{1f633}"},
+{b:"\u0421\u0430\u043c\u043e\u0442\u0435\u043d",p:"sa-MO-ten",n:"Eenzaam",e:"Lonely",m:"\u{1f614}"},
+{b:"\u0429\u0435\u0434\u044a\u0440",p:"SHTE-duhr",n:"Vrijgevig",e:"Generous",m:"\u{1f381}"},
+{b:"\u0422\u044a\u0440\u043f\u0435\u043b\u0438\u0432",p:"tuhr-pe-LIV",n:"Geduldig",e:"Patient",m:"\u23f3"},
+{b:"\u041c\u044a\u0440\u0437\u0435\u043b\u0438\u0432",p:"muhr-ze-LIV",n:"Lui",e:"Lazy",m:"\u{1f634}"},
+{b:"\u0423\u043c\u0435\u043d",p:"OO-men",n:"Slim",e:"Smart",m:"\u{1f9e0}"},
+{b:"\u0413\u043b\u0443\u043f\u0430\u0432",p:"GLOO-pav",n:"Dom",e:"Silly",m:"\u{1f974}"},
+{b:"\u0421\u0438\u043b\u0435\u043d",p:"SI-len",n:"Sterk",e:"Strong",m:"\u{1f4aa}"},
+{b:"\u0422\u0438\u0445",p:"tih",n:"Stil",e:"Quiet",m:"\u{1f910}"},
+{b:"\u0428\u0443\u043c\u0435\u043d",p:"SHOO-men",n:"Luidruchtig",e:"Noisy",m:"\u{1f4e2}"},
+{b:"\u0414\u043e\u0431\u0440\u0435 \u043c\u0438 \u0435",p:"dob-RE mi e",n:"Het gaat goed met me",e:"I'm fine",m:"\u{1f60a}"},
+{b:"\u0417\u043b\u0435 \u043c\u0438 \u0435",p:"ZLE mi e",n:"Het gaat slecht met me",e:"I feel bad",m:"\u{1f922}"},
+{b:"\u0425\u0430\u0440\u0435\u0441\u0432\u0430 \u043c\u0438",p:"ha-RES-va mi",n:"Ik vind het leuk",e:"I like it",m:"\u{1f44d}"},
+{b:"\u041e\u0431\u0438\u0447\u0430\u043c",p:"o-BI-cham",n:"Ik hou van",e:"I love",m:"\u2764\ufe0f"}],
 conv:[
 {s:"\u0411\u0430\u0431\u0430",b:"\u041a\u0430\u043a \u0441\u0438 \u0434\u043d\u0435\u0441?",n:"Hoe gaat het vandaag?",side:"l"},
 {s:"Kind",b:"\u041c\u043d\u043e\u0433\u043e \u0441\u044a\u043c \u0449\u0430\u0441\u0442\u043b\u0438\u0432!",n:"Ik ben heel blij!",side:"r"},
@@ -317,7 +398,17 @@ ws:[
 {b:"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438",p:"buhl-GAR-ski",n:"Bulgaars",e:"Bulgarian",m:"\u{1f1e7}\u{1f1ec}"},
 {b:"\u041f\u0440\u0438\u044f\u0442\u0435\u043b",p:"pri-YA-tel",n:"Vriend",e:"Friend",m:"\u{1f46b}"},
 {b:"\u0420\u043e\u0434\u0435\u043d \u0441\u044a\u043c",p:"RO-den suhm",n:"Ik ben geboren",e:"I was born",m:"\u{1f476}"}
-],
+,
+{b:"\u041d\u0430 \u043a\u043e\u043b\u043a\u043e \u0441\u0438 \u0433\u043e\u0434\u0438\u043d\u0438?",p:"na KOL-ko si GO-di-ni?",n:"Hoe oud ben je?",e:"How old are you?",m:"\u{1f382}"},
+{b:"\u0418\u0434\u0432\u0430\u043c \u043e\u0442",p:"ID-vam ot",n:"Ik kom uit",e:"I come from",m:"\u{1f30d}"},
+{b:"\u041e\u0431\u0438\u0447\u0430\u043c \u0434\u0430",p:"o-BI-cham da",n:"Ik hou van (om te)",e:"I love to",m:"\u2764\ufe0f"},
+{b:"\u041c\u043e\u0433\u0430",p:"MO-ga",n:"Ik kan",e:"I can",m:"\u{1f4aa}"},
+{b:"\u041d\u0435 \u043c\u043e\u0433\u0430",p:"ne MO-ga",n:"Ik kan niet",e:"I can't",m:"\u274c"},
+{b:"\u0418\u043c\u0430\u043c",p:"I-mam",n:"Ik heb",e:"I have",m:"\u{1f44d}"},
+{b:"\u041d\u044f\u043c\u0430\u043c",p:"NYA-mam",n:"Ik heb niet",e:"I don't have",m:"\u{1f645}"},
+{b:"\u0422\u0440\u044f\u0431\u0432\u0430",p:"TRYAB-va",n:"Ik moet",e:"I must",m:"\u2757"},
+{b:"\u041b\u044e\u0431\u0438\u043c\u0438\u044f\u0442 \u043c\u0438",p:"lyu-BI-mi-yat mi",n:"Mijn favoriete",e:"My favorite",m:"\u2b50"},
+{b:"\u0418\u0441\u043a\u0430\u043c \u0434\u0430 \u0431\u044a\u0434\u0430",p:"IS-kam da BUH-da",n:"Ik wil worden",e:"I want to be",m:"\u{1f31f}"}],
 conv:[
 {s:"\u0411\u0430\u0431\u0430",b:"\u041a\u0430\u0436\u0438 \u043d\u0430 \u043b\u0435\u043b\u044f \u043a\u0430\u043a \u0441\u0435 \u043a\u0430\u0437\u0432\u0430\u0448.",n:"Vertel tante hoe je heet.",side:"l"},
 {s:"Kind",b:"\u041a\u0430\u0437\u0432\u0430\u043c \u0441\u0435... \u041d\u0430 \u0435\u0434\u0438\u043d\u0430\u0434\u0435\u0441\u0435\u0442 \u0433\u043e\u0434\u0438\u043d\u0438 \u0441\u044a\u043c.",n:"Ik heet... Ik ben elf jaar oud.",side:"r"},
@@ -364,7 +455,22 @@ ws:[
 {b:"\u041f\u043b\u0443\u0432\u0430\u043c",p:"PLOO-vam",n:"Ik zwem",e:"I swim",m:"\u{1f3ca}"},
 {b:"\u0413\u043e\u0442\u0432\u044f",p:"GOT-vya",n:"Ik kook",e:"I cook",m:"\u{1f373}"},
 {b:"\u0413\u043b\u0435\u0434\u0430\u043c",p:"GLE-dam",n:"Ik kijk",e:"I watch",m:"\u{1f4fa}"}
-],
+,
+{b:"\u0422\u0435\u0442\u0440\u0430\u0434\u043a\u0430",p:"tet-RAD-ka",n:"Schrift",e:"Notebook",m:"\u{1f4d3}"},
+{b:"\u041c\u043e\u043b\u0438\u0432",p:"mo-LIV",n:"Potlood",e:"Pencil",m:"\u270f\ufe0f"},
+{b:"\u0425\u0438\u043c\u0438\u043a\u0430\u043b\u043a\u0430",p:"hi-mi-KAL-ka",n:"Pen",e:"Pen",m:"\u{1f58a}\ufe0f"},
+{b:"\u0413\u0443\u043c\u0430",p:"goo-MA",n:"Gum",e:"Eraser",m:"\u{1f4dd}"},
+{b:"\u0427\u0430\u043d\u0442\u0430",p:"CHAN-ta",n:"Tas",e:"Bag",m:"\u{1f392}"},
+{b:"\u0411\u0430\u0441\u043a\u0435\u0442\u0431\u043e\u043b",p:"bas-ket-BOL",n:"Basketbal",e:"Basketball",m:"\u{1f3c0}"},
+{b:"\u0422\u0435\u043d\u0438\u0441",p:"TE-nis",n:"Tennis",e:"Tennis",m:"\u{1f3be}"},
+{b:"\u041a\u0430\u0440\u0430\u043c \u043a\u043e\u043b\u0435\u043b\u043e",p:"KA-ram ko-LE-lo",n:"Ik fiets",e:"I cycle",m:"\u{1f6b2}"},
+{b:"\u0421\u043d\u0438\u043c\u0430\u043c",p:"SNI-mam",n:"Ik fotografeer",e:"I take photos",m:"\u{1f4f7}"},
+{b:"\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u0438\u0440\u0430\u043c",p:"pro-gra-MI-ram",n:"Ik programmeer",e:"I code",m:"\u{1f4bb}"},
+{b:"\u0421\u043a\u0430\u0447\u0430\u043c",p:"SKA-cham",n:"Ik spring",e:"I jump",m:"\u{1f3c3}"},
+{b:"\u0421\u043b\u0443\u0448\u0430\u043c \u043c\u0443\u0437\u0438\u043a\u0430",p:"SLOO-sham MOO-zi-ka",n:"Ik luister naar muziek",e:"I listen to music",m:"\u{1f3b5}"},
+{b:"\u041f\u043e\u043c\u0430\u0433\u0430\u043c",p:"po-ma-GAM",n:"Ik help",e:"I help",m:"\u{1f91d}"},
+{b:"\u041f\u043e\u0447\u0438\u0432\u0430\u043c",p:"po-CHI-vam",n:"Ik rust uit",e:"I rest",m:"\u{1f634}"},
+{b:"\u0425\u043e\u0434\u044f \u043d\u0430 \u0440\u0430\u0437\u0445\u043e\u0434\u043a\u0430",p:"HO-dya na raz-HOD-ka",n:"Ik ga wandelen",e:"I go for a walk",m:"\u{1f6b6}"}],
 conv:[
 {s:"\u0411\u0430\u0431\u0430",b:"\u041a\u0430\u043a\u0432\u043e \u043f\u0440\u0430\u0432\u0438\u0448 \u0434\u043d\u0435\u0441?",n:"Wat doe je vandaag?",side:"l"},
 {s:"Kind",b:"\u0421\u0443\u0442\u0440\u0438\u043d\u0442\u0430 \u0447\u0435\u0442\u0430 \u043a\u043d\u0438\u0433\u0430.",n:"'s Ochtends lees ik een boek.",side:"r"},
@@ -403,7 +509,21 @@ ws:[
 {b:"\u041b\u0435\u0432",p:"lev",n:"Lev (munteenheid)",e:"Lev (currency)",m:"\u{1f1e7}\u{1f1ec}"},
 {b:"\u0418\u0441\u043a\u0430\u043c \u0434\u0430 \u043a\u0443\u043f\u044f",p:"IS-kam da KOO-pya",n:"Ik wil kopen",e:"I want to buy",m:"\u{1f6d2}"},
 {b:"\u0422\u043e\u0432\u0430",p:"to-VA",n:"Dit/dat",e:"This/that",m:"\u{1f449}"}
-],
+,
+{b:"\u0415\u0434\u043d\u043e",p:"ed-NO",n:"Een",e:"One",m:"1\ufe0f\u20e3"},
+{b:"\u0414\u0432\u0435",p:"dve",n:"Twee",e:"Two",m:"2\ufe0f\u20e3"},
+{b:"\u0422\u0440\u0438",p:"tri",n:"Drie",e:"Three",m:"3\ufe0f\u20e3"},
+{b:"\u0427\u0435\u0442\u0438\u0440\u0438",p:"CHE-ti-ri",n:"Vier",e:"Four",m:"4\ufe0f\u20e3"},
+{b:"\u041f\u0435\u0442",p:"pet",n:"Vijf",e:"Five",m:"5\ufe0f\u20e3"},
+{b:"\u0428\u0435\u0441\u0442",p:"shest",n:"Zes",e:"Six",m:"6\ufe0f\u20e3"},
+{b:"\u0421\u0435\u0434\u0435\u043c",p:"SE-dem",n:"Zeven",e:"Seven",m:"7\ufe0f\u20e3"},
+{b:"\u041e\u0441\u0435\u043c",p:"O-sem",n:"Acht",e:"Eight",m:"8\ufe0f\u20e3"},
+{b:"\u0414\u0435\u0432\u0435\u0442",p:"DE-vet",n:"Negen",e:"Nine",m:"9\ufe0f\u20e3"},
+{b:"\u0414\u0435\u0441\u0435\u0442",p:"DE-set",n:"Tien",e:"Ten",m:"\u{1f51f}"},
+{b:"\u0414\u0432\u0430\u0434\u0435\u0441\u0435\u0442",p:"DVA-de-set",n:"Twintig",e:"Twenty",m:"\u{1f522}"},
+{b:"\u0421\u0442\u043e",p:"sto",n:"Honderd",e:"Hundred",m:"\u{1f4af}"},
+{b:"\u041a\u0430\u0441\u0430",p:"KA-sa",n:"Kassa",e:"Cash register",m:"\u{1f4b0}"},
+{b:"\u041f\u043b\u0430\u0449\u0430\u043c",p:"PLA-shtam",n:"Ik betaal",e:"I pay",m:"\u{1f4b3}"}],
 conv:[
 {s:"Kind",b:"\u041a\u043e\u043b\u043a\u043e \u0441\u0442\u0440\u0443\u0432\u0430 \u0442\u043e\u0432\u0430?",n:"Hoeveel kost dit?",side:"r"},
 {s:"\u041f\u0440\u043e\u0434\u0430\u0432\u0430\u0447",b:"\u041f\u0435\u0442 \u043b\u0435\u0432\u0430.",n:"Vijf leva.",side:"l"},
@@ -450,7 +570,20 @@ ws:[
 {b:"\u0414\u043d\u0435\u0441",p:"dnes",n:"Vandaag",e:"Today",m:"\u{1f4c5}"},
 {b:"\u0423\u0442\u0440\u0435",p:"OO-tre",n:"Morgen",e:"Tomorrow",m:"\u{1f305}"},
 {b:"\u0412\u0447\u0435\u0440\u0430",p:"vche-RA",n:"Gisteren",e:"Yesterday",m:"\u{1f553}"}
-],
+,
+{b:"\u0411\u0443\u0440\u044f",p:"BOO-rya",n:"Storm",e:"Storm",m:"\u26c8\ufe0f"},
+{b:"\u0414\u044a\u0433\u0430",p:"duh-GA",n:"Regenboog",e:"Rainbow",m:"\u{1f308}"},
+{b:"\u041c\u044a\u0433\u043b\u0430",p:"muhg-LA",n:"Mist",e:"Fog",m:"\u{1f32b}\ufe0f"},
+{b:"\u041b\u0435\u0434",p:"led",n:"IJs",e:"Ice",m:"\u{1f9ca}"},
+{b:"\u0425\u043b\u0430\u0434\u043d\u043e",p:"HLAD-no",n:"Fris",e:"Cool/chilly",m:"\u{1f321}\ufe0f"},
+{b:"\u0417\u0432\u0435\u0437\u0434\u0430",p:"zvez-DA",n:"Ster",e:"Star",m:"\u2b50"},
+{b:"\u041b\u0443\u043d\u0430",p:"loo-NA",n:"Maan",e:"Moon",m:"\u{1f319}"},
+{b:"\u041d\u0435\u0431\u0435",p:"ne-BE",n:"Lucht/hemel",e:"Sky",m:"\u{1f324}\ufe0f"},
+{b:"\u0427\u0430\u0434\u044a\u0440",p:"cha-DUHR",n:"Paraplu",e:"Umbrella",m:"\u2602\ufe0f"},
+{b:"\u041a\u0430\u043a\u0432\u043e \u0435 \u0432\u0440\u0435\u043c\u0435\u0442\u043e?",p:"kak-VO e VRE-me-to?",n:"Hoe is het weer?",e:"What's the weather?",m:"\u{1f324}\ufe0f"},
+{b:"\u041d\u0430\u0432\u044a\u043d \u0435 \u0445\u0443\u0431\u0430\u0432\u043e",p:"na-VUHN e hoo-BA-vo",n:"Buiten is het mooi",e:"It's nice outside",m:"\u2600\ufe0f"},
+{b:"\u0412\u0430\u043b\u0438 \u0434\u044a\u0436\u0434",p:"VA-li duhzhd",n:"Het regent",e:"It's raining",m:"\u{1f327}\ufe0f"},
+{b:"\u0412\u0430\u043b\u0438 \u0441\u043d\u044f\u0433",p:"VA-li snyag",n:"Het sneeuwt",e:"It's snowing",m:"\u2744\ufe0f"}],
 conv:[
 {s:"\u0411\u0430\u0431\u0430",b:"\u041a\u0430\u043a\u0432\u043e \u0435 \u0432\u0440\u0435\u043c\u0435\u0442\u043e \u0434\u043d\u0435\u0441?",n:"Hoe is het weer vandaag?",side:"l"},
 {s:"Kind",b:"\u0421\u043b\u044a\u043d\u0447\u0435\u0432\u043e \u0435 \u0438 \u0442\u043e\u043f\u043b\u043e!",n:"Het is zonnig en warm!",side:"r"},
@@ -500,7 +633,20 @@ ws:[
 {b:"\u041a\u044a\u0434\u0435?",p:"kuh-DE?",n:"Waar?",e:"Where?",m:"\u{1f4cd}"},
 {b:"\u0417\u0430\u0449\u043e?",p:"zash-TO?",n:"Waarom?",e:"Why?",m:"\u2753"},
 {b:"\u041a\u0430\u043a?",p:"kak?",n:"Hoe?",e:"How?",m:"\u{1f914}"}
-]}
+,
+{b:"\u0411\u0438\u043b\u0435\u0442",p:"bi-LET",n:"Kaartje",e:"Ticket",m:"\u{1f3ab}"},
+{b:"\u0410\u0432\u0442\u043e\u0431\u0443\u0441",p:"av-to-BOOS",n:"Bus",e:"Bus",m:"\u{1f68c}"},
+{b:"\u0412\u043b\u0430\u043a",p:"vlak",n:"Trein",e:"Train",m:"\u{1f682}"},
+{b:"\u0421\u0430\u043c\u043e\u043b\u0435\u0442",p:"sa-mo-LET",n:"Vliegtuig",e:"Airplane",m:"\u{1f6eb}"},
+{b:"\u0425\u043e\u0442\u0435\u043b",p:"ho-TEL",n:"Hotel",e:"Hotel",m:"\u{1f3e8}"},
+{b:"\u0417\u043e\u043e\u043f\u0430\u0440\u043a",p:"zo-o-PARK",n:"Dierentuin",e:"Zoo",m:"\u{1f981}"},
+{b:"\u0414\u0430 \u043e\u0442\u0438\u0434\u0435\u043c",p:"da o-TI-dem",n:"Laten we gaan",e:"Let's go",m:"\u{1f3c3}"},
+{b:"\u0429\u0435 \u043e\u0442\u0438\u0434\u0430",p:"shte o-TI-da",n:"Ik zal gaan",e:"I will go",m:"\u{1f6b6}"},
+{b:"\u0429\u0435 \u0434\u043e\u0439\u0434\u0430",p:"shte DOJ-da",n:"Ik zal komen",e:"I will come",m:"\u{1f44b}"},
+{b:"\u0429\u0435 \u0432\u0438\u0434\u0438\u043c",p:"shte VI-dim",n:"We zullen zien",e:"We'll see",m:"\u{1f440}"},
+{b:"\u0429\u0435 \u044f\u0434\u0435\u043c",p:"shte YA-dem",n:"We zullen eten",e:"We'll eat",m:"\u{1f37d}\ufe0f"},
+{b:"\u041d\u0435\u043a\u0430",p:"NE-ka",n:"Laten we",e:"Let's",m:"\u{1f91d}"},
+{b:"\u041e\u0431\u0438\u043a\u043e\u043b\u043a\u0430",p:"o-bi-KOL-ka",n:"Rondleiding",e:"Tour",m:"\u{1f9ed}"}]}
 ,
 
 {id:"sch",wk:"\u2605",t:"Schoolverhalen Delen",em:"\u{1f3eb}",gr:"grad-t",ph:3,type:"vocabconv",desc:"Vertel oma over school",
@@ -532,7 +678,23 @@ ws:[
 {b:"\u0424\u0438\u0437\u043a\u0443\u043b\u0442\u0443\u0440\u0430",p:"fiz-kool-TOO-ra",n:"Gym",e:"Physical education",m:"\u{1f3c3}"},
 {b:"\u0420\u0438\u0441\u0443\u0432\u0430\u043d\u0435",p:"ri-SOO-va-ne",n:"Tekenen",e:"Drawing",m:"\u{1f3a8}"},
 {b:"\u0420\u0430\u0437\u0431\u0438\u0440\u0430\u043c",p:"raz-BI-ram",n:"Ik begrijp",e:"I understand",m:"\u{1f4a1}"},
-{b:"\u041d\u0435 \u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043c",p:"ne raz-BI-ram",n:"Ik begrijp niet",e:"I don't understand",m:"\u2753"}],
+{b:"\u041d\u0435 \u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043c",p:"ne raz-BI-ram",n:"Ik begrijp niet",e:"I don't understand",m:"\u2753"},
+{b:"\u0420\u0430\u043d\u0438\u0446\u0430",p:"RA-ni-tsa",n:"Rugzak",e:"Backpack",m:"\u{1f392}"},
+{b:"\u041b\u0438\u043d\u0438\u0439\u043a\u0430",p:"li-NIY-ka",n:"Liniaal",e:"Ruler",m:"\u{1f4cf}"},
+{b:"\u041a\u043b\u0430\u0441\u043d\u0430 \u0441\u0442\u0430\u044f",p:"KLAS-na STA-ya",n:"Klaslokaal",e:"Classroom",m:"\u{1f3eb}"},
+{b:"\u0417\u0432\u044a\u043d\u0435\u0446",p:"zvuh-NETS",n:"Schoolbel",e:"School bell",m:"\u{1f514}"},
+{b:"\u0417\u0430\u0434\u0430\u0447\u0430",p:"za-DA-cha",n:"Opdracht",e:"Assignment",m:"\u{1f4dd}"},
+{b:"\u0413\u0435\u043e\u0433\u0440\u0430\u0444\u0438\u044f",p:"ge-o-GRA-fi-ya",n:"Aardrijkskunde",e:"Geography",m:"\u{1f30d}"},
+{b:"\u0411\u0438\u043e\u043b\u043e\u0433\u0438\u044f",p:"bi-o-LO-gi-ya",n:"Biologie",e:"Biology",m:"\u{1f9ec}"},
+{b:"\u0424\u0438\u0437\u0438\u043a\u0430",p:"FI-zi-ka",n:"Natuurkunde",e:"Physics",m:"\u2697\ufe0f"},
+{b:"\u0425\u0438\u043c\u0438\u044f",p:"HI-mi-ya",n:"Scheikunde",e:"Chemistry",m:"\u{1f9ea}"},
+{b:"\u0421\u0442\u043e\u043b",p:"stol",n:"Kantine",e:"Canteen",m:"\u{1f37d}\ufe0f"},
+{b:"\u0414\u0438\u0440\u0435\u043a\u0442\u043e\u0440",p:"di-REK-tor",n:"Directeur",e:"Principal",m:"\u{1f468}\u200d\u{1f4bc}"},
+{b:"\u0418\u043c\u0430\u043c \u043f\u0435\u0442\u0438\u0446\u0430!",p:"I-mam pe-TI-tsa",n:"Ik heb een 5 (= 10)!",e:"I got an A!",m:"\u{1f31f}"},
+{b:"\u0422\u0440\u0443\u0434\u043d\u043e \u043c\u0438 \u0435",p:"TROOD-no mi e",n:"Het is moeilijk voor mij",e:"It's hard for me",m:"\u{1f613}"},
+{b:"\u041b\u0435\u0441\u043d\u043e \u043c\u0438 \u0435",p:"LES-no mi e",n:"Het is makkelijk voor mij",e:"It's easy for me",m:"\u{1f60e}"},
+{b:"\u0423\u0447\u0435\u0431\u043d\u0438\u043a",p:"oo-CHEB-nik",n:"Schoolboek",e:"Textbook",m:"\u{1f4d5}"},
+{b:"\u0415\u043a\u0441\u043a\u0443\u0440\u0437\u0438\u044f",p:"eks-KOOR-zi-ya",n:"Schoolreisje",e:"School trip",m:"\u{1f68c}"}],
 conv:[
 {s:"\u0411\u0430\u0431\u0430",b:"\u041a\u0430\u043a \u0435 \u0432 \u0443\u0447\u0438\u043b\u0438\u0449\u0435?",n:"Hoe is het op school?",side:"l"},
 {s:"Kind",b:"\u041c\u043d\u043e\u0433\u043e \u0434\u043e\u0431\u0440\u0435! \u0414\u043d\u0435\u0441 \u0438\u043c\u0430\u0445\u043c\u0435 \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0430.",n:"Heel goed! Vandaag hadden we wiskunde.",side:"r"},
@@ -569,7 +731,25 @@ ws:[
 {b:"\u041f\u043b\u0430\u0436",p:"plazh",n:"Strand",e:"Beach",m:"\u{1f3d6}\ufe0f"},
 {b:"\u0414\u044a\u043b\u0431\u043e\u043a\u043e",p:"duhl-BO-ko",n:"Diep",e:"Deep",m:"\u{1f30a}"},
 {b:"\u041f\u043b\u0438\u0442\u043a\u043e",p:"PLIT-ko",n:"Ondiep",e:"Shallow",m:"\u{1f4a7}"},
-{b:"\u0417\u0430\u043b\u0435\u0437",p:"za-LEZ",n:"Zonsondergang",e:"Sunset",m:"\u{1f305}"}],
+{b:"\u0417\u0430\u043b\u0435\u0437",p:"za-LEZ",n:"Zonsondergang",e:"Sunset",m:"\u{1f305}"},
+{b:"\u0421\u043b\u044a\u043d\u0446\u0435",p:"SLUHN-tse",n:"Zon",e:"Sun",m:"\u2600\ufe0f"},
+{b:"\u0427\u0430\u0434\u044a\u0440",p:"cha-DUHR",n:"Parasol",e:"Umbrella",m:"\u26f1\ufe0f"},
+{b:"\u041a\u043e\u0444\u0430",p:"KO-fa",n:"Emmer",e:"Bucket",m:"\u{1f4e6}"},
+{b:"\u041b\u043e\u0434\u043a\u0430",p:"LOD-ka",n:"Boot",e:"Boat",m:"\u26f5"},
+{b:"\u041a\u043e\u0440\u0430\u0431",p:"ko-RAB",n:"Schip",e:"Ship",m:"\u{1f6a2}"},
+{b:"\u0427\u0430\u0439\u043a\u0430",p:"CHAY-ka",n:"Meeuw",e:"Seagull",m:"\u{1f426}"},
+{b:"\u041e\u0441\u0442\u0440\u043e\u0432",p:"OS-trov",n:"Eiland",e:"Island",m:"\u{1f3dd}\ufe0f"},
+{b:"\u0424\u0430\u0440",p:"far",n:"Vuurtoren",e:"Lighthouse",m:"\u{1f506}"},
+{b:"\u041c\u043e\u0440\u0441\u043a\u0430 \u0437\u0432\u0435\u0437\u0434\u0430",p:"MOR-ska zvez-DA",n:"Zeester",e:"Starfish",m:"\u2b50"},
+{b:"\u041c\u0435\u0434\u0443\u0437\u0430",p:"me-DOO-za",n:"Kwal",e:"Jellyfish",m:"\u{1f9ca}"},
+{b:"\u0413\u043e\u0440\u0435\u0449\u043e \u0435!",p:"go-RESH-to e",n:"Het is heet!",e:"It's hot!",m:"\u{1f525}"},
+{b:"\u0417\u0430\u0433\u043e\u0440\u044f\u043b",p:"za-go-RYAL",n:"Bruin verbrand",e:"Tanned",m:"\u{1f31e}"},
+{b:"\u041f\u0440\u0438\u0441\u0442\u0430\u043d\u0438\u0449\u0435",p:"pris-ta-NISH-te",n:"Haven",e:"Harbor",m:"\u2693"},
+{b:"\u0421\u044a\u0440\u0444",p:"surf",n:"Surfen",e:"Surfing",m:"\u{1f3c4}"},
+{b:"\u0421\u043f\u0430\u0441\u0438\u0442\u0435\u043b",p:"spa-si-TEL",n:"Strandwacht",e:"Lifeguard",m:"\u{1f6df}"},
+{b:"\u0412\u0435\u0447\u0435\u0440 \u043d\u0430 \u043c\u043e\u0440\u0435\u0442\u043e",p:"VE-cher na MO-re-to",n:"Avond aan zee",e:"Evening by the sea",m:"\u{1f307}"},
+{b:"\u0414\u0438\u043d\u044f",p:"DI-nya",n:"Watermeloen",e:"Watermelon",m:"\u{1f349}"},
+{b:"\u0420\u0430\u0437\u0445\u043e\u0434\u043a\u0430 \u043f\u043e \u043f\u043b\u0430\u0436\u0430",p:"raz-HOD-ka po PLA-zha",n:"Strandwandeling",e:"Beach walk",m:"\u{1f6b6}"}],
 conv:[
 {s:"Kind 1",b:"\u0425\u0430\u0439\u0434\u0435 \u043d\u0430 \u043f\u043b\u0430\u0436\u0430!",n:"Laten we naar het strand gaan!",side:"l"},
 {s:"Kind 2",b:"\u0414\u0430! \u0418\u0441\u043a\u0430\u043c \u0434\u0430 \u043f\u043b\u0443\u0432\u0430\u043c!",n:"Ja! Ik wil zwemmen!",side:"r"},
@@ -603,7 +783,24 @@ ws:[
 {b:"\u0411\u0430\u0432\u043d\u043e",p:"BAV-no",n:"Langzaam",e:"Slowly",m:"\u{1f422}"},
 {b:"\u041f\u0430\u0434\u0430\u043c",p:"PA-dam",n:"Ik val",e:"I fall",m:"\u{1f605}"},
 {b:"\u0421\u0442\u0430\u0432\u0430\u043c",p:"STA-vam",n:"Ik sta op",e:"I get up",m:"\u{1f64b}"},
-{b:"\u0412\u043d\u0438\u043c\u0430\u0432\u0430\u0439!",p:"vni-ma-VAJ",n:"Pas op!",e:"Watch out!",m:"\u26a0\ufe0f"}],
+{b:"\u0412\u043d\u0438\u043c\u0430\u0432\u0430\u0439!",p:"vni-ma-VAJ",n:"Pas op!",e:"Watch out!",m:"\u26a0\ufe0f"},
+{b:"\u0421\u043d\u044f\u0433",p:"snyag",n:"Sneeuw",e:"Snow",m:"\u2744\ufe0f"},
+{b:"\u0421\u043d\u0435\u0436\u0435\u043d \u0447\u043e\u0432\u0435\u043a",p:"SNEZH-en cho-VEK",n:"Sneeuwpop",e:"Snowman",m:"\u26c4"},
+{b:"\u0421\u043d\u0435\u0436\u043d\u0430 \u0442\u043e\u043f\u043a\u0430",p:"SNEZH-na TOP-ka",n:"Sneeuwbal",e:"Snowball",m:"\u26aa"},
+{b:"\u0428\u0430\u043b",p:"shal",n:"Sjaal",e:"Scarf",m:"\u{1f9e3}"},
+{b:"\u0411\u043e\u0442\u0443\u0448\u0438",p:"bo-TOO-shi",n:"Laarzen",e:"Boots",m:"\u{1f97e}"},
+{b:"\u041a\u0430\u043c\u0438\u043d\u0430",p:"ka-MI-na",n:"Open haard",e:"Fireplace",m:"\u{1f525}"},
+{b:"\u0425\u0438\u0436\u0430",p:"HI-zha",n:"Berghut",e:"Mountain cabin",m:"\u{1f3d4}\ufe0f"},
+{b:"\u041f\u043b\u0430\u043d\u0438\u043d\u0430",p:"pla-ni-NA",n:"Berg",e:"Mountain",m:"\u26f0\ufe0f"},
+{b:"\u0412\u0440\u044a\u0445",p:"vruhh",n:"Top/piek",e:"Peak",m:"\u{1f3d4}\ufe0f"},
+{b:"\u0414\u043e\u043b\u0438\u043d\u0430",p:"do-LI-na",n:"Vallei",e:"Valley",m:"\u{1f304}"},
+{b:"\u0413\u043e\u0440\u0430",p:"go-RA",n:"Bos",e:"Forest",m:"\u{1f332}"},
+{b:"\u041b\u0435\u0434",p:"led",n:"IJs",e:"Ice",m:"\u{1f9ca}"},
+{b:"\u0421\u043d\u043e\u0443\u0431\u043e\u0440\u0434",p:"SNOH-bord",n:"Snowboard",e:"Snowboard",m:"\u{1f3c2}"},
+{b:"\u041d\u0430\u0447\u0438\u043d\u0430\u0435\u0449",p:"na-chi-na-ESHT",n:"Beginner",e:"Beginner",m:"\u{1f476}"},
+{b:"\u0413\u043e\u0440\u0435\u0449 \u0448\u043e\u043a\u043e\u043b\u0430\u0434",p:"go-RESHT sho-ko-LAD",n:"Warme chocolademelk",e:"Hot chocolate",m:"\u2615"},
+{b:"\u0429\u0435\u043a\u0438",p:"SHTE-ki",n:"Skistokken",e:"Ski poles",m:"\u{1f3bf}"},
+{b:"\u0421\u043a\u0438 \u043e\u0447\u0438\u043b\u0430",p:"ski o-CHI-la",n:"Skibril",e:"Ski goggles",m:"\u{1f576}\ufe0f"}],
 conv:[
 {s:"Kind 1",b:"\u0425\u0430\u0439\u0434\u0435 \u0434\u0430 \u043a\u0430\u0440\u0430\u043c \u0441\u043a\u0438!",n:"Laten we gaan skien!",side:"l"},
 {s:"Kind 2",b:"\u0422\u0430\u0437\u0438 \u043f\u0438\u0441\u0442\u0430 \u0435 \u0441\u0442\u0440\u0430\u0448\u043d\u0430!",n:"Die piste is eng!",side:"r"},
@@ -639,7 +836,22 @@ ws:[
 {b:"\u0417\u0432\u044a\u043d\u0435\u0446",p:"zvuh-NETS",n:"Bel",e:"Bell",m:"\u{1f514}"},
 {b:"\u041f\u043e\u0436\u0435\u043b\u0430\u043d\u0438\u0435",p:"po-zhe-LA-ni-e",n:"Wens",e:"Wish",m:"\u2b50"},
 {b:"\u041e\u0433\u044a\u043d",p:"O-guhn",n:"Vuur",e:"Fire",m:"\u{1f525}"},
-{b:"\u041d\u043e\u0432\u043e",p:"NO-vo",n:"Nieuw",e:"New",m:"\u2728"}],
+{b:"\u041d\u043e\u0432\u043e",p:"NO-vo",n:"Nieuw",e:"New",m:"\u2728"},
+{b:"\u041d\u043e\u0432\u0430 \u0433\u043e\u0434\u0438\u043d\u0430",p:"NO-va go-DI-na",n:"Nieuwjaar",e:"New Year",m:"\u{1f386}"},
+{b:"\u0422\u0440\u0435\u0442\u0438 \u043c\u0430\u0440\u0442",p:"TRE-ti mart",n:"3 maart (nat. feestdag)",e:"March 3rd",m:"\u{1f1e7}\u{1f1ec}"},
+{b:"\u0412\u0435\u043b\u0438\u043a\u0434\u0435\u043d\u0441\u043a\u043e \u044f\u0439\u0446\u0435",p:"ve-lik-DEN-sko yay-TSE",n:"Paasei",e:"Easter egg",m:"\u{1f95a}"},
+{b:"\u041a\u043e\u0437\u0443\u043d\u0430\u043a",p:"ko-zoo-NAK",n:"Paasbrood",e:"Easter bread",m:"\u{1f35e}"},
+{b:"\u0421\u0443\u0440\u0432\u0430\u043a\u0430\u043d\u0435",p:"soor-VA-ka-ne",n:"Nieuwjaarsritueel",e:"New Year ritual",m:"\u{1f332}"},
+{b:"\u0413\u0435\u0440\u0433\u044c\u043e\u0432\u0434\u0435\u043d",p:"GER-gyov-den",n:"Sint-Jorisdag",e:"St. George's Day",m:"\u{1f409}"},
+{b:"\u041d\u0430\u0440\u043e\u0434\u043d\u0430 \u043c\u0443\u0437\u0438\u043a\u0430",p:"na-ROD-na MOO-zi-ka",n:"Volksmuziek",e:"Folk music",m:"\u{1f3b6}"},
+{b:"\u0413\u0430\u0439\u0434\u0430",p:"GAY-da",n:"Doedelzak",e:"Bagpipe",m:"\u{1f3b5}"},
+{b:"\u0427\u0435\u0441\u0442\u0438\u0442\u0430 \u041d\u043e\u0432\u0430 \u0433\u043e\u0434\u0438\u043d\u0430!",p:"ches-TI-ta NO-va go-DI-na",n:"Gelukkig Nieuwjaar!",e:"Happy New Year!",m:"\u{1f389}"},
+{b:"\u0427\u0435\u0441\u0442\u0438\u0442 \u0412\u0435\u043b\u0438\u043a\u0434\u0435\u043d!",p:"ches-TIT ve-LIK-den",n:"Vrolijk Pasen!",e:"Happy Easter!",m:"\u{1f430}"},
+{b:"\u0427\u0435\u0441\u0442\u0438\u0442 \u0440\u043e\u0436\u0434\u0435\u043d \u0434\u0435\u043d!",p:"ches-TIT ROZH-den den",n:"Gefeliciteerd met je verjaardag!",e:"Happy birthday!",m:"\u{1f382}"},
+{b:"\u0417\u0434\u0440\u0430\u0432\u0435",p:"ZDRA-ve",n:"Gezondheid",e:"Health",m:"\u{1f4aa}"},
+{b:"\u0429\u0430\u0441\u0442\u0438\u0435",p:"SHTAS-ti-e",n:"Geluk",e:"Happiness",m:"\u{1f340}"},
+{b:"\u0423\u0441\u043f\u0435\u0445",p:"oos-PEH",n:"Succes",e:"Success",m:"\u{1f31f}"},
+{b:"\u041d\u0430\u0437\u0434\u0440\u0430\u0432\u0435!",p:"naz-DRA-ve",n:"Proost!",e:"Cheers!",m:"\u{1f942}"}],
 
 conv:[
 {s:"Kind",b:"\u0411\u0430\u0431\u0430, \u043a\u0430\u043a\u0432\u043e \u0435 \u0411\u0430\u0431\u0430 \u041c\u0430\u0440\u0442\u0430?",n:"Oma, wat is Baba Marta?",side:"r"},
@@ -682,7 +894,23 @@ ws:[
 {b:"\u0417\u043d\u0430\u043c\u0435",p:"ZNA-me",n:"Vlag",e:"Flag",m:"\u{1f1e7}\u{1f1ec}"},
 {b:"\u0411\u044f\u043b\u043e, \u0437\u0435\u043b\u0435\u043d\u043e, \u0447\u0435\u0440\u0432\u0435\u043d\u043e",p:"BYA-lo, ze-LE-no, cher-VE-no",n:"Wit, groen, rood",e:"White, green, red",m:"\u{1f3f3}\ufe0f"},
 {b:"\u041b\u044a\u0432",p:"luhv",n:"Leeuw",e:"Lion",m:"\u{1f981}"},
-{b:"\u0413\u0435\u0440\u0431",p:"gerb",n:"Wapen (heraldisch)",e:"Coat of arms",m:"\u{1f6e1}\ufe0f"}],
+{b:"\u0413\u0435\u0440\u0431",p:"gerb",n:"Wapen (heraldisch)",e:"Coat of arms",m:"\u{1f6e1}\ufe0f"},
+{b:"\u0412\u0430\u0440\u043d\u0430",p:"VAR-na",n:"Varna (stad)",e:"Varna",m:"\u{1f3d6}\ufe0f"},
+{b:"\u0411\u0443\u0440\u0433\u0430\u0441",p:"boor-GAS",n:"Burgas (stad)",e:"Burgas",m:"\u26f5"},
+{b:"\u041c\u0443\u0441\u0430\u043b\u0430",p:"moo-sa-LA",n:"Musala (hoogste berg)",e:"Musala peak",m:"\u26f0\ufe0f"},
+{b:"\u0427\u0435\u0440\u043d\u043e \u043c\u043e\u0440\u0435",p:"CHER-no MO-re",n:"Zwarte Zee",e:"Black Sea",m:"\u{1f30a}"},
+{b:"\u0420\u043e\u0434\u043e\u043f\u0438",p:"ro-DO-pi",n:"Rhodopen (gebergte)",e:"Rhodope mountains",m:"\u26f0\ufe0f"},
+{b:"\u041f\u0438\u0440\u0438\u043d",p:"pi-RIN",n:"Pirin (gebergte)",e:"Pirin mountains",m:"\u{1f3d4}\ufe0f"},
+{b:"\u0420\u043e\u0437\u0430",p:"RO-za",n:"Roos",e:"Rose",m:"\u{1f339}"},
+{b:"\u0420\u043e\u0437\u043e\u0432\u043e \u043c\u0430\u0441\u043b\u043e",p:"RO-zo-vo MAS-lo",n:"Rozenolie",e:"Rose oil",m:"\u{1f339}"},
+{b:"\u041b\u043e\u0437\u0435",p:"lo-ZE",n:"Wijngaard",e:"Vineyard",m:"\u{1f347}"},
+{b:"\u041c\u0430\u043d\u0430\u0441\u0442\u0438\u0440",p:"ma-nas-TIR",n:"Klooster",e:"Monastery",m:"\u26ea"},
+{b:"\u0426\u044a\u0440\u043a\u0432\u0430",p:"TSURK-va",n:"Kerk",e:"Church",m:"\u26ea"},
+{b:"\u041c\u043e\u0441\u0442",p:"most",n:"Brug",e:"Bridge",m:"\u{1f309}"},
+{b:"\u041f\u043b\u043e\u0449\u0430\u0434",p:"plosh-TAD",n:"Plein",e:"Square",m:"\u{1f3d9}\ufe0f"},
+{b:"\u041f\u0430\u043c\u0435\u0442\u043d\u0438\u043a",p:"pa-MET-nik",n:"Monument",e:"Monument",m:"\u{1f5fd}"},
+{b:"\u0425\u044a\u043b\u043c",p:"huhlm",n:"Heuvel",e:"Hill",m:"\u{1f304}"},
+{b:"\u041f\u043e\u043b\u0435",p:"PO-le",n:"Veld",e:"Field",m:"\u{1f33e}"}],
 
 conv:[
 {s:"Kind",b:"\u0411\u0430\u0431\u0430, \u0440\u0430\u0437\u043a\u0430\u0436\u0438 \u043c\u0438 \u0437\u0430 \u0411\u044a\u043b\u0433\u0430\u0440\u0438\u044f.",n:"Oma, vertel me over Bulgarije.",side:"r"},
@@ -725,7 +953,20 @@ ws:[
 {b:"\u0420\u0430\u0432\u043d\u043e",p:"RAV-no",n:"Vlak",e:"Flat",m:"\u{1f33e}"},
 {b:"\u041a\u0440\u0430\u043b\u0441\u0442\u0432\u043e",p:"KRAL-stvo",n:"Koninkrijk",e:"Kingdom",m:"\u{1f451}"},
 {b:"\u041a\u0440\u0430\u043b",p:"kral",n:"Koning",e:"King",m:"\u{1f934}"},
-{b:"\u041a\u0440\u0430\u043b\u0438\u0446\u0430",p:"kra-LI-tsa",n:"Koningin",e:"Queen",m:"\u{1f478}"}],
+{b:"\u041a\u0440\u0430\u043b\u0438\u0446\u0430",p:"kra-LI-tsa",n:"Koningin",e:"Queen",m:"\u{1f478}"},
+{b:"\u0410\u043c\u0441\u0442\u0435\u0440\u0434\u0430\u043c",p:"am-ster-DAM",n:"Amsterdam",e:"Amsterdam",m:"\u{1f3d9}\ufe0f"},
+{b:"\u0425\u0430\u0433\u0430",p:"HA-ga",n:"Den Haag",e:"The Hague",m:"\u{1f3db}\ufe0f"},
+{b:"\u041a\u0440\u0430\u043b\u0441\u043a\u0438 \u0434\u0435\u043d",p:"KRAL-ski den",n:"Koningsdag",e:"King's Day",m:"\u{1f451}"},
+{b:"\u041e\u0440\u0430\u043d\u0436\u0435\u0432\u043e",p:"o-RAN-zhe-vo",n:"Oranje",e:"Orange",m:"\u{1f7e0}"},
+{b:"\u0421\u0442\u0440\u043e\u0444\u0435\u043b",p:"STRO-fel",n:"Stroopwafel",e:"Stroopwafel",m:"\u{1f9c7}"},
+{b:"\u0425\u0430\u0433\u0435\u043b\u0441\u043b\u0430\u0445",p:"HA-gel-slah",n:"Hagelslag",e:"Chocolate sprinkles",m:"\u{1f36b}"},
+{b:"\u0414\u044a\u0436\u0434\u043e\u0431\u0440\u0430\u043d",p:"duhzh-do-BRAN",n:"Regenjas",e:"Raincoat",m:"\u{1f9e5}"},
+{b:"\u041a\u044a\u043d\u043a\u0438",p:"KUHN-ki",n:"Schaatsen",e:"Ice skates",m:"\u26f8\ufe0f"},
+{b:"\u041f\u0440\u043e\u0432\u0438\u043d\u0446\u0438\u044f",p:"pro-VIN-tsi-ya",n:"Provincie",e:"Province",m:"\u{1f5fa}\ufe0f"},
+{b:"\u0410\u0437 \u0436\u0438\u0432\u0435\u044f \u0432 \u0425\u043e\u043b\u0430\u043d\u0434\u0438\u044f",p:"az zhi-VE-ya v ho-LAN-di-ya",n:"Ik woon in Nederland",e:"I live in NL",m:"\u{1f1f3}\u{1f1f1}"},
+{b:"\u0413\u043e\u0432\u043e\u0440\u044f \u0445\u043e\u043b\u0430\u043d\u0434\u0441\u043a\u0438",p:"go-vo-RYA ho-LAND-ski",n:"Ik spreek Nederlands",e:"I speak Dutch",m:"\u{1f5e3}\ufe0f"},
+{b:"\u0425\u043e\u043b\u0430\u043d\u0434\u0438\u044f \u0435 \u0440\u0430\u0432\u043d\u0430",p:"ho-LAN-di-ya e RAV-na",n:"Nederland is vlak",e:"Netherlands is flat",m:"\u{1f3de}\ufe0f"},
+{b:"\u041a\u0430\u0440\u0430\u043c \u043a\u043e\u043b\u0435\u043b\u043e \u0432\u0441\u0435\u043a\u0438 \u0434\u0435\u043d",p:"KA-ram ko-LE-lo VSE-ki den",n:"Ik fiets elke dag",e:"I cycle every day",m:"\u{1f6b2}"}],
 conv:[
 {s:"Kind",b:"\u0411\u0430\u0431\u043e, \u0437\u043d\u0430\u0435\u0448 \u043b\u0438 \u0447\u0435 \u0425\u043e\u043b\u0430\u043d\u0434\u0438\u044f \u0435 \u043f\u043e\u0434 \u043c\u043e\u0440\u0441\u043a\u043e\u0442\u043e \u043d\u0438\u0432\u043e?",n:"Oma, wist je dat Nederland onder zeeniveau ligt?",side:"r"},
 {s:"\u0411\u0430\u0431\u0430",b:"\u041d\u0430\u0438\u0441\u0442\u0438\u043d\u0430 \u043b\u0438? \u041a\u0430\u043a \u0435 \u0432\u044a\u0437\u043c\u043e\u0436\u043d\u043e?",n:"Echt waar? Hoe kan dat?",side:"l"},
@@ -760,7 +1001,21 @@ ws:[
 {b:"\u0421\u044a\u043a\u0440\u043e\u0432\u0438\u0449\u0435",p:"suhk-RO-vish-te",n:"Schat",e:"Treasure",m:"\u{1f48e}"},
 {b:"\u0426\u0430\u0440",p:"tsar",n:"Tsaar/koning",e:"King",m:"\u{1f451}"},
 {b:"\u041b\u0435\u0433\u0435\u043d\u0434\u0430",p:"le-GEN-da",n:"Legende",e:"Legend",m:"\u{1f4d6}"},
-{b:"\u0414\u0440\u0435\u0432\u0435\u043d",p:"DRE-ven",n:"Oud/antiek",e:"Ancient",m:"\u{1f3db}\ufe0f"}],
+{b:"\u0414\u0440\u0435\u0432\u0435\u043d",p:"DRE-ven",n:"Oud/antiek",e:"Ancient",m:"\u{1f3db}\ufe0f"},
+{b:"\u0422\u0440\u0430\u043a\u0438\u044f",p:"TRA-ki-ya",n:"Thracië",e:"Thrace",m:"\u{1f3de}\ufe0f"},
+{b:"\u041f\u0435\u0449\u0435\u0440\u0430",p:"pesh-TE-ra",n:"Grot",e:"Cave",m:"\u{1f573}\ufe0f"},
+{b:"\u041a\u043e\u043b\u0435\u0441\u043d\u0438\u0446\u0430",p:"ko-LES-ni-tsa",n:"Strijdwagen",e:"Chariot",m:"\u{1f3c7}"},
+{b:"\u041b\u0438\u0440\u0430",p:"LI-ra",n:"Lier (instrument)",e:"Lyre",m:"\u{1f3b6}"},
+{b:"\u0421\u0440\u0435\u0431\u0440\u043e",p:"SREB-ro",n:"Zilver",e:"Silver",m:"\u{1f4b0}"},
+{b:"\u0411\u0440\u043e\u043d\u0437",p:"bronz",n:"Brons",e:"Bronze",m:"\u{1f949}"},
+{b:"\u0410\u043c\u0444\u043e\u0440\u0430",p:"am-FO-ra",n:"Amfora",e:"Amphora",m:"\u{1f3fa}"},
+{b:"\u0411\u0438\u0442\u043a\u0430",p:"BIT-ka",n:"Veldslag",e:"Battle",m:"\u2694\ufe0f"},
+{b:"\u0416\u0440\u0435\u0446",p:"zhrets",n:"Priester",e:"Priest",m:"\u{1f9d9}"},
+{b:"\u0420\u0438\u0442\u0443\u0430\u043b",p:"ri-too-AL",n:"Ritueel",e:"Ritual",m:"\u{1f52e}"},
+{b:"\u0421\u0432\u0435\u0449\u0435\u043d",p:"svesh-TEN",n:"Heilig",e:"Sacred",m:"\u2728"},
+{b:"\u041c\u0443\u0437\u0435\u0439",p:"moo-ZEJ",n:"Museum",e:"Museum",m:"\u{1f3db}\ufe0f"},
+{b:"\u041d\u0430\u0445\u043e\u0434\u043a\u0430",p:"na-HOD-ka",n:"Ontdekking",e:"Discovery",m:"\u{1f50d}"},
+{b:"\u0410\u0440\u0445\u0435\u043e\u043b\u043e\u0433",p:"ar-he-O-log",n:"Archeoloog",e:"Archaeologist",m:"\u{1f50e}"}],
 
 conv:[
 {s:"Kind",b:"\u041a\u043e\u0438 \u0441\u0430 \u0442\u0440\u0430\u043a\u0438\u0442\u0435?",n:"Wie zijn de Thraciërs?",side:"r"},
@@ -801,7 +1056,20 @@ ws:[
 {b:"\u041f\u0440\u0435\u0432\u043e\u0434",p:"pre-VOD",n:"Vertaling",e:"Translation",m:"\u{1f310}"},
 {b:"\u0420\u0435\u0447\u043d\u0438\u043a",p:"RECH-nik",n:"Woordenboek",e:"Dictionary",m:"\u{1f4d5}"},
 {b:"\u041f\u0440\u043e\u0438\u0437\u043d\u043e\u0448\u0435\u043d\u0438\u0435",p:"pro-iz-no-SHE-ni-e",n:"Uitspraak",e:"Pronunciation",m:"\u{1f5e3}\ufe0f"},
-{b:"\u0420\u0430\u0437\u0433\u043e\u0432\u043e\u0440",p:"raz-go-VOR",n:"Gesprek",e:"Conversation",m:"\u{1f4ac}"}],
+{b:"\u0420\u0430\u0437\u0433\u043e\u0432\u043e\u0440",p:"raz-go-VOR",n:"Gesprek",e:"Conversation",m:"\u{1f4ac}"},
+{b:"\u0411\u0443\u043a\u0432\u0430",p:"BOOK-va",n:"Letter",e:"Letter",m:"\u{1f524}"},
+{b:"\u0410\u0437\u0431\u0443\u043a\u0430",p:"AZ-boo-ka",n:"Alfabet",e:"Alphabet",m:"\u{1f520}"},
+{b:"\u0413\u043b\u0430\u0433\u043e\u043b",p:"gla-GOL",n:"Werkwoord",e:"Verb",m:"\u{1f4dd}"},
+{b:"\u041c\u043d\u043e\u0436\u0435\u0441\u0442\u0432\u0435\u043d\u043e \u0447\u0438\u0441\u043b\u043e",p:"MNO-zhest-ve-no chis-LO",n:"Meervoud",e:"Plural",m:"\u{1f465}"},
+{b:"\u041c\u0438\u043d\u0430\u043b\u043e \u0432\u0440\u0435\u043c\u0435",p:"mi-NA-lo VRE-me",n:"Verleden tijd",e:"Past tense",m:"\u23ea"},
+{b:"\u0421\u0435\u0433\u0430\u0448\u043d\u043e \u0432\u0440\u0435\u043c\u0435",p:"se-GASH-no VRE-me",n:"Tegenwoordige tijd",e:"Present tense",m:"\u23f8\ufe0f"},
+{b:"\u0411\u044a\u0434\u0435\u0449\u0435 \u0432\u0440\u0435\u043c\u0435",p:"BUH-desh-te VRE-me",n:"Toekomende tijd",e:"Future tense",m:"\u23e9"},
+{b:"\u0427\u0435\u0442\u0430 \u043d\u0430 \u0433\u043b\u0430\u0441",p:"che-TA na glas",n:"Ik lees hardop",e:"I read aloud",m:"\u{1f5e3}\ufe0f"},
+{b:"\u0421\u043b\u0443\u0448\u0430\u043c \u0432\u043d\u0438\u043c\u0430\u0442\u0435\u043b\u043d\u043e",p:"SLOO-sham vni-MA-tel-no",n:"Ik luister aandachtig",e:"I listen carefully",m:"\u{1f442}"},
+{b:"\u041f\u043e\u0432\u0442\u0430\u0440\u044f\u043c",p:"pov-TA-ryam",n:"Ik herhaal",e:"I repeat",m:"\u{1f501}"},
+{b:"\u0423\u043f\u0440\u0430\u0436\u043d\u0435\u043d\u0438\u0435",p:"oop-razh-NE-ni-e",n:"Oefening",e:"Exercise",m:"\u{1f4dd}"},
+{b:"\u041d\u0430\u0443\u0447\u0438\u0445 \u043d\u043e\u0432\u0430 \u0434\u0443\u043c\u0430!",p:"na-oo-CHIH NO-va DOO-ma",n:"Ik heb een nieuw woord geleerd!",e:"I learned a new word!",m:"\u{1f389}"},
+{b:"\u0413\u043e\u0432\u043e\u0440\u044f \u0431\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438!",p:"go-vo-RYA buhl-GAR-ski",n:"Ik spreek Bulgaars!",e:"I speak Bulgarian!",m:"\u{1f1e7}\u{1f1ec}"}],
 
 conv:[
 {s:"Kind",b:"\u0422\u0440\u0443\u0434\u043d\u043e \u043b\u0438 \u0435 \u0434\u0430 \u0443\u0447\u0438\u0448 \u0431\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438?",n:"Is het moeilijk om Bulgaars te leren?",side:"r"},
@@ -844,7 +1112,19 @@ ws:[
 {b:"\u0417\u0430\u043f\u0435\u0442\u0430\u044f",p:"za-pe-TA-ya",n:"Komma",e:"Comma",m:"\u{1f4ce}"},
 {b:"\u0412\u044a\u043f\u0440\u043e\u0441\u0438\u0442\u0435\u043b\u043d\u0430",p:"vuhp-ro-SI-tel-na",n:"Vraagteken",e:"Question mark",m:"\u2753"},
 {b:"\u0427\u0435\u0442\u0435\u043d\u0435",p:"CHE-te-ne",n:"Lezen",e:"Reading",m:"\u{1f4d6}"},
-{b:"\u041f\u0438\u0441\u0430\u043d\u0435",p:"PI-sa-ne",n:"Schrijven",e:"Writing",m:"\u270f\ufe0f"}],
+{b:"\u041f\u0438\u0441\u0430\u043d\u0435",p:"PI-sa-ne",n:"Schrijven",e:"Writing",m:"\u270f\ufe0f"},
+{b:"\u041f\u0435\u0440\u0433\u0430\u043c\u0435\u043d\u0442",p:"per-ga-MENT",n:"Perkament",e:"Parchment",m:"\u{1f4dc}"},
+{b:"\u041c\u043e\u043d\u0430\u0445",p:"mo-NAH",n:"Monnik",e:"Monk",m:"\u{1f9d1}"},
+{b:"\u041f\u0440\u0435\u0432\u0435\u0436\u0434\u0430\u043c",p:"pre-VEZH-dam",n:"Ik vertaal",e:"I translate",m:"\u{1f310}"},
+{b:"\u041c\u0430\u0441\u0442\u0438\u043b\u043e",p:"mas-TI-lo",n:"Inkt",e:"Ink",m:"\u{1f58b}\ufe0f"},
+{b:"\u0421\u0432\u0438\u0442\u044a\u043a",p:"SVI-tuhk",n:"Boekrol",e:"Scroll",m:"\u{1f4dc}"},
+{b:"\u0421\u0440\u0435\u0434\u043d\u043e\u0432\u0435\u043a\u043e\u0432\u0438\u0435",p:"sred-no-ve-KO-vi-e",n:"Middeleeuwen",e:"Middle Ages",m:"\u{1f3f0}"},
+{b:"\u0421\u043b\u0430\u0432\u044f\u043d\u0441\u043a\u0438 \u043d\u0430\u0440\u043e\u0434\u0438",p:"sla-VYAN-ski na-RO-di",n:"Slavische volkeren",e:"Slavic peoples",m:"\u{1f30d}"},
+{b:"\u0420\u0443\u0441\u0438\u044f",p:"ROO-si-ya",n:"Rusland",e:"Russia",m:"\u{1f1f7}\u{1f1fa}"},
+{b:"\u0421\u044a\u0440\u0431\u0438\u044f",p:"SUHR-bi-ya",n:"Servië",e:"Serbia",m:"\u{1f1f7}\u{1f1f8}"},
+{b:"\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442",p:"do-koo-MENT",n:"Document",e:"Document",m:"\u{1f4c4}"},
+{b:"\u041d\u0430\u0434\u043f\u0438\u0441",p:"NAD-pis",n:"Inscriptie",e:"Inscription",m:"\u{1f5ff}"},
+{b:"\u041f\u0440\u0430\u0437\u043d\u0438\u043a \u043d\u0430 \u0431\u0443\u043a\u0432\u0438\u0442\u0435",p:"PRAZ-nik na BOOK-vi-te",n:"Feest van de letters",e:"Festival of letters",m:"\u{1f389}"}],
 
 conv:[
 {s:"Kind",b:"\u041a\u043e\u0439 \u0435 \u0441\u044a\u0437\u0434\u0430\u043b \u043a\u0438\u0440\u0438\u043b\u0438\u0446\u0430\u0442\u0430?",n:"Wie heeft het Cyrillisch schrift gemaakt?",side:"r"},
@@ -889,7 +1169,22 @@ ws:[
 {b:"\u0414\u043e\u043b\u0438\u043d\u0430",p:"do-LI-na",n:"Vallei",e:"Valley",m:"\u{1f3de}\ufe0f"},
 {b:"\u0412\u0440\u044a\u0445",p:"vruhh",n:"Top/piek",e:"Peak",m:"\u26f0\ufe0f"},
 {b:"\u0418\u0437\u0432\u043e\u0440",p:"iz-VOR",n:"Bron",e:"Spring",m:"\u{1f4a7}"},
-{b:"\u0420\u0430\u0437\u0445\u043e\u0434\u043a\u0430",p:"raz-HOD-ka",n:"Wandeling",e:"Walk",m:"\u{1f6b6}"}],
+{b:"\u0420\u0430\u0437\u0445\u043e\u0434\u043a\u0430",p:"raz-HOD-ka",n:"Wandeling",e:"Walk",m:"\u{1f6b6}"},
+{b:"\u0421\u043e\u0437\u043e\u043f\u043e\u043b",p:"so-ZO-pol",n:"Sozopol",e:"Sozopol",m:"\u{1f3d6}\ufe0f"},
+{b:"\u0411\u043e\u044f\u043d\u0441\u043a\u0430 \u0446\u044a\u0440\u043a\u0432\u0430",p:"BO-yan-ska TSURK-va",n:"Bojana kerk",e:"Boyana Church",m:"\u26ea"},
+{b:"\u041c\u0430\u0434\u0430\u0440\u0441\u043a\u0438 \u043a\u043e\u043d\u043d\u0438\u043a",p:"ma-DAR-ski KON-nik",n:"Ruiter van Madara",e:"Madara Rider",m:"\u{1f3c7}"},
+{b:"\u0422\u0435\u0440\u043c\u0430\u043b\u0435\u043d \u0438\u0437\u0432\u043e\u0440",p:"ter-MA-len iz-VOR",n:"Thermale bron",e:"Hot spring",m:"\u2668\ufe0f"},
+{b:"\u041d\u0430\u0446\u0438\u043e\u043d\u0430\u043b\u0435\u043d \u043f\u0430\u0440\u043a",p:"na-tsi-o-NA-len park",n:"Nationaal park",e:"National park",m:"\u{1f3de}\ufe0f"},
+{b:"\u041f\u0440\u0438\u0440\u043e\u0434\u0430",p:"pri-RO-da",n:"Natuur",e:"Nature",m:"\u{1f33f}"},
+{b:"\u041f\u043b\u0430\u043d\u0438\u043d\u0430 \u0412\u0438\u0442\u043e\u0448\u0430",p:"pla-ni-NA vi-TO-sha",n:"Vitosha berg",e:"Vitosha mountain",m:"\u26f0\ufe0f"},
+{b:"\u0421\u0442\u0430\u0440 \u0433\u0440\u0430\u0434",p:"star grad",n:"Oude stad",e:"Old town",m:"\u{1f3f0}"},
+{b:"\u0410\u043c\u0444\u0438\u0442\u0435\u0430\u0442\u044a\u0440",p:"am-fi-te-A-tuhr",n:"Amfitheater",e:"Amphitheater",m:"\u{1f3db}\ufe0f"},
+{b:"\u0415\u043a\u043e\u043f\u044a\u0442\u0435\u043a\u0430",p:"e-ko-PUH-te-ka",n:"Ecopad",e:"Eco trail",m:"\u{1f6b6}"},
+{b:"\u0425\u0438\u0436\u0430",p:"HI-zha",n:"Berghut",e:"Mountain hut",m:"\u{1f3d4}\ufe0f"},
+{b:"\u041a\u0430\u043d\u044c\u043e\u043d",p:"kan-YON",n:"Kloof",e:"Canyon",m:"\u{1f3dc}\ufe0f"},
+{b:"\u041f\u0430\u043d\u043e\u0440\u0430\u043c\u0430",p:"pa-no-RA-ma",n:"Panorama",e:"Panoramic view",m:"\u{1f304}"},
+{b:"\u041c\u0430\u0433\u0438\u0447\u0435\u0441\u043a\u043e!",p:"ma-GI-ches-ko",n:"Magisch!",e:"Magical!",m:"\u2728"},
+{b:"\u0418\u0441\u043a\u0430\u043c \u0434\u0430 \u0441\u0435 \u0432\u044a\u0440\u043d\u0430",p:"IS-kam da se VUHR-na",n:"Ik wil terugkomen",e:"I want to come back",m:"\u{1f49a}"}],
 
 conv:[
 {s:"Kind",b:"\u041a\u0430\u043a\u0432\u0438 \u0438\u043d\u0442\u0435\u0440\u0435\u0441\u043d\u0438 \u043c\u0435\u0441\u0442\u0430 \u0438\u043c\u0430 \u0432 \u0411\u044a\u043b\u0433\u0430\u0440\u0438\u044f?",n:"Welke interessante plekken zijn er in Bulgarije?",side:"r"},
@@ -927,7 +1222,9 @@ const BADGES=[
 {id:"p3",nm:"Cultuur Ontdekker",ic:"\u{1f30d}",ds:"5 thema-modules gedaan",rq:s=>s.mc>=14},
 {id:"w200",nm:"Woordenwizard",ic:"\u{1f9d9}",ds:"200 woorden geleerd",rq:s=>s.wl>=200},
 {id:"all",nm:"Oma's Favoriet",ic:"\u{1f475}\u2764\ufe0f",ds:"Alle modules afgerond!",rq:s=>s.mc>=19},
-];
+,
+{id:"m1",nm:"Memory Match",ic:"\u{1f0cf}",ds:"1 memory game gewonnen",rq:s=>(s.mc||0)>=1},
+{id:"m5",nm:"Memory Meester",ic:"\u{1f9e0}",ds:"5 memory games gewonnen",rq:s=>(s.mc||0)>=5}];
 
 function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
 
@@ -1031,15 +1328,21 @@ function Home({go,st}){
           ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc)),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
     // Quick links
-    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:8}},
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginTop:8}},
       ce("button",{className:"card",onClick:()=>go("quiz"),style:{textAlign:"center",padding:14}},
         ce("div",{style:{fontSize:28}},"\u{1f3af}"),
         ce("div",{className:"card-t",style:{marginTop:4}},"Quiz"),
         ce("div",{className:"card-d"},"Test alles!")),
+      ce("button",{className:"card",onClick:()=>go("memory"),style:{textAlign:"center",padding:14}},
+        ce("div",{style:{fontSize:28}},"\u{1f0cf}"),
+        ce("div",{className:"card-t",style:{marginTop:4}},"Memory"),
+        ce("div",{className:"card-d"},"Match de paren!")),
       ce("button",{className:"card",onClick:()=>go("badges"),style:{textAlign:"center",padding:14}},
         ce("div",{style:{fontSize:28}},"\u{1f3c6}"),
         ce("div",{className:"card-t",style:{marginTop:4}},"Badges"),
         ce("div",{className:"card-d"},eb+"/"+BADGES.length+" verdiend"))),
+    ce("div",{style:{textAlign:"center",marginTop:12}},
+      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
       ce("span",null,"\u2728"),
       ce("div",null,
@@ -1227,59 +1530,251 @@ function ModScreen({mod,go,st,sS}){
 
 // === QUIZ ===
 function Quiz({go,st,sS}){
-  const aw=allWords(MODS);
-  const al=ALPHA.flatMap(g=>g.ls);
-  const[qi,sQI]=uS(0);const[sc,sSC]=uS(0);const[sk,sSK]=uS(0);
-  const[sel,sSEL]=uS(null);const[sh2,sSH]=uS(false);
-  const[qs,sQS]=uS([]);const[dn,sDN]=uS(false);
+  var aw=allWords(MODS);
+  var al=ALPHA.flatMap(function(g){return g.ls;});
+  var[qi,sQI]=uS(0);var[sc,sSC]=uS(0);var[sk,sSK]=uS(0);
+  var[sel,sSEL]=uS(null);var[sh2,sSH]=uS(false);
+  var[qs,sQS]=uS([]);var[dn,sDN]=uS(false);
+  var[qMode,sQMode]=uS("mix");
 
-  const gen=()=>{
-    const q=[];
-    const sw=sh(aw);
-    for(let i=0;i<Math.min(8,sw.length);i++){
-      const c=sw[i];const wr=sh(aw.filter(w=>w.n!==c.n)).slice(0,3);
-      q.push({pr:c.b,hi:"["+c.p+"]",ans:c.n,ops:sh([c.n,...wr.map(w=>w.n)]),em:c.m});}
-    const sl=sh(al);
-    for(let i=0;i<Math.min(7,sl.length);i++){
-      const c=sl[i];const wr=sh(al.filter(l=>l.du!==c.du)).slice(0,3);
-      q.push({pr:c.u+" "+c.l,hi:"Welke klank?",ans:c.du,ops:sh([c.du,...wr.map(l=>l.du)]),em:"\u{1f524}"});}
-    sQS(sh(q));sQI(0);sSC(0);sSK(0);sSEL(null);sSH(false);sDN(false);};
-  uE(()=>{gen();},[]);
+  var gen=function(mode){
+    var m=mode||qMode;
+    var q=[];
+    var sw=sh(aw);var sl=sh(al);
+
+    if(m==="mix"||m==="bg-nl"){
+      // Bulgarian -> Dutch (original)
+      var cnt=m==="mix"?6:12;
+      for(var i=0;i<Math.min(cnt,sw.length);i++){
+        var c=sw[i];var wr=sh(aw.filter(function(w){return w.n!==c.n;})).slice(0,3);
+        q.push({pr:c.b,hi:"["+c.p+"]",ans:c.n,ops:sh([c.n].concat(wr.map(function(w){return w.n;}))),em:c.m,tp:"bg-nl"});
+      }
+    }
+
+    if(m==="mix"||m==="nl-bg"){
+      // Dutch -> Bulgarian (REVERSE!)
+      var cnt2=m==="mix"?4:12;
+      for(var i2=0;i2<Math.min(cnt2,sw.length);i2++){
+        var c2=sw[i2];var wr2=sh(aw.filter(function(w){return w.b!==c2.b;})).slice(0,3);
+        q.push({pr:c2.n,hi:c2.e,ans:c2.b,ops:sh([c2.b].concat(wr2.map(function(w){return w.b;}))),em:c2.m,tp:"nl-bg"});
+      }
+    }
+
+    if(m==="mix"||m==="letters"){
+      // Letter recognition
+      var cnt3=m==="mix"?5:15;
+      for(var i3=0;i3<Math.min(cnt3,sl.length);i3++){
+        var c3=sl[i3];var wr3=sh(al.filter(function(l){return l.du!==c3.du;})).slice(0,3);
+        q.push({pr:c3.u+" "+c3.l,hi:"Welke klank?",ans:c3.du,ops:sh([c3.du].concat(wr3.map(function(l){return l.du;}))),em:"\u{1f524}",tp:"letter"});
+      }
+    }
+
+    sQS(sh(q));sQI(0);sSC(0);sSK(0);sSEL(null);sSH(false);sDN(false);
+  };
+
+  uE(function(){gen("mix");},[]);
 
   if(qs.length===0)return null;
-  const q=qs[qi];const ok=sel===q.ans;
-  const pick=(o)=>{if(sh2)return;sSEL(o);sSH(true);const g=o===q.ans;const ns=g?sk+1:0;sSK(ns);if(g)sSC(sc+1);
-    sS(s=>({...s,xp:s.xp+(g?15:0),qo:(s.qo||0)+(g?1:0),qb:Math.max(s.qb||0,ns)}));};
-  const nx=()=>{if(qi>=qs.length-1)sDN(true);else{sQI(qi+1);sSEL(null);sSH(false);}};
+  var q=qs[qi];var ok=sel===q.ans;
+  var pick=function(o){if(sh2)return;sSEL(o);sSH(true);var g=o===q.ans;var ns=g?sk+1:0;sSK(ns);if(g)sSC(sc+1);
+    sS(function(s){return Object.assign({},s,{xp:s.xp+(g?15:0),qo:(s.qo||0)+(g?1:0),qb:Math.max(s.qb||0,ns)});});};
+  var nx=function(){if(qi>=qs.length-1)sDN(true);else{sQI(qi+1);sSEL(null);sSH(false);}};
 
-  if(dn){const pc=Math.round(sc/qs.length*100);
+  // Quiz type label
+  var tpLabel=function(tp){
+    if(tp==="bg-nl")return "\u{1f1e7}\u{1f1ec} \u2192 \u{1f1f3}\u{1f1f1}";
+    if(tp==="nl-bg")return "\u{1f1f3}\u{1f1f1} \u2192 \u{1f1e7}\u{1f1ec}";
+    return "\u{1f524} Letter";
+  };
+
+  // Mode selection screen
+  var modeScreen=function(){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:48}},"\u{1f3af}"),
+        ce("h2",{className:"h1"},"Quiz"),
+        ce("p",{className:"sub"},"Kies een quiztype")),
+      ce("div",{className:"sy3"},
+        ce("button",{className:"card",onClick:function(){sQMode("mix");gen("mix");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f500}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Alles door elkaar"),ce("div",{className:"card-d"},"Letters + woorden, beide richtingen")))),
+        ce("button",{className:"card",onClick:function(){sQMode("bg-nl");gen("bg-nl");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f1e7}\u{1f1ec}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Bulgaars \u2192 Nederlands"),ce("div",{className:"card-d"},"Vertaal het Bulgaarse woord")))),
+        ce("button",{className:"card",onClick:function(){sQMode("nl-bg");gen("nl-bg");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f1f3}\u{1f1f1}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Nederlands \u2192 Bulgaars"),ce("div",{className:"card-d"},"Kies het juiste Bulgaarse woord")))),
+        ce("button",{className:"card",onClick:function(){sQMode("letters");gen("letters");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f524}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Letters"),ce("div",{className:"card-d"},"Welke klank hoort bij de letter?"))))),
+      ce("button",{className:"btn btn-g",style:{marginTop:12},onClick:function(){go("home");}},"\u2190 Home"));
+  };
+
+  // Show mode selection if no questions yet
+  if(qs.length===0)return modeScreen();
+
+  if(dn){var pc=Math.round(sc/qs.length*100);
     return ce("div",{className:"scr sy ctr"},
       ce("div",{style:{fontSize:56}},pc>=80?"\u{1f389}":pc>=50?"\u{1f44f}":"\u{1f4aa}"),
       ce("h2",{className:"h1"},pc>=80?"Geweldig!":pc>=50?"Goed gedaan!":"Blijf oefenen!"),
       ce("div",{className:"gradient-text",style:{fontSize:44,fontWeight:800}},sc+"/"+qs.length),
       ce("p",{style:{color:"#64748b"}},pc>=80?"Je bent echt goed bezig!":pc>=50?"Goede basis!":"Oefening baart kunst!"),
-      ce("div",{style:{display:"flex",gap:12,justifyContent:"center"}},
-        ce("button",{className:"btn btn-v",onClick:gen},"\u{1f504} Opnieuw"),
-        ce("button",{className:"btn btn-g",onClick:()=>go("home"),style:{background:"#f1f5f9"}},"Home")));}
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}},
+        ce("button",{className:"btn btn-v",onClick:function(){gen(qMode);}},"\u{1f504} Opnieuw"),
+        ce("button",{className:"btn btn-v",style:{background:"linear-gradient(135deg,#fbbf24,#f59e0b)"},onClick:function(){sQS([]);}},"\u{1f3af} Ander type"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));}
 
   return ce("div",{className:"scr sy"},
     ce("div",{className:"nr"},
       ce("span",{style:{fontSize:13,color:"#64748b"}},"Vraag "+(qi+1)+"/"+qs.length),
       ce("div",{style:{display:"flex",alignItems:"center",gap:8}},
+        q.tp&&ce("span",{style:{fontSize:11,background:"#f1f5f9",padding:"2px 8px",borderRadius:99,color:"#64748b"}},tpLabel(q.tp)),
         ce("span",{style:{fontSize:13,fontWeight:500,color:"#059669"}},sc+" goed"),
         sk>1&&ce("span",{className:"streak"},"\u{1f525} "+sk+"x"))),
     ce("div",{className:"pb"},ce("div",{style:{height:"100%",borderRadius:999,background:"linear-gradient(to right,#a78bfa,#9333ea)",width:((qi+1)/qs.length*100)+"%",transition:"width .3s"}})),
     ce("div",{style:{background:"linear-gradient(135deg,#f5f3ff,#faf5ff)",borderRadius:16,padding:20,textAlign:"center",border:"1px solid #ede9fe"}},
       ce("div",{style:{fontSize:26,marginBottom:6}},q.em),
       ce("div",{style:{fontSize:32,fontWeight:700,color:"#6d28d9",marginBottom:4}},q.pr),
+      q.tp==="bg-nl"&&typeof speak==="function"&&ce("div",{style:{marginBottom:4}},ce(SpeakBtn,{text:q.pr,size:"md"})),
       ce("div",{style:{fontSize:13,color:"#a78bfa"}},q.hi)),
-    ce("div",{className:"sy3"},q.ops.map((o,i)=>{
-      let cl="qo";if(sh2){if(o===q.ans)cl+=" qo-ok";else if(o===sel&&!ok)cl+=" qo-no";else cl+=" qo-x";}
-      return ce("button",{key:i,className:cl,disabled:sh2,onClick:()=>pick(o)},
+    ce("div",{className:"sy3"},q.ops.map(function(o,i){
+      var cl="qo";if(sh2){if(o===q.ans)cl+=" qo-ok";else if(o===sel&&!ok)cl+=" qo-no";else cl+=" qo-x";}
+      return ce("button",{key:i,className:cl,disabled:sh2,onClick:function(){pick(o);}},
         ce("span",null,o),sh2&&o===q.ans&&ce("span",null,"\u2713"),sh2&&o===sel&&!ok&&o!==q.ans&&ce("span",null,"\u2717"));})),
     sh2&&ce("div",{className:"ctr"},
       ce("div",{style:{fontSize:13,fontWeight:500,color:ok?"#059669":"#dc2626",marginBottom:10}},ok?"\u2728 Goed zo!":"Het antwoord was: "+q.ans),
       ce("button",{className:"btn btn-v",onClick:nx},qi>=qs.length-1?"Resultaat":"Volgende")));
+}
+
+
+// === MEMORY GAME ===
+function Memory({go,st,sS}){
+  var aw=allWords(MODS);
+  var[cards,sCards]=uS([]);
+  var[f1,sF1]=uS(null);
+  var[f2,sF2]=uS(null);
+  var[matched,sMatched]=uS([]);
+  var[moves,sMoves]=uS(0);
+  var[done,sDone]=uS(false);
+  var[lock,sLock]=uS(false);
+  var[diff,sDiff]=uS(null);
+  var[timer,sTimer]=uS(0);
+  var[timerOn,sTimerOn]=uS(false);
+  var timerRef=React.useRef(null);
+
+  // Timer
+  uE(function(){
+    if(timerOn){timerRef.current=setInterval(function(){sTimer(function(t){return t+1;});},1000);}
+    return function(){if(timerRef.current)clearInterval(timerRef.current);};
+  },[timerOn]);
+
+  var startGame=function(d){
+    sDiff(d);
+    var cnt=d==="easy"?6:d==="medium"?8:12;
+    var words=sh(aw).slice(0,cnt);
+    var cs=[];
+    for(var i=0;i<words.length;i++){
+      var w=words[i];
+      cs.push({id:i*2,pairId:i,type:"bg",text:w.b,hint:w.p?"["+w.p+"]":"",em:w.m});
+      cs.push({id:i*2+1,pairId:i,type:"nl",text:w.n,hint:w.e||"",em:w.m});
+    }
+    sCards(sh(cs));sF1(null);sF2(null);sMatched([]);sMoves(0);sDone(false);sLock(false);sTimer(0);sTimerOn(true);
+  };
+
+  var handleClick=function(idx){
+    if(lock)return;
+    if(matched.indexOf(cards[idx].pairId)>=0)return;
+    if(f1===idx)return;
+    if(f1===null){sF1(idx);return;}
+    sF2(idx);sLock(true);sMoves(moves+1);
+    var c1=cards[f1];var c2=cards[idx];
+    if(c1.pairId===c2.pairId&&c1.type!==c2.type){
+      var nm=matched.concat([c1.pairId]);
+      setTimeout(function(){
+        sMatched(nm);sF1(null);sF2(null);sLock(false);
+        if(nm.length===cards.length/2){
+          sDone(true);sTimerOn(false);
+          sS(function(s){return Object.assign({},s,{xp:s.xp+25,mc:(s.mc||0)+1});});
+        }
+      },600);
+    } else {
+      setTimeout(function(){sF1(null);sF2(null);sLock(false);},1000);
+    }
+  };
+
+  var fmtTime=function(s){var m=Math.floor(s/60);var sec=s%60;return m+":"+(sec<10?"0":"")+sec;};
+
+  // Difficulty selection
+  if(!diff){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:48}},"\u{1f0cf}"),
+        ce("h2",{className:"h1"},"Memory"),
+        ce("p",{className:"sub"},"Match Bulgaars met Nederlands")),
+      ce("div",{className:"sy3"},
+        ce("button",{className:"card",onClick:function(){startGame("easy");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f331}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Makkelijk"),ce("div",{className:"card-d"},"12 kaarten (6 paren)")))),
+        ce("button",{className:"card",onClick:function(){startGame("medium");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f33f}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Gemiddeld"),ce("div",{className:"card-d"},"16 kaarten (8 paren)")))),
+        ce("button",{className:"card",onClick:function(){startGame("hard");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f525}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Moeilijk"),ce("div",{className:"card-d"},"24 kaarten (12 paren)"))))
+      ),
+      ce("button",{className:"btn btn-g",style:{marginTop:12},onClick:function(){go("home");}},"\u2190 Home"));
+  }
+
+  // Done screen
+  if(done){
+    var stars=moves<=cards.length?3:moves<=cards.length*1.5?2:1;
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:56}},stars===3?"\u{1f31f}":stars===2?"\u2b50":"\u{1f44f}"),
+      ce("h2",{className:"h1"},stars===3?"Perfect!":stars===2?"Goed gedaan!":"Gelukt!"),
+      ce("div",{style:{fontSize:28,color:"#f59e0b",marginTop:4}},Array(stars).fill("\u2b50").join("")),
+      ce("div",{className:"mem-stats",style:{marginTop:12}},
+        ce("div",null,"\u{1f4a1} ",ce("span",{className:"mem-stat-val"},moves)," zetten"),
+        ce("div",null,"\u23f1\ufe0f ",ce("span",{className:"mem-stat-val"},fmtTime(timer)))),
+      ce("p",{style:{color:"#64748b",marginTop:8,fontSize:13}},"+25 XP verdiend!"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:12}},
+        ce("button",{className:"btn btn-v",onClick:function(){sDiff(null);}},"\u{1f3af} Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));
+  }
+
+  // Game board
+  var cols=diff==="easy"?"mem-grid-3":diff==="hard"?"mem-grid-4":"mem-grid-4";
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){sDiff(null);sTimerOn(false);}},"\u2190 Terug"),
+      ce("div",{className:"mem-stats"},
+        ce("div",null,"\u{1f4a1} ",ce("span",{className:"mem-stat-val"},moves)),
+        ce("div",null,"\u23f1\ufe0f ",ce("span",{className:"mem-stat-val"},fmtTime(timer))),
+        ce("div",null,"\u2705 ",ce("span",{className:"mem-stat-val"},matched.length+"/"+cards.length/2)))),
+    ce("div",{className:"pb",style:{marginBottom:12}},
+      ce("div",{style:{height:"100%",borderRadius:999,background:"linear-gradient(to right,#a78bfa,#9333ea)",width:(matched.length/(cards.length/2)*100)+"%",transition:"width .3s"}})),
+    ce("div",{className:"mem-grid "+cols},
+      cards.map(function(c,idx){
+        var isFlipped=f1===idx||f2===idx;
+        var isMatched=matched.indexOf(c.pairId)>=0;
+        var isWrong=f2!==null&&!lock===false&&idx===f2&&cards[f1]&&cards[f1].pairId!==c.pairId;
+        var cls="mem-card"+(isFlipped?" flipped":"")+(isMatched?" matched":"");
+        return ce("div",{key:c.id,className:cls,onClick:function(){handleClick(idx);}},
+          ce("div",{className:"mem-inner"},
+            ce("div",{className:"mem-face mem-back"},
+              ce("span",null,"\u{1f0cf}")),
+            ce("div",{className:"mem-face mem-front "+(c.type==="bg"?"mem-front-bg":"mem-front-nl")},
+              c.em&&ce("div",{className:"mem-em"},c.em),
+              ce("div",{className:"mem-word"},c.text),
+              c.hint&&ce("div",{className:"mem-hint"},c.hint),
+              ce("div",{style:{fontSize:9,color:c.type==="bg"?"#14b8a6":"#8b5cf6",fontWeight:600,marginTop:3}},c.type==="bg"?"BG":"NL"))));
+      })));
 }
 
 // === BADGES ===
@@ -1299,7 +1794,9 @@ function BadgScr({st}){
 // === APP ===
 function App(){
   const[scr,sScr]=uS("home");
-  const[st,sS]=uS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0});
+  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0};};
+  const[st,sS]=uS(loadSt);
+  uE(()=>{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}},[st]);
   const go=(s)=>sScr(s);
 
   // Find module
@@ -1314,6 +1811,7 @@ function App(){
     mod&&mod.type!=="alpha"&&ce(ModScreen,{mod,go,st,sS}),
     agIdx!==null&&ce(AlphaGrp,{gi:agIdx,go,st,sS}),
     scr==="quiz"&&ce(Quiz,{go,st,sS}),
+    scr==="memory"&&ce(Memory,{go,st,sS}),
     scr==="badges"&&ce(BadgScr,{st}));
 }
 
