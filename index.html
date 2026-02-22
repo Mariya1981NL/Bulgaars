@@ -164,6 +164,62 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .mod-prog-bar{flex:1;height:4px;background:#f1f5f9;border-radius:99px;overflow:hidden}
 .mod-prog-fill{height:100%;border-radius:99px;transition:width .5s}
 .mod-prog-txt{font-size:10px;color:#94a3b8;white-space:nowrap}
+
+/* Woordzoeker */
+.ws-grid{display:grid;gap:2px;margin:12px auto;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.ws-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;border-radius:6px;background:#fff;border:1px solid #e2e8f0;cursor:pointer;transition:all .15s;color:#1e293b}
+.ws-cell:hover{background:#f5f3ff;border-color:#a78bfa}
+.ws-cell.ws-sel{background:#ddd6fe;border-color:#8b5cf6;color:#6d28d9}
+.ws-cell.ws-found{background:#d1fae5;border-color:#34d399;color:#065f46}
+.ws-cell.ws-hint{background:#fef3c7;border-color:#fbbf24}
+.ws-words{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.ws-word{padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid #e2e8f0;background:#fff;color:#1e293b;transition:all .2s}
+.ws-word.ws-word-found{background:#d1fae5;border-color:#34d399;color:#065f46;text-decoration:line-through}
+
+/* Zinnen bouwen */
+.sb-sentence{display:flex;flex-wrap:wrap;gap:8px;min-height:56px;padding:12px;border-radius:14px;border:2px dashed #e2e8f0;background:#f8fafc;justify-content:center;align-items:center;margin:12px 0}
+.sb-sentence.sb-correct{border-color:#34d399;background:#ecfdf5}
+.sb-sentence.sb-wrong{border-color:#f87171;background:#fef2f2;animation:sb-shake .4s}
+@keyframes sb-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.sb-word{padding:8px 14px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;border:2px solid #e2e8f0;background:#fff;color:#1e293b}
+.sb-word:hover{border-color:#a78bfa;background:#f5f3ff}
+.sb-word.sb-placed{opacity:.3;cursor:default;pointer-events:none}
+.sb-word.sb-in-slot{background:#ede9fe;border-color:#a78bfa;color:#6d28d9}
+.sb-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:12px}
+.sb-trans{text-align:center;font-size:14px;color:#64748b;font-style:italic;padding:8px;background:#f8fafc;border-radius:10px}
+
+/* Dagelijkse Uitdaging */
+.dc-card{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:2px solid #fbbf24;border-radius:16px;padding:20px;text-align:center}
+.dc-word{font-size:28px;font-weight:800;color:#92400e;margin:8px 0}
+.dc-pron{font-size:13px;color:#b45309;font-style:italic}
+.dc-nl{font-size:16px;color:#78716c;margin-top:4px}
+.dc-dots{display:flex;justify-content:center;gap:8px;margin:12px 0}
+.dc-dot{width:12px;height:12px;border-radius:50%;transition:all .3s}
+.dc-streak{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:8px 16px;border-radius:99px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+
+/* Verhaaltjes */
+.story-card{background:#fff;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden}
+.story-header{padding:16px;background:linear-gradient(135deg,#f0fdfa,#ecfdf5);border-bottom:1px solid #ccfbf1}
+.story-title{font-size:16px;font-weight:700;color:#134e4a}
+.story-level{font-size:11px;color:#0d9488;margin-top:2px}
+.story-body{padding:16px}
+.story-line{padding:8px 0;border-bottom:1px solid #f1f5f9}
+.story-line:last-child{border-bottom:none}
+.story-bg{font-size:15px;font-weight:600;color:#1e293b;cursor:pointer}
+.story-bg:hover{color:#0d9488}
+.story-nl{font-size:13px;color:#94a3b8;margin-top:2px;font-style:italic}
+
+/* Cultuur */
+.culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.culture-card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.culture-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);border-color:#a78bfa}
+.culture-em{font-size:32px;margin-bottom:8px}
+.culture-t{font-size:13px;font-weight:600;color:#1e293b}
+.culture-d{font-size:11px;color:#64748b;margin-top:2px}
+.song-line{padding:6px 0;display:flex;gap:8px;border-bottom:1px solid #f1f5f9}
+.song-line:last-child{border-bottom:none}
+.song-bg{font-size:14px;font-weight:600;color:#1e293b;flex:1}
+.song-nl{font-size:12px;color:#64748b;flex:1}
 </style>
 </head>
 <body>
@@ -1195,7 +1251,13 @@ const BADGES=[
 {id:"all",nm:"Oma's Favoriet",ic:"\u{1f475}\u2764\ufe0f",ds:"Alle modules afgerond!",rq:s=>s.mc>=19},
 {id:"m1",nm:"Memory Match",ic:"\u{1f0cf}",ds:"1 memory game gewonnen",rq:s=>(s.mc||0)>=1},
 {id:"m5",nm:"Memory Meester",ic:"\u{1f9e0}",ds:"5 memory games gewonnen",rq:s=>(s.mc||0)>=5},
-{id:"h1",nm:"Galgje Held",ic:"\u{1f620}",ds:"Eerste galgje gewonnen",rq:s=>(s.hw||0)>=1}];
+{id:"h1",nm:"Galgje Held",ic:"\u{1f620}",ds:"Eerste galgje gewonnen",rq:s=>(s.hw||0)>=1},
+{id:"ws1",nm:"Woordzoeker",ic:"\u{1f50e}",ds:"Eerste woordzoeker gewonnen",rq:s=>(s.wsg||0)>=1},
+{id:"ws5",nm:"Zoek Meester",ic:"\u{1f9d0}",ds:"5 woordzoekers gewonnen",rq:s=>(s.wsg||0)>=5},
+{id:"sb1",nm:"Zinnen Bouwer",ic:"\u{1f3d7}\ufe0f",ds:"Eerste zin gebouwd",rq:s=>(s.sbg||0)>=1},
+{id:"sb10",nm:"Zinnen Meester",ic:"\u{1f4ac}",ds:"10 zinnen gebouwd",rq:s=>(s.sbg||0)>=10},
+{id:"dc7",nm:"Week Streak",ic:"\u{1f525}",ds:"7 dagen dagelijkse uitdaging",rq:s=>(s.dw||0)>=7},
+{id:"dc30",nm:"Maand Streak",ic:"\u{1f4aa}",ds:"30 dagen dagelijkse uitdaging",rq:s=>(s.dw||0)>=30}];
 
 function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
 
@@ -1310,22 +1372,46 @@ function Home({go,st}){
           ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
             (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    // Daily challenge banner
+    ce("button",{onClick:()=>go("daily"),style:{width:"100%",background:"linear-gradient(135deg,#fef3c7,#fffbeb)",border:"2px solid #fbbf24",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4}},
+      ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
+        ce("span",{style:{fontSize:24}},"\u2b50"),
+        ce("div",null,
+          ce("div",{style:{fontWeight:700,fontSize:14,color:"#92400e"}},"Dagelijkse Uitdaging"),
+          ce("div",{style:{fontSize:11,color:"#b45309"}},"5 nieuwe woorden elke dag!")),
+        ce("span",{style:{fontSize:11,background:"#f59e0b",color:"#fff",padding:"2px 8px",borderRadius:99,fontWeight:700}},(st.dw||0)+" dagen"))
+    ),
     // Quick links
-    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:8}},
-      ce("button",{className:"card",onClick:()=>go("quiz"),style:{textAlign:"center",padding:14}},
-        ce("div",{style:{fontSize:28}},"\u{1f3af}"),
-        ce("div",{className:"card-t",style:{marginTop:4}},"Quiz"),
-        ce("div",{className:"card-d"},"Test alles!")),
-      ce("button",{className:"card",onClick:()=>go("memory"),style:{textAlign:"center",padding:14}},
-        ce("div",{style:{fontSize:28}},"\u{1f0cf}"),
-        ce("div",{className:"card-t",style:{marginTop:4}},"Memory"),
-        ce("div",{className:"card-d"},"Match de paren!")),
-      ce("button",{className:"card",onClick:()=>go("badges"),style:{textAlign:"center",padding:14}},
-        ce("div",{style:{fontSize:28}},"\u{1f3c6}"),
-        ce("div",{className:"card-t",style:{marginTop:4}},"Badges"),
-        ce("div",{className:"card-d"},eb+"/"+BADGES.length+" verdiend"))),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginTop:8}},
+      ce("button",{className:"card",onClick:()=>go("quiz"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f3af}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Quiz")),
+      ce("button",{className:"card",onClick:()=>go("memory"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f0cf}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Memory")),
+      ce("button",{className:"card",onClick:()=>go("hangman"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f620}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Galgje")),
+      ce("button",{className:"card",onClick:()=>go("wordsearch"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f50e}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Woordzoeker")),
+      ce("button",{className:"card",onClick:()=>go("sentences"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f3d7}\ufe0f"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Zinnen")),
+      ce("button",{className:"card",onClick:()=>go("stories"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f4d6}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Verhalen")),
+      ce("button",{className:"card",onClick:()=>go("culture"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f30d}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Cultuur")),
+      ce("button",{className:"card",onClick:()=>go("search"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f50d}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Zoeken")),
+      ce("button",{className:"card",onClick:()=>go("badges"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f3c6}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},eb+"/"+BADGES.length))),
     ce("div",{style:{textAlign:"center",marginTop:12}},
-      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
+      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
       ce("span",null,"\u2728"),
       ce("div",null,
@@ -1951,6 +2037,547 @@ function Memory({go,st,sS}){
       })));
 }
 
+
+// === WOORDZOEKER ===
+function WordSearch({go,st,sS}){
+  var aw=allWords(MODS);
+  var[grid,sGrid]=uS([]);
+  var[words,sWords]=uS([]);
+  var[found,sFound]=uS([]);
+  var[sel,sSel]=uS([]);
+  var[done,sDone]=uS(false);
+  var[diff,sDiff]=uS(null);
+  var[hint,sHint]=uS(null);
+
+  var DIRS=[[0,1],[1,0],[1,1],[0,-1],[-1,0],[-1,-1],[1,-1],[-1,1]];
+  var CYR="\u0410\u0411\u0412\u0413\u0414\u0415\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042e\u042f";
+
+  var startGame=function(d){
+    sDiff(d);sFound([]);sSel([]);sDone(false);sHint(null);
+    var sz=d==="easy"?8:d==="medium"?10:12;
+    var cnt=d==="easy"?5:d==="medium"?7:10;
+    var maxLen=d==="easy"?5:d==="medium"?7:99;
+    var pool=sh(aw.filter(function(w){return w.b.length<=maxLen&&w.b.indexOf(" ")<0;}));
+    var chosen=pool.slice(0,cnt);
+    var g=[];for(var r=0;r<sz;r++){g[r]=[];for(var c=0;c<sz;c++)g[r][c]="";}
+    var placed=[];
+    for(var wi=0;wi<chosen.length;wi++){
+      var w=chosen[wi].b.toUpperCase();var ok=false;
+      for(var att=0;att<100&&!ok;att++){
+        var dir=DIRS[Math.floor(Math.random()*DIRS.length)];
+        var sr=Math.floor(Math.random()*sz);var sc=Math.floor(Math.random()*sz);
+        var er=sr+dir[0]*(w.length-1);var ec=sc+dir[1]*(w.length-1);
+        if(er<0||er>=sz||ec<0||ec>=sz)continue;
+        var fits=true;var cells=[];
+        for(var i=0;i<w.length;i++){
+          var cr=sr+dir[0]*i;var cc=sc+dir[1]*i;
+          if(g[cr][cc]!==""&&g[cr][cc]!==w[i]){fits=false;break;}
+          cells.push([cr,cc]);
+        }
+        if(fits){
+          for(var i=0;i<w.length;i++)g[cells[i][0]][cells[i][1]]=w[i];
+          placed.push({word:w,cells:cells,bg:chosen[wi].b,nl:chosen[wi].n,em:chosen[wi].m});
+          ok=true;
+        }
+      }
+    }
+    for(var r=0;r<sz;r++)for(var c=0;c<sz;c++)if(g[r][c]==="")g[r][c]=CYR[Math.floor(Math.random()*CYR.length)];
+    sGrid(g);sWords(placed);
+  };
+
+  var isInFound=function(r,c){
+    for(var i=0;i<found.length;i++){
+      var cells=found[i].cells;
+      for(var j=0;j<cells.length;j++)if(cells[j][0]===r&&cells[j][1]===c)return true;
+    }return false;
+  };
+  var isSelected=function(r,c){
+    for(var i=0;i<sel.length;i++)if(sel[i][0]===r&&sel[i][1]===c)return true;return false;
+  };
+  var isHinted=function(r,c){
+    if(!hint)return false;
+    for(var i=0;i<hint.cells.length;i++)if(hint.cells[i][0]===r&&hint.cells[i][1]===c)return true;return false;
+  };
+
+  var handleCell=function(r,c){
+    if(done)return;
+    var ns=sel.concat([[r,c]]);sSel(ns);
+    var selStr="";for(var i=0;i<ns.length;i++)selStr+=grid[ns[i][0]][ns[i][1]];
+    for(var i=0;i<words.length;i++){
+      if(found.indexOf(words[i])>=0)continue;
+      if(words[i].word===selStr){
+        var nf=found.concat([words[i]]);sFound(nf);sSel([]);sHint(null);
+        if(nf.length===words.length){
+          sDone(true);
+          sS(function(s){return Object.assign({},s,{xp:s.xp+30,wsg:(s.wsg||0)+1});});
+        }
+        return;
+      }
+    }
+    if(ns.length>=Math.max.apply(null,words.map(function(w){return w.word.length;}))){sSel([]);}
+  };
+
+  var giveHint=function(){
+    var unfound=words.filter(function(w){return found.indexOf(w)<0;});
+    if(unfound.length>0)sHint(unfound[Math.floor(Math.random()*unfound.length)]);
+  };
+
+  if(!diff){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:48}},"\u{1f50e}"),
+        ce("h2",{className:"h1"},"Woordzoeker"),
+        ce("p",{className:"sub"},"Vind de Bulgaarse woorden!")),
+      ce("div",{className:"sy3"},
+        ce("button",{className:"card",onClick:function(){startGame("easy");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f331}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Makkelijk"),ce("div",{className:"card-d"},"8\u00d78 grid, 5 korte woorden")))),
+        ce("button",{className:"card",onClick:function(){startGame("medium");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f33f}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Gemiddeld"),ce("div",{className:"card-d"},"10\u00d710 grid, 7 woorden")))),
+        ce("button",{className:"card",onClick:function(){startGame("hard");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f525}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Moeilijk"),ce("div",{className:"card-d"},"12\u00d712 grid, 10 woorden"))))
+      ),
+      ce("button",{className:"btn btn-g",style:{marginTop:12},onClick:function(){go("home");}},"\u2190 Home"));
+  }
+
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:56}},"\u{1f389}"),
+      ce("h2",{className:"h1"},"Alle woorden gevonden!"),
+      ce("div",{className:"sy3",style:{marginTop:8}},
+        words.map(function(w,i){return ce("div",{key:i,style:{fontSize:13}},ce("span",{style:{fontWeight:700}},w.bg)," = ",w.nl," ",w.em);})),
+      ce("p",{style:{color:"#64748b",marginTop:8,fontSize:13}},"+30 XP verdiend!"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:12}},
+        ce("button",{className:"btn btn-v",onClick:function(){sDiff(null);}},"\u{1f3af} Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));
+  }
+
+  var sz=grid.length;
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){sDiff(null);}},"\u2190 Terug"),
+      ce("div",{style:{display:"flex",gap:8,alignItems:"center"}},
+        ce("span",{style:{fontSize:13,color:"#64748b"}},found.length+"/"+words.length),
+        !done&&ce("button",{className:"btn",style:{fontSize:12,background:"#fef3c7",color:"#92400e",padding:"4px 10px"},onClick:giveHint},"\u{1f4a1} Hint"),
+        ce("button",{className:"btn",style:{fontSize:12,background:"#fef2f2",color:"#dc2626",padding:"4px 10px"},onClick:function(){sSel([]);}},"\u2715 Reset"))),
+    ce("div",{className:"ws-grid",style:{gridTemplateColumns:"repeat("+sz+",1fr)",maxWidth:sz*36,margin:"12px auto"}},
+      grid.map(function(row,r){return row.map(function(cell,c){
+        var cls="ws-cell";
+        if(isInFound(r,c))cls+=" ws-found";
+        else if(isSelected(r,c))cls+=" ws-sel";
+        else if(isHinted(r,c))cls+=" ws-hint";
+        return ce("div",{key:r+"-"+c,className:cls,onClick:function(){handleCell(r,c);},style:{fontSize:sz>10?13:16}},cell);
+      });})),
+    ce("div",{className:"ws-words"},
+      words.map(function(w,i){
+        var isFound=found.indexOf(w)>=0;
+        return ce("span",{key:i,className:"ws-word"+(isFound?" ws-word-found":"")},w.em+" "+w.bg);
+      })));
+}
+
+// === ZINNEN BOUWEN ===
+function SentenceBuilder({go,st,sS}){
+  // Collect sentences from conversation data
+  var sentences=[];
+  for(var i=0;i<MODS.length;i++){
+    var m=MODS[i];
+    if(m.conv){
+      for(var j=0;j<m.conv.length;j++){
+        var c=m.conv[j];
+        if(c.b&&c.b.split(" ").length>=3&&c.b.split(" ").length<=8){
+          sentences.push({bg:c.b,nl:c.n,mod:m.t});
+        }
+      }
+    }
+  }
+  var[current,sCurrent]=uS(null);
+  var[pool,sPool]=uS([]);
+  var[placed,sPlaced]=uS([]);
+  var[score,sScore]=uS(0);
+  var[total,sTotal]=uS(0);
+  var[feedback,sFeedback]=uS(null);
+  var[showNl,sShowNl]=uS(false);
+  var[done,sDone]=uS(false);
+  var rounds=5;
+
+  var nextSentence=function(){
+    if(total>=rounds){
+      sDone(true);
+      var xpEarned=score*5;
+      sS(function(s){return Object.assign({},s,{xp:s.xp+xpEarned,sbg:(s.sbg||0)+score});});
+      return;
+    }
+    var s=sh(sentences)[0];
+    sCurrent(s);
+    var words=s.bg.split(" ");
+    sPool(sh(words.map(function(w,i){return{id:i,text:w};})));
+    sPlaced([]);sFeedback(null);sShowNl(false);
+  };
+
+  uE(function(){if(sentences.length>0&&!current&&!done)nextSentence();},[]);
+
+  var placeWord=function(w){
+    if(feedback)return;
+    sPlaced(function(p){return p.concat([w]);});
+  };
+  var removeWord=function(idx){
+    if(feedback)return;
+    sPlaced(function(p){return p.filter(function(_,i){return i!==idx;});});
+  };
+  var checkAnswer=function(){
+    var answer=placed.map(function(w){return w.text;}).join(" ");
+    if(answer===current.bg){
+      sFeedback("correct");
+      sScore(function(s){return s+1;});
+      sTotal(function(t){return t+1;});
+      setTimeout(function(){nextSentence();},1500);
+    } else {
+      sFeedback("wrong");
+      setTimeout(function(){sFeedback(null);sPlaced([]);},1200);
+    }
+  };
+
+  if(sentences.length===0){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"\u{1f614}"),
+      ce("h2",{className:"h1"},"Geen zinnen beschikbaar"),
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home"));
+  }
+
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:56}},score>=4?"\u{1f31f}":score>=2?"\u{1f44f}":"\u{1f4aa}"),
+      ce("h2",{className:"h1"},score>=4?"Fantastisch!":score>=2?"Goed gedaan!":"Blijf oefenen!"),
+      ce("div",{style:{fontSize:28,fontWeight:700,color:"#6d28d9",margin:"8px 0"}},score+"/"+rounds+" goed"),
+      ce("p",{style:{color:"#64748b",marginTop:4,fontSize:13}},"+"+(score*5)+" XP verdiend!"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:16}},
+        ce("button",{className:"btn btn-v",onClick:function(){sScore(0);sTotal(0);sDone(false);sCurrent(null);setTimeout(nextSentence,50);}},"\u{1f504} Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));
+  }
+
+  if(!current)return null;
+
+  var placedIds=placed.map(function(w){return w.id;});
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home"),
+      ce("span",{style:{fontSize:13,color:"#64748b"}},"Zin "+(total+1)+"/"+rounds+" | Score: "+score)),
+    ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:36}},"\u{1f3d7}\ufe0f"),
+      ce("h2",{className:"h2"},"Bouw de zin!"),
+      ce("p",{className:"sub"},"Zet de woorden in de juiste volgorde")),
+    // Translation hint
+    ce("div",{className:"sb-trans"},
+      showNl?current.nl:ce("button",{style:{background:"none",border:"none",color:"#a78bfa",cursor:"pointer",fontSize:13},onClick:function(){sShowNl(true);}}},"\u{1f4a1} Toon vertaling")),
+    // Placed words
+    ce("div",{className:"sb-sentence"+(feedback==="correct"?" sb-correct":"")+(feedback==="wrong"?" sb-wrong":"")},
+      placed.length===0?ce("span",{style:{color:"#94a3b8",fontSize:13}},"Tik op woorden om ze hier te plaatsen"):
+      placed.map(function(w,i){return ce("button",{key:w.id+"-"+i,className:"sb-word sb-in-slot",onClick:function(){removeWord(i);}},w.text);})),
+    // Word pool
+    ce("div",{className:"sb-pool"},
+      pool.map(function(w){
+        var used=placedIds.indexOf(w.id)>=0;
+        return ce("button",{key:w.id,className:"sb-word"+(used?" sb-placed":""),onClick:function(){if(!used)placeWord(w);}},w.text);
+      })),
+    // Check button
+    placed.length===pool.length&&!feedback&&ce("div",{className:"ctr"},
+      ce("button",{className:"btn btn-t",onClick:checkAnswer},"\u2705 Controleer")),
+    feedback==="correct"&&ce("div",{className:"ctr",style:{color:"#059669",fontWeight:700,fontSize:16}},"\u2705 Correct!"),
+    feedback==="wrong"&&ce("div",{className:"ctr",style:{color:"#dc2626",fontWeight:700,fontSize:14}},"\u274c Probeer opnieuw!"));
+}
+
+// === DAGELIJKSE UITDAGING ===
+function DailyChallenge({go,st,sS}){
+  var aw=allWords(MODS);
+  var today=new Date().toISOString().slice(0,10);
+  // Seed random with date for consistent daily words
+  var seed=0;for(var i=0;i<today.length;i++)seed=seed*31+today.charCodeAt(i);
+  var pseudoRandom=function(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
+  var dailyWords=[];
+  var indices=[];
+  for(var i=0;i<5;i++){
+    var idx;
+    do{idx=Math.floor(pseudoRandom()*aw.length);}while(indices.indexOf(idx)>=0);
+    indices.push(idx);
+    dailyWords.push(aw[idx]);
+  }
+
+  var[idx,sIdx]=uS(0);
+  var[flipped,sFlipped]=uS(false);
+  var[completed,sCompleted]=uS(st.dc===today);
+  var[revealed,sRevealed]=uS([]);
+
+  var revealWord=function(){
+    sFlipped(true);
+    if(revealed.indexOf(idx)<0){
+      var nr=revealed.concat([idx]);
+      sRevealed(nr);
+      if(nr.length>=5&&!completed){
+        sCompleted(true);
+        sS(function(s){return Object.assign({},s,{xp:s.xp+15,dc:today,dw:(s.dw||0)+1});});
+      }
+    }
+  };
+
+  var nextWord=function(){
+    if(idx<4){sIdx(idx+1);sFlipped(false);}
+  };
+  var prevWord=function(){
+    if(idx>0){sIdx(idx-1);sFlipped(false);}
+  };
+
+  var w=dailyWords[idx];
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home"),
+      ce("div",{className:"dc-streak"},"\u{1f525} "+(st.dw||0)+" dagen")),
+    ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:36}},"\u2b50"),
+      ce("h2",{className:"h1"},"Dagelijkse Uitdaging"),
+      ce("p",{className:"sub"},today)),
+    completed&&ce("div",{style:{background:"#ecfdf5",border:"1px solid #a7f3d0",borderRadius:12,padding:12,textAlign:"center",color:"#047857",fontWeight:600,fontSize:14}},"\u2705 Vandaag voltooid! +15 XP"),
+    ce("div",{className:"dc-dots"},
+      dailyWords.map(function(_,i){
+        return ce("div",{key:i,className:"dc-dot",style:{background:revealed.indexOf(i)>=0?"#10b981":i===idx?"#a78bfa":"#e2e8f0"},onClick:function(){sIdx(i);sFlipped(false);}});
+      })),
+    ce("div",{className:"dc-card",onClick:function(){if(!flipped)revealWord();else nextWord();}},
+      ce("div",{style:{fontSize:13,color:"#92400e"}},"Woord "+(idx+1)+" van 5"),
+      ce("div",{className:"dc-word"},flipped?w.b:"???"),
+      flipped&&w.p&&ce("div",{className:"dc-pron"},"["+w.p+"]"),
+      flipped&&ce("div",{className:"dc-nl"},w.n),
+      flipped&&w.m&&ce("div",{style:{fontSize:28,marginTop:8}},w.m),
+      !flipped&&ce("div",{style:{fontSize:13,color:"#b45309",marginTop:8}},"Tik om te onthullen"),
+      flipped&&ce("div",{style:{marginTop:8}},ce(SpeakBtn,{text:w.b,size:"lg"}))),
+    ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
+      idx>0&&ce("button",{className:"btn btn-g",onClick:prevWord},"\u2190 Vorige"),
+      idx<4&&ce("button",{className:"btn btn-t",onClick:nextWord},"Volgende \u2192")));
+}
+
+// === KORTE VERHAALTJES ===
+var STORIES=[
+  {id:"s1",title:"\u041a\u043e\u0442\u043a\u0430\u0442\u0430 \u041c\u0438\u043c\u0438",titleNl:"Poes Mimi",em:"\u{1f431}",level:"Beginner",
+   lines:[
+    {bg:"\u041c\u0438\u043c\u0438 \u0435 \u043a\u043e\u0442\u043a\u0430.",nl:"Mimi is een poes."},
+    {bg:"\u0422\u044f \u0435 \u043c\u0430\u043b\u043a\u0430 \u0438 \u0431\u044f\u043b\u0430.",nl:"Ze is klein en wit."},
+    {bg:"\u041c\u0438\u043c\u0438 \u043e\u0431\u0438\u0447\u0430 \u043c\u043b\u044f\u043a\u043e.",nl:"Mimi houdt van melk."},
+    {bg:"\u0422\u044f \u0441\u043f\u0438 \u043d\u0430 \u0434\u0438\u0432\u0430\u043d\u0430.",nl:"Ze slaapt op de bank."},
+    {bg:"\u041c\u0438\u043c\u0438 \u0435 \u0449\u0430\u0441\u0442\u043b\u0438\u0432\u0430.",nl:"Mimi is gelukkig."}
+  ]},
+  {id:"s2",title:"\u0412 \u043f\u0430\u0440\u043a\u0430",titleNl:"In het park",em:"\u{1f333}",level:"Beginner",
+   lines:[
+    {bg:"\u0414\u043d\u0435\u0441 \u0435 \u0441\u043b\u044a\u043d\u0447\u0435\u0432 \u0434\u0435\u043d.",nl:"Vandaag is het een zonnige dag."},
+    {bg:"\u0414\u0435\u0446\u0430\u0442\u0430 \u0438\u0433\u0440\u0430\u044f\u0442 \u0432 \u043f\u0430\u0440\u043a\u0430.",nl:"De kinderen spelen in het park."},
+    {bg:"\u0415\u0434\u043d\u043e \u043c\u043e\u043c\u0447\u0435 \u0438\u043c\u0430 \u0442\u043e\u043f\u043a\u0430.",nl:"Een jongen heeft een bal."},
+    {bg:"\u0415\u0434\u043d\u043e \u043c\u043e\u043c\u0438\u0447\u0435 \u044f\u0434\u0435 \u0441\u043b\u0430\u0434\u043e\u043b\u0435\u0434.",nl:"Een meisje eet ijs."},
+    {bg:"\u0412\u0441\u0438\u0447\u043a\u0438 \u0441\u0430 \u0449\u0430\u0441\u0442\u043b\u0438\u0432\u0438!",nl:"Iedereen is gelukkig!"}
+  ]},
+  {id:"s3",title:"\u041f\u0440\u0438 \u0431\u0430\u0431\u0430",titleNl:"Bij oma",em:"\u{1f475}",level:"Beginner",
+   lines:[
+    {bg:"\u0410\u0437 \u043e\u0442\u0438\u0432\u0430\u043c \u043f\u0440\u0438 \u0431\u0430\u0431\u0430.",nl:"Ik ga naar oma."},
+    {bg:"\u0411\u0430\u0431\u0430 \u0436\u0438\u0432\u0435\u0435 \u0432 \u0421\u043e\u0444\u0438\u044f.",nl:"Oma woont in Sofia."},
+    {bg:"\u0422\u044f \u043f\u0440\u0430\u0432\u0438 \u0431\u0430\u043d\u0438\u0446\u0430.",nl:"Ze maakt banitsa."},
+    {bg:"\u0411\u0430\u043d\u0438\u0446\u0430\u0442\u0430 \u0435 \u043c\u043d\u043e\u0433\u043e \u0432\u043a\u0443\u0441\u043d\u0430!",nl:"De banitsa is heel lekker!"},
+    {bg:"\u0410\u0437 \u043e\u0431\u0438\u0447\u0430\u043c \u0431\u0430\u0431\u0430.",nl:"Ik hou van oma."}
+  ]},
+  {id:"s4",title:"\u041d\u0430 \u043f\u0430\u0437\u0430\u0440\u0430",titleNl:"Op de markt",em:"\u{1f34e}",level:"Gemiddeld",
+   lines:[
+    {bg:"\u041c\u0430\u043c\u0430 \u0438 \u0430\u0437 \u043e\u0442\u0438\u0432\u0430\u043c\u0435 \u043d\u0430 \u043f\u0430\u0437\u0430\u0440\u0430.",nl:"Mama en ik gaan naar de markt."},
+    {bg:"\u041d\u0430 \u043f\u0430\u0437\u0430\u0440\u0430 \u0438\u043c\u0430 \u043c\u043d\u043e\u0433\u043e \u043f\u043b\u043e\u0434\u043e\u0432\u0435.",nl:"Op de markt zijn veel vruchten."},
+    {bg:"\u041c\u0430\u043c\u0430 \u043a\u0443\u043f\u0443\u0432\u0430 \u044f\u0431\u044a\u043b\u043a\u0438 \u0438 \u043a\u0440\u0443\u0448\u0438.",nl:"Mama koopt appels en peren."},
+    {bg:"\u0410\u0437 \u0438\u0441\u043a\u0430\u043c \u0434\u0438\u043d\u044f.",nl:"Ik wil een watermeloen."},
+    {bg:"\u041c\u0430\u043c\u0430 \u043a\u0430\u0437\u0432\u0430: \u0414\u043e\u0431\u0440\u0435!",nl:"Mama zegt: Oké!"},
+    {bg:"\u041d\u0438\u0435 \u0441\u043c\u0435 \u0449\u0430\u0441\u0442\u043b\u0438\u0432\u0438.",nl:"Wij zijn gelukkig."}
+  ]},
+  {id:"s5",title:"\u0423\u0447\u0438\u043b\u0438\u0449\u0435",titleNl:"School",em:"\u{1f3eb}",level:"Gemiddeld",
+   lines:[
+    {bg:"\u0410\u0437 \u0445\u043e\u0434\u044f \u043d\u0430 \u0443\u0447\u0438\u043b\u0438\u0449\u0435.",nl:"Ik ga naar school."},
+    {bg:"\u041c\u043e\u044f\u0442\u0430 \u0443\u0447\u0438\u0442\u0435\u043b\u043a\u0430 \u0441\u0435 \u043a\u0430\u0437\u0432\u0430 \u0418\u0432\u0430\u043d\u043a\u0430.",nl:"Mijn lerares heet Ivanka."},
+    {bg:"\u0414\u043d\u0435\u0441 \u0438\u043c\u0430\u043c\u0435 \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0430.",nl:"Vandaag hebben we wiskunde."},
+    {bg:"\u0410\u0437 \u043e\u0431\u0438\u0447\u0430\u043c \u0434\u0430 \u0447\u0435\u0442\u0430 \u043a\u043d\u0438\u0433\u0438.",nl:"Ik hou ervan om boeken te lezen."},
+    {bg:"\u0421\u043b\u0435\u0434 \u0443\u0447\u0438\u043b\u0438\u0449\u0435 \u0438\u0433\u0440\u0430\u044f \u0441 \u043f\u0440\u0438\u044f\u0442\u0435\u043b\u0438.",nl:"Na school speel ik met vrienden."}
+  ]}
+];
+
+function Stories({go,st}){
+  var[sel,sSel]=uS(null);
+  var[showNl,sShowNl]=uS({});
+
+  var toggleLine=function(i){
+    sShowNl(function(p){var n=Object.assign({},p);n[i]=!n[i];return n;});
+  };
+
+  if(sel){
+    var s=STORIES[sel];
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"nr"},
+        ce("button",{className:"btn btn-g",onClick:function(){sSel(null);sShowNl({});}},"\u2190 Terug")),
+      ce("div",{className:"story-card"},
+        ce("div",{className:"story-header"},
+          ce("div",{style:{fontSize:32,marginBottom:4}},s.em),
+          ce("div",{className:"story-title"},s.title),
+          ce("div",{style:{fontSize:13,color:"#64748b"}},s.titleNl),
+          ce("div",{className:"story-level"},s.level)),
+        ce("div",{className:"story-body"},
+          s.lines.map(function(l,i){
+            return ce("div",{key:i,className:"story-line"},
+              ce("div",{className:"story-bg",onClick:function(){speak(l.bg);toggleLine(i);}},l.bg),
+              showNl[i]&&ce("div",{className:"story-nl"},l.nl));
+          }))),
+      ce("div",{className:"ctr",style:{marginTop:12}},
+        ce("p",{style:{fontSize:12,color:"#94a3b8"}},"Tik op een zin om de vertaling te zien en de uitspraak te horen")));
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home")),
+    ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:36}},"\u{1f4d6}"),
+      ce("h2",{className:"h1"},"Verhaaltjes"),
+      ce("p",{className:"sub"},"Lees korte verhalen in het Bulgaars")),
+    ce("div",{className:"sy3"},
+      STORIES.map(function(s,i){
+        return ce("button",{key:s.id,className:"card",onClick:function(){sSel(i);},style:{width:"100%",textAlign:"left"}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},s.em),
+            ce("div",{className:"card-b"},
+              ce("div",{className:"card-t"},s.title),
+              ce("div",{className:"card-d"},s.titleNl+" \u2014 "+s.level)),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a")));
+      })));
+}
+
+// === CULTUUR & KINDERLIEDJES ===
+var CULTURE_PAGES=[
+  {id:"eten",title:"Bulgaars Eten",em:"\u{1f372}",items:[
+    {t:"\u0411\u0430\u043d\u0438\u0446\u0430 (Banitsa)",d:"Filodeeg met kaas, het nationale ontbijt. Op Nieuwjaarsdag zit er een geluksmuntje in!"},
+    {t:"\u0428\u043e\u043f\u0441\u043a\u0430 \u0441\u0430\u043b\u0430\u0442\u0430 (Shopska salade)",d:"Tomaten, komkommers, paprika en witte kaas. De kleuren van de Bulgaarse vlag!"},
+    {t:"\u041a\u0435\u0431\u0430\u043f\u0447\u0435\u0442\u0430 (Kebapcheta)",d:"Gegrilde gehaktrolletjes, het populairste BBQ-gerecht."},
+    {t:"\u0422\u0430\u0440\u0430\u0442\u043e\u0440 (Tarator)",d:"Koude yoghurtsoep met komkommer, perfect voor de zomer!"},
+    {t:"\u041b\u044e\u0442\u0435\u043d\u0438\u0446\u0430 (Ljutenitsa)",d:"Paprikaspread die iedereen zelf maakt in de herfst."},
+    {t:"\u041a\u0438\u0441\u0435\u043b\u043e \u043c\u043b\u044f\u043a\u043e (Yoghurt)",d:"Bulgaarse yoghurt is wereldberoemd! De bacterie heet Lactobacillus bulgaricus."}
+  ]},
+  {id:"muziek",title:"Bulgaarse Muziek",em:"\u{1f3b5}",items:[
+    {t:"Bulgaarse Volksmuziek",d:"Bekend om complexe ritmes (7/8, 11/8) die je nergens anders vindt. UNESCO erfgoed!"},
+    {t:"De Gaida (Doedelzak)",d:"Het traditionele instrument van de herders in de Rhodopen bergen."},
+    {t:"Le Myst\u00e8re des Voix Bulgares",d:"Het beroemde vrouwenkoor dat Grammy Awards heeft gewonnen."},
+    {t:"Horo",d:"De traditionele kringdans. Iedereen danst samen, hand in hand!"},
+    {t:"Chalga",d:"Moderne Bulgaarse popmuziek. Heel populair bij feestjes!"}
+  ]},
+  {id:"tradities",title:"Tradities",em:"\u{1f3ad}",items:[
+    {t:"Martenitsa (1 maart)",d:"Rode en witte armbandjes die je draagt tot je een ooievaar ziet. Symbool van lente!"},
+    {t:"Kukeri",d:"Mannen in enge maskers met bellen die de winter verjagen. Heel indrukwekkend!"},
+    {t:"Nestinari (Vuurdansers)",d:"Dansen op gloeiende kolen! Een eeuwenoude traditie in Strandja."},
+    {t:"Rozenfestival (Kazanlak)",d:"Bulgarije maakt 85% van de rozeolie in de wereld. Elk jaar een groot festival!"},
+    {t:"Naamdag",d:"In Bulgarije vier je niet alleen je verjaardag maar ook je naamdag!"}
+  ]},
+  {id:"natuur",title:"Natuur",em:"\u{1f3d4}\ufe0f",items:[
+    {t:"De Zwarte Zee",d:"Prachtige stranden aan de oostkust. Populaire vakantiebestemming!"},
+    {t:"Pirin Gebergte",d:"UNESCO erfgoed met eeuwenoude bossen en de oudste boom van Bulgarije (1300 jaar!)."},
+    {t:"De Rhodopen",d:"Mysterieuze bergen vol grotten, legenden en het land van Orpheus."},
+    {t:"Het Rozendal",d:"Tussen twee bergketens, waar miljoenen rozen groeien voor rozeolie."},
+    {t:"De Donau",d:"De noordgrens van Bulgarije, met unieke natuur en pelikanen."}
+  ]}
+];
+
+var SONGS=[
+  {id:"abc",title:"\u0410\u0411\u0412 (\u0410\u0437\u0431\u0443\u043a\u0430)",titleNl:"Het Alfabet Lied",em:"\u{1f3b6}",
+   lines:[
+    {bg:"\u0410, \u0411, \u0412, \u0413, \u0414, \u0415, \u0416",nl:"A, B, V, G, D, E, Zj"},
+    {bg:"\u0417, \u0418, \u0419, \u041a, \u041b, \u041c, \u041d",nl:"Z, I, J, K, L, M, N"},
+    {bg:"\u041e, \u041f, \u0420, \u0421, \u0422, \u0423",nl:"O, P, R, S, T, Oe"},
+    {bg:"\u0424, \u0425, \u0426, \u0427, \u0428, \u0429",nl:"F, Ch, Ts, Tsj, Sj, Sjt"},
+    {bg:"\u042a, \u042c, \u042e, \u042f",nl:"Uh, Zacht, Joe, Ja"},
+    {bg:"\u0422\u043e\u0432\u0430 \u0435 \u0430\u0437\u0431\u0443\u043a\u0430\u0442\u0430!",nl:"Dat is het alfabet!"}
+  ]},
+  {id:"pit",title:"\u041f\u0438\u043b\u0435\u043d\u0446\u0435",titleNl:"Kuikentje",em:"\u{1f425}",
+   lines:[
+    {bg:"\u041f\u0438\u043b\u0435\u043d\u0446\u0435 \u043c\u0430\u043b\u043a\u043e,",nl:"Klein kuikentje,"},
+    {bg:"\u0436\u044a\u043b\u0442\u043e, \u043a\u0440\u044a\u0433\u043b\u043e,",nl:"geel, rond,"},
+    {bg:"\u0442\u0438\u0447\u0430 \u0432 \u0434\u0432\u043e\u0440\u0430,",nl:"rent in de tuin,"},
+    {bg:"\u0442\u044a\u0440\u0441\u0438 \u0437\u044a\u0440\u043d\u043e.",nl:"zoekt een graan."},
+    {bg:"\u041f\u0438\u044e, \u043f\u0438\u044e, \u043f\u0438\u044e!",nl:"Piep, piep, piep!"}
+  ]},
+  {id:"kal",title:"\u041a\u0440\u0430\u0441\u0442\u0430\u0432\u0438\u0447\u043a\u043e",titleNl:"Komkommertje",em:"\u{1f952}",
+   lines:[
+    {bg:"\u041a\u0440\u0430\u0441\u0442\u0430\u0432\u0438\u0447\u043a\u043e \u0437\u0435\u043b\u0435\u043d,",nl:"Groen komkommertje,"},
+    {bg:"\u0432 \u0433\u0440\u0430\u0434\u0438\u043d\u043a\u0430\u0442\u0430 \u0440\u0430\u0441\u0442\u0435,",nl:"groeit in de tuin,"},
+    {bg:"\u0441\u043b\u044a\u043d\u0446\u0435\u0442\u043e \u0433\u043e \u0433\u043b\u0435\u0434\u0430,",nl:"de zon kijkt ernaar,"},
+    {bg:"\u0434\u044a\u0436\u0434\u044a\u0442 \u0433\u043e \u043f\u043e\u043b\u0438\u0432\u0430.",nl:"de regen begiet het."},
+    {bg:"\u0420\u0430\u0441\u0442\u0435 \u0432\u0441\u0435\u043a\u0438 \u0434\u0435\u043d!",nl:"Het groeit elke dag!"}
+  ]}
+];
+
+function CultureHub({go,st}){
+  var[page,sPage]=uS(null);
+  var[song,sSong]=uS(null);
+
+  if(song!==null){
+    var s=SONGS[song];
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"nr"},
+        ce("button",{className:"btn btn-g",onClick:function(){sSong(null);}},"\u2190 Terug")),
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:40}},s.em),
+        ce("h2",{className:"h2"},s.title),
+        ce("p",{className:"sub"},s.titleNl)),
+      ce("div",{className:"card",style:{padding:16}},
+        s.lines.map(function(l,i){
+          return ce("div",{key:i,className:"song-line"},
+            ce("div",{className:"song-bg",style:{cursor:"pointer"},onClick:function(){speak(l.bg);}},l.bg),
+            ce("div",{className:"song-nl"},l.nl));
+        })),
+      ce("div",{className:"ctr",style:{marginTop:8}},
+        ce("p",{style:{fontSize:11,color:"#94a3b8"}},"Tik op een regel om de uitspraak te horen")));
+  }
+
+  if(page!==null){
+    var p=CULTURE_PAGES[page];
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"nr"},
+        ce("button",{className:"btn btn-g",onClick:function(){sPage(null);}},"\u2190 Terug")),
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:40}},p.em),
+        ce("h2",{className:"h2"},p.title)),
+      ce("div",{className:"sy3"},
+        p.items.map(function(item,i){
+          return ce("div",{key:i,className:"card",style:{padding:14}},
+            ce("div",{style:{fontWeight:700,fontSize:14,color:"#1e293b",marginBottom:4}},item.t),
+            ce("div",{style:{fontSize:13,color:"#64748b",lineHeight:1.5}},item.d));
+        })));
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home")),
+    ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:36}},"\u{1f30d}"),
+      ce("h2",{className:"h1"},"Cultuur & Muziek"),
+      ce("p",{className:"sub"},"Ontdek Bulgarije!")),
+    ce("h3",{className:"h3",style:{marginTop:16}},"\u{1f4d6} Ontdek"),
+    ce("div",{className:"culture-grid"},
+      CULTURE_PAGES.map(function(p,i){
+        return ce("button",{key:p.id,className:"culture-card",onClick:function(){sPage(i);}},
+          ce("div",{className:"culture-em"},p.em),
+          ce("div",{className:"culture-t"},p.title));
+      })),
+    ce("h3",{className:"h3",style:{marginTop:20}},"\u{1f3b5} Kinderliedjes"),
+    ce("div",{className:"sy3"},
+      SONGS.map(function(s,i){
+        return ce("button",{key:s.id,className:"card",onClick:function(){sSong(i);},style:{width:"100%",textAlign:"left"}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:24,marginRight:10}},s.em),
+            ce("div",{className:"card-b"},
+              ce("div",{className:"card-t"},s.title),
+              ce("div",{className:"card-d"},s.titleNl)),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a")));
+      })));
+}
+
 // === BADGES ===
 function BadgScr({st}){
   return ce("div",{className:"scr sy"},
@@ -1968,7 +2595,7 @@ function BadgScr({st}){
 // === APP ===
 function App(){
   const[scr,sScr]=uS("home");
-  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0};};
+  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0};};
   const[st,sS]=uS(loadSt);
   uE(()=>{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}},[st]);
   const go=(s)=>sScr(s);
@@ -1988,6 +2615,11 @@ function App(){
     scr==="memory"&&ce(Memory,{go,st,sS}),
     scr==="search"&&ce(SearchScreen,{go,st}),
     scr==="hangman"&&ce(Hangman,{go,st,sS}),
+    scr==="wordsearch"&&ce(WordSearch,{go,st,sS}),
+    scr==="sentences"&&ce(SentenceBuilder,{go,st,sS}),
+    scr==="daily"&&ce(DailyChallenge,{go,st,sS}),
+    scr==="stories"&&ce(Stories,{go,st}),
+    scr==="culture"&&ce(CultureHub,{go,st}),
     scr==="badges"&&ce(BadgScr,{st}));
 }
 
