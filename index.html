@@ -2273,7 +2273,7 @@ function SentenceBuilder({go,st,sS}){
       ce("p",{className:"sub"},"Zet de woorden in de juiste volgorde")),
     // Translation hint
     ce("div",{className:"sb-trans"},
-      showNl?current.nl:ce("button",{style:{background:"none",border:"none",color:"#a78bfa",cursor:"pointer",fontSize:13},onClick:function(){sShowNl(true);}}},"\u{1f4a1} Toon vertaling")),
+      showNl?current.nl:ce("button",{style:{background:"none",border:"none",color:"#a78bfa",cursor:"pointer",fontSize:13},onClick:function(){sShowNl(true);}},"\u{1f4a1} Toon vertaling")),
     // Placed words
     ce("div",{className:"sb-sentence"+(feedback==="correct"?" sb-correct":"")+(feedback==="wrong"?" sb-wrong":"")},
       placed.length===0?ce("span",{style:{color:"#94a3b8",fontSize:13}},"Tik op woorden om ze hier te plaatsen"):
