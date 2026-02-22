@@ -125,6 +125,45 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .mem-stats{display:flex;justify-content:center;gap:16px;font-size:14px;font-weight:500;color:#64748b}
 .mem-stat-val{font-weight:700;color:#1e293b}
 .mem-complete{text-align:center;padding:20px}
+
+/* Search / Woordenboek */
+.search-box{position:relative}
+.search-input{width:100%;padding:12px 16px 12px 40px;border-radius:12px;border:2px solid #e2e8f0;font-size:14px;font-family:inherit;background:#fff;transition:border-color .2s;outline:none}
+.search-input:focus{border-color:#a78bfa}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:16px;pointer-events:none}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;color:#94a3b8;cursor:pointer;padding:4px 8px}
+.search-clear:hover{color:#64748b}
+.search-results{max-height:60vh;overflow-y:auto}
+.search-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px solid #f1f5f9;background:#fff;transition:all .15s}
+.search-item:hover{background:#f8fafc;border-color:#e2e8f0}
+.search-item-em{font-size:22px;flex-shrink:0;width:36px;text-align:center}
+.search-item-main{flex:1;min-width:0}
+.search-item-bg{font-size:15px;font-weight:700;color:#1e293b}
+.search-item-nl{font-size:13px;color:#64748b}
+.search-item-pron{font-size:11px;color:#a78bfa;font-style:italic}
+.search-item-mod{font-size:10px;color:#94a3b8;background:#f1f5f9;padding:2px 8px;border-radius:99px;flex-shrink:0}
+.search-count{font-size:12px;color:#94a3b8;text-align:center;padding:4px}
+
+/* Galgje */
+.hm-word{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.hm-letter{width:32px;height:42px;border-bottom:3px solid #8b5cf6;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#1e293b;transition:all .3s}
+.hm-letter-space{width:16px;border-bottom:none}
+.hm-letter.revealed{animation:hm-pop .3s}
+@keyframes hm-pop{0%{transform:scale(1.3)}100%{transform:scale(1)}}
+.hm-keys{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:380px;margin:0 auto}
+.hm-key{width:34px;height:38px;border-radius:8px;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .15s;border:1px solid #e2e8f0;background:#fff;color:#1e293b}
+.hm-key:hover:not(:disabled){background:#f5f3ff;border-color:#a78bfa}
+.hm-key:disabled{opacity:.3;cursor:not-allowed}
+.hm-key-hit{background:#ecfdf5!important;border-color:#34d399!important;color:#059669!important}
+.hm-key-miss{background:#fef2f2!important;border-color:#fca5a5!important;color:#dc2626!important}
+.hm-fig{text-align:center;font-size:13px;color:#64748b;margin:8px 0}
+.hm-hint-box{background:#fef3c7;border-radius:12px;padding:10px 14px;font-size:13px;color:#92400e;text-align:center}
+
+/* Module progress */
+.mod-prog{display:flex;align-items:center;gap:6px;margin-top:4px}
+.mod-prog-bar{flex:1;height:4px;background:#f1f5f9;border-radius:99px;overflow:hidden}
+.mod-prog-fill{height:100%;border-radius:99px;transition:width .5s}
+.mod-prog-txt{font-size:10px;color:#94a3b8;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -1155,7 +1194,8 @@ const BADGES=[
 {id:"w200",nm:"Woordenwizard",ic:"\u{1f9d9}",ds:"200 woorden geleerd",rq:s=>s.wl>=200},
 {id:"all",nm:"Oma's Favoriet",ic:"\u{1f475}\u2764\ufe0f",ds:"Alle modules afgerond!",rq:s=>s.mc>=19},
 {id:"m1",nm:"Memory Match",ic:"\u{1f0cf}",ds:"1 memory game gewonnen",rq:s=>(s.mc||0)>=1},
-{id:"m5",nm:"Memory Meester",ic:"\u{1f9e0}",ds:"5 memory games gewonnen",rq:s=>(s.mc||0)>=5}];
+{id:"m5",nm:"Memory Meester",ic:"\u{1f9e0}",ds:"5 memory games gewonnen",rq:s=>(s.mc||0)>=5},
+{id:"h1",nm:"Galgje Held",ic:"\u{1f620}",ds:"Eerste galgje gewonnen",rq:s=>(s.hw||0)>=1}];
 
 function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
 
@@ -1205,6 +1245,15 @@ function Nav({scr,go,st}){
       ce("span",{className:"pill pill-str"},"\u2764\ufe0f "+st.sk)));
 }
 
+
+// Module progress helper
+function modProgress(mod,st){
+  if(!mod.ws||!st.wi)return{learned:0,total:0,pct:0};
+  var total=mod.ws.length;
+  var learned=mod.ws.filter(function(w){return st.wi.indexOf(w.b)>=0;}).length;
+  return{learned:learned,total:total,pct:total>0?Math.round(learned/total*100):0};
+}
+
 function Home({go,st}){
   const tl=ALPHA.reduce((s,g)=>s+g.ls.length,0);
   const tw=allWords(MODS).length;
@@ -1218,7 +1267,7 @@ function Home({go,st}){
       ce("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:12}},
         ce("span",{style:{fontSize:13,fontWeight:500,color:"#134e4a"}},"Voortgang"),
         ce("span",{style:{fontSize:12,color:"#0d9488"}},st.xp+" XP")),
-      ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}},
+      ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
         ce("div",{style:{background:"#fff",borderRadius:12,padding:10,textAlign:"center"}},
           ce("div",{style:{fontSize:18,fontWeight:700,color:"#0d9488"}},st.ll+"/"+tl),
           ce("div",{style:{fontSize:10,color:"#64748b"}},"Letters"),
@@ -1240,7 +1289,8 @@ function Home({go,st}){
       ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
         ce("div",{className:"card-r"},
           ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc)),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc),
+            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
     // Phase 2
     ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h ph2"},"Fase 2: Gesprekken (Week 7-16)")),
@@ -1248,7 +1298,8 @@ function Home({go,st}){
       ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
         ce("div",{className:"card-r"},
           ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc)),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc),
+            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
     // Phase 3
     ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h",style:{background:"#fef3c7",color:"#b45309"}},"Fase 3: Thema\u2019s & Cultuur")),
@@ -1256,10 +1307,11 @@ function Home({go,st}){
       ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
         ce("div",{className:"card-r"},
           ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc)),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
+            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
     // Quick links
-    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginTop:8}},
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:8}},
       ce("button",{className:"card",onClick:()=>go("quiz"),style:{textAlign:"center",padding:14}},
         ce("div",{style:{fontSize:28}},"\u{1f3af}"),
         ce("div",{className:"card-t",style:{marginTop:4}},"Quiz"),
@@ -1273,7 +1325,7 @@ function Home({go,st}){
         ce("div",{className:"card-t",style:{marginTop:4}},"Badges"),
         ce("div",{className:"card-d"},eb+"/"+BADGES.length+" verdiend"))),
     ce("div",{style:{textAlign:"center",marginTop:12}},
-      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
+      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
       ce("span",null,"\u2728"),
       ce("div",null,
@@ -1582,6 +1634,197 @@ function Quiz({go,st,sS}){
 }
 
 
+
+
+// === GALGJE ===
+function Hangman({go,st,sS}){
+  var aw=allWords(MODS);
+  var[word,sWord]=uS(null);
+  var[guessed,sGuessed]=uS([]);
+  var[wrong,sWrong]=uS(0);
+  var[done,sDone]=uS(false);
+  var[won,sWon]=uS(false);
+  var[showHint,sShowHint]=uS(false);
+  var[diff,sDiff]=uS(null);
+  var maxWrong=6;
+
+  // Cyrillic alphabet for keyboard
+  var cyrillic="\u0410\u0411\u0412\u0413\u0414\u0415\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042e\u042f".split("");
+
+  var startGame=function(d){
+    sDiff(d);
+    var pool=d==="easy"?aw.filter(function(w){return w.b.length<=5;}):
+              d==="hard"?aw.filter(function(w){return w.b.length>=8;}):aw;
+    if(pool.length<5)pool=aw;
+    var w=pool[Math.floor(Math.random()*pool.length)];
+    sWord(w);sGuessed([]);sWrong(0);sDone(false);sWon(false);sShowHint(false);
+  };
+
+  var guess=function(letter){
+    if(done||guessed.indexOf(letter)>=0)return;
+    var ng=guessed.concat([letter]);
+    sGuessed(ng);
+    var upper=word.b.toUpperCase();
+    if(upper.indexOf(letter)<0){
+      var nw=wrong+1;
+      sWrong(nw);
+      if(nw>=maxWrong){sDone(true);sWon(false);}
+    } else {
+      // Check if won
+      var letters=upper.split("").filter(function(c){return c!==" ";});
+      var allGuessed=letters.every(function(c){return ng.indexOf(c)>=0;});
+      if(allGuessed){
+        sDone(true);sWon(true);
+        sS(function(s){return Object.assign({},s,{xp:s.xp+20,hw:(s.hw||0)+1});});
+      }
+    }
+  };
+
+  // Hangman figure (text-based)
+  var hParts=[
+    {e:"\u{1f6b6}",t:""},
+    {e:"\u{1f9b6}",t:"Voet..."},
+    {e:"\u{1f9b5}",t:"Been..."},
+    {e:"\u{1f9b6}\u{1f9b5}",t:"Lichaam..."},
+    {e:"\u{1f44b}",t:"Armen..."},
+    {e:"\u{1f62c}",t:"Bijna..."},
+    {e:"\u{1f480}",t:"Game over!"}
+  ];
+
+  // Difficulty selection
+  if(!diff){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:48}},"\u{1f620}"),
+        ce("h2",{className:"h1"},"Galgje"),
+        ce("p",{className:"sub"},"Raad het Bulgaarse woord!")),
+      ce("div",{className:"sy3"},
+        ce("button",{className:"card",onClick:function(){startGame("easy");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f331}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Makkelijk"),ce("div",{className:"card-d"},"Korte woorden (max 5 letters)")))),
+        ce("button",{className:"card",onClick:function(){startGame("medium");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f33f}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Gemiddeld"),ce("div",{className:"card-d"},"Alle woorden")))),
+        ce("button",{className:"card",onClick:function(){startGame("hard");},style:{width:"100%",textAlign:"left",padding:16}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:28,marginRight:12}},"\u{1f525}"),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Moeilijk"),ce("div",{className:"card-d"},"Lange woorden (8+ letters)"))))
+      ),
+      ce("button",{className:"btn btn-g",style:{marginTop:12},onClick:function(){go("home");}},"\u2190 Home"));
+  }
+
+  if(!word)return null;
+
+  // Done screen
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:56}},won?"\u{1f389}":"\u{1f614}"),
+      ce("h2",{className:"h1"},won?"Gewonnen!":"Helaas!"),
+      ce("div",{style:{fontSize:28,fontWeight:700,color:"#6d28d9",margin:"8px 0"}},word.b),
+      ce("div",{style:{fontSize:16,color:"#64748b"}},word.n),
+      word.p&&ce("div",{style:{fontSize:13,color:"#a78bfa",fontStyle:"italic"}},"["+word.p+"]"),
+      won&&ce("p",{style:{color:"#64748b",marginTop:8,fontSize:13}},"+20 XP verdiend!"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:16}},
+        ce("button",{className:"btn btn-v",onClick:function(){startGame(diff);}},"\u{1f504} Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){sDiff(null);}},"\u{1f3af} Ander niveau"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));
+  }
+
+  // Game board
+  var upper=word.b.toUpperCase();
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){sDiff(null);}},"\u2190 Terug"),
+      ce("div",{style:{display:"flex",alignItems:"center",gap:12}},
+        ce("span",{style:{fontSize:13,color:"#64748b"}},"Fout: "+wrong+"/"+maxWrong),
+        !showHint&&!done&&ce("button",{className:"btn",style:{fontSize:12,background:"#fef3c7",color:"#92400e",padding:"4px 10px"},onClick:function(){sShowHint(true);}},"\u{1f4a1} Hint"))),
+    // Hangman figure
+    ce("div",{style:{textAlign:"center",margin:"8px 0"}},
+      ce("div",{style:{fontSize:48}},wrong===0?"\u{1f60a}":wrong<3?"\u{1f610}":wrong<5?"\u{1f627}":wrong<6?"\u{1f630}":"\u{1f480}"),
+      ce("div",{style:{display:"flex",justifyContent:"center",gap:4,marginTop:4}},
+        Array(maxWrong).fill(0).map(function(_,i){
+          return ce("div",{key:i,style:{width:16,height:16,borderRadius:"50%",background:i<wrong?"#f87171":"#e2e8f0",transition:"all .3s"}});
+        })),
+      wrong>0&&ce("div",{style:{fontSize:12,color:"#dc2626",marginTop:4}},wrong+" van "+maxWrong+" fout")),
+    // Hint
+    showHint&&ce("div",{className:"hm-hint-box"},"\u{1f4a1} Nederlands: "+word.n),
+    // Word display
+    ce("div",{className:"hm-word"},
+      upper.split("").map(function(c,i){
+        if(c===" ")return ce("div",{key:i,className:"hm-letter hm-letter-space"});
+        var revealed=guessed.indexOf(c)>=0;
+        return ce("div",{key:i,className:"hm-letter"+(revealed?" revealed":"")},revealed?word.b[i]:"");
+      })),
+    // Emoji & category
+    ce("div",{className:"ctr"},ce("span",{style:{fontSize:24}},word.m||"")),
+    // Keyboard
+    ce("div",{className:"hm-keys"},
+      cyrillic.map(function(l){
+        var used=guessed.indexOf(l)>=0;
+        var hit=used&&upper.indexOf(l)>=0;
+        var miss=used&&upper.indexOf(l)<0;
+        return ce("button",{key:l,className:"hm-key"+(hit?" hm-key-hit":"")+(miss?" hm-key-miss":""),disabled:used,onClick:function(){guess(l);}},l);
+      })));
+}
+
+// === WOORDENBOEK / ZOEKFUNCTIE ===
+function SearchScreen({go,st}){
+  var aw=allWords(MODS);
+  var[q,sQ]=uS("");
+  var[filter,sFilter]=uS("all");
+
+  var filtered=aw;
+  if(q.length>0){
+    var lq=q.toLowerCase();
+    filtered=aw.filter(function(w){
+      return w.b.toLowerCase().indexOf(lq)>=0||
+        w.n.toLowerCase().indexOf(lq)>=0||
+        (w.p&&w.p.toLowerCase().indexOf(lq)>=0)||
+        (w.e&&w.e.toLowerCase().indexOf(lq)>=0);
+    });
+  }
+
+  // Find module info for each word
+  var modMap={};
+  for(var i=0;i<MODS.length;i++){
+    var mod=MODS[i];
+    if(mod.ws){
+      for(var j=0;j<mod.ws.length;j++){
+        if(!modMap[mod.ws[j].b])modMap[mod.ws[j].b]={mod:mod.t,em:mod.em,wk:mod.wk};
+      }
+    }
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home")),
+    ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:36}},"\u{1f50d}"),
+      ce("h2",{className:"h1"},"Woordenboek"),
+      ce("p",{className:"sub"},aw.length+" woorden")),
+    ce("div",{className:"search-box"},
+      ce("span",{className:"search-icon"},"\u{1f50e}"),
+      ce("input",{className:"search-input",placeholder:"Zoek in Bulgaars, Nederlands of Engels...",value:q,onChange:function(e){sQ(e.target.value);}}),
+      q.length>0&&ce("button",{className:"search-clear",onClick:function(){sQ("");}},"\u2715")),
+    ce("div",{className:"search-count"},filtered.length===aw.length?
+      "Typ om te zoeken":
+      filtered.length+" "+(filtered.length===1?"resultaat":"resultaten")),
+    ce("div",{className:"search-results sy3"},
+      filtered.slice(0,50).map(function(w,i){
+        var mi=modMap[w.b];
+        return ce("div",{key:i,className:"search-item"},
+          ce("div",{className:"search-item-em"},w.m||"\u{1f4d6}"),
+          ce("div",{className:"search-item-main"},
+            ce("div",{className:"search-item-bg"},w.b),
+            ce("div",{className:"search-item-nl"},w.n),
+            w.p&&ce("div",{className:"search-item-pron"},"["+w.p+"]")),
+          mi&&ce("span",{className:"search-item-mod"},mi.mod));
+      }),
+      filtered.length>50&&ce("div",{className:"search-count"},"Toon eerste 50 van "+filtered.length+" resultaten")));
+}
+
 // === MEMORY GAME ===
 function Memory({go,st,sS}){
   var aw=allWords(MODS);
@@ -1725,7 +1968,7 @@ function BadgScr({st}){
 // === APP ===
 function App(){
   const[scr,sScr]=uS("home");
-  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0};};
+  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0};};
   const[st,sS]=uS(loadSt);
   uE(()=>{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}},[st]);
   const go=(s)=>sScr(s);
@@ -1743,6 +1986,8 @@ function App(){
     agIdx!==null&&ce(AlphaGrp,{gi:agIdx,go,st,sS}),
     scr==="quiz"&&ce(Quiz,{go,st,sS}),
     scr==="memory"&&ce(Memory,{go,st,sS}),
+    scr==="search"&&ce(SearchScreen,{go,st}),
+    scr==="hangman"&&ce(Hangman,{go,st,sS}),
     scr==="badges"&&ce(BadgScr,{st}));
 }
 
