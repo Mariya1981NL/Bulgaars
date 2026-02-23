@@ -515,6 +515,21 @@ function srsInitWord(srs,word){
   return newSrs;
 }
 
+// === ERROR TRACKING ===
+function errTrack(errs,wordKey,correct){
+  var e=Object.assign({},errs);
+  if(!e[wordKey])e[wordKey]={w:0,c:0,last:0};
+  if(correct){e[wordKey].c=(e[wordKey].c||0)+1;if(e[wordKey].c>=3&&e[wordKey].w<=e[wordKey].c){delete e[wordKey];}}
+  else{e[wordKey].w=(e[wordKey].w||0)+1;e[wordKey].last=Date.now();}
+  return e;
+}
+function getHardWords(errs,allW){
+  var hard=[];
+  for(var k in errs){if(errs[k].w>=2){var w=allW.find(function(x){return x.b===k;});if(w)hard.push({word:w,errors:errs[k].w,correct:errs[k].c||0});}}
+  hard.sort(function(a,b){return b.errors-a.errors;});
+  return hard;
+}
+
 function Home({go,st,sS}){
   const tl=ALPHA.reduce((s,g)=>s+g.ls.length,0);
   const tw=allWords(MODS).length;
@@ -612,6 +627,17 @@ function Home({go,st,sS}){
       ce("button",{className:"card",onClick:()=>go("checkpoint:B1"),style:{textAlign:"center",padding:12,border:(st.cp||{}).B1?"2px solid #34d399":"1px solid #e2e8f0"}},
         ce("div",{style:{fontSize:20}},(st.cp||{}).B1?"\u2705":"\ud83d\udcdd"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"B1 Test"))),
+    // Moeilijke woorden sectie
+    (function(){var hw=getHardWords(st.errs||{},allWords(MODS));if(hw.length===0)return null;return ce("div",{style:{marginTop:8,marginBottom:8}},
+      ce("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
+        ce("div",{style:{fontSize:12,fontWeight:600,color:"#ef4444"}},"\u{1f525} Moeilijke woorden ("+hw.length+")"),
+        ce("button",{className:"btn btn-t",style:{fontSize:11,padding:"2px 10px"},onClick:function(){go("flashcards:hard");}},"\u{1f4c7} Oefenen")),
+      ce("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},hw.slice(0,8).map(function(h){
+        return ce("div",{key:h.word.b,style:{background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"4px 8px",fontSize:12}},
+          ce("span",{style:{marginRight:4}},h.word.m),
+          ce("span",{style:{fontWeight:600}},h.word.b),
+          ce("span",{style:{color:"#ef4444",fontSize:10,marginLeft:4}},"\u2718"+h.errors));})),
+      hw.length>8&&ce("div",{style:{fontSize:11,color:"#94a3b8",marginTop:4}},"+"+( hw.length-8)+" meer..."));})(),
     // Quick links - Slim Leren
     ce("div",{style:{marginTop:8}},
       ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:6}},"\u{1f9e0} Slim Leren")),
@@ -677,7 +703,7 @@ function Home({go,st,sS}){
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>go("parentdash")},"\u{1f4ca} Ouder-dashboard")),
     ce("div",{style:{textAlign:"center",marginTop:12}},
-      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
+      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{}});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
       ce("span",null,"\u2728"),
       ce("div",null,
@@ -872,6 +898,7 @@ function Quiz({go,st,sS}){
   var[sel,sSEL]=uS(null);var[sh2,sSH]=uS(false);
   var[qs,sQS]=uS([]);var[dn,sDN]=uS(false);
   var[qMode,sQMode]=uS("mix");
+  var[wrongQ,sWrongQ]=uS([]);var[retryPhase,sRetryPhase]=uS(false);
 
   var gen=function(mode){
     var m=mode||qMode;
@@ -883,7 +910,7 @@ function Quiz({go,st,sS}){
       var cnt=m==="mix"?6:12;
       for(var i=0;i<Math.min(cnt,sw.length);i++){
         var c=sw[i];var wr=sh(aw.filter(function(w){return w.n!==c.n;})).slice(0,3);
-        q.push({pr:c.b,hi:"["+c.p+"]",ans:c.n,ops:sh([c.n].concat(wr.map(function(w){return w.n;}))),em:c.m,tp:"bg-nl"});
+        q.push({pr:c.b,hi:"["+c.p+"]",ans:c.n,ops:sh([c.n].concat(wr.map(function(w){return w.n;}))),em:c.m,tp:"bg-nl",wordKey:c.b});
       }
     }
 
@@ -892,7 +919,7 @@ function Quiz({go,st,sS}){
       var cnt2=m==="mix"?4:12;
       for(var i2=0;i2<Math.min(cnt2,sw.length);i2++){
         var c2=sw[i2];var wr2=sh(aw.filter(function(w){return w.b!==c2.b;})).slice(0,3);
-        q.push({pr:c2.n,hi:c2.e,ans:c2.b,ops:sh([c2.b].concat(wr2.map(function(w){return w.b;}))),em:c2.m,tp:"nl-bg"});
+        q.push({pr:c2.n,hi:c2.e,ans:c2.b,ops:sh([c2.b].concat(wr2.map(function(w){return w.b;}))),em:c2.m,tp:"nl-bg",wordKey:c2.b});
       }
     }
 
@@ -913,8 +940,9 @@ function Quiz({go,st,sS}){
   if(qs.length===0)return null;
   var q=qs[qi];var ok=sel===q.ans;
   var pick=function(o){if(sh2)return;sSEL(o);sSH(true);var g=o===q.ans;var ns=g?sk+1:0;sSK(ns);if(g)sSC(sc+1);
-    sS(function(s){return Object.assign({},s,{xp:s.xp+(g?15:0),qo:(s.qo||0)+(g?1:0),qb:Math.max(s.qb||0,ns)});});};
-  var nx=function(){if(qi>=qs.length-1)sDN(true);else{sQI(qi+1);sSEL(null);sSH(false);}};
+    else{sWrongQ(function(prev){return prev.concat([q]);});}
+    sS(function(s){var ne=q.wordKey?errTrack(s.errs||{},q.wordKey,g):(s.errs||{});return Object.assign({},s,{xp:s.xp+(g?15:0),qo:(s.qo||0)+(g?1:0),qb:Math.max(s.qb||0,ns),errs:ne});});};
+  var nx=function(){if(qi>=qs.length-1){if(!retryPhase&&wrongQ.length>0){var rqs=wrongQ.map(function(wq){return Object.assign({},wq,{ops:sh(wq.ops)});});sRetryPhase(true);sQS(rqs);sQI(0);sSEL(null);sSH(false);sWrongQ([]);}else{sDN(true);}}else{sQI(qi+1);sSEL(null);sSH(false);}};
 
   // Quiz type label
   var tpLabel=function(tp){
@@ -965,6 +993,7 @@ function Quiz({go,st,sS}){
         ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));}
 
   return ce("div",{className:"scr sy"},
+    retryPhase&&ce("div",{style:{background:"#fef3c7",border:"1px solid #fde68a",borderRadius:12,padding:8,textAlign:"center",fontSize:13,fontWeight:600,color:"#92400e",marginBottom:4}},"\ud83d\udd01 Herhalingsronde — foute antwoorden opnieuw!"),
     ce("div",{className:"nr"},
       ce("span",{style:{fontSize:13,color:"#64748b"}},"Vraag "+(qi+1)+"/"+qs.length),
       ce("div",{style:{display:"flex",alignItems:"center",gap:8}},
@@ -1757,9 +1786,15 @@ function BadgScr({st}){
 
 // === SESSION 5 COMPONENTS ===
 
-function Flashcards({go,st,sS}){
+function Flashcards({go,st,sS,initMode}){
   var aw=allWords(MODS);
-  var [cards,sCards]=uS(function(){return sh(aw).slice(0,10);});
+  var startMode=initMode||"random";
+  var [fcMode,sFcMode]=uS(startMode);
+  var getCards=function(mode){
+    if(mode==="hard"){var hw=getHardWords(st.errs||{},aw);if(hw.length>0)return hw.slice(0,10).map(function(h){return h.word;});}
+    return sh(aw).slice(0,10);
+  };
+  var [cards,sCards]=uS(function(){return getCards(startMode);});
   var [idx,sI]=uS(0);
   var [flipped,sF]=uS(false);
   var [done,sD]=uS(false);
@@ -1781,6 +1816,9 @@ function Flashcards({go,st,sS}){
       ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
       ce("div",{className:"h2"},"\u{1f4c7} Flashcards"),
       ce("span",{className:"sub"},(idx+1)+"/"+cards.length)),
+    ce("div",{style:{display:"flex",gap:6,justifyContent:"center",margin:"8px 0"}},
+      ce("button",{className:"btn "+(fcMode==="random"?"btn-g":"btn-t"),style:{fontSize:12,padding:"4px 12px"},onClick:function(){sFcMode("random");sCards(getCards("random"));sI(0);sF(false);sD(false);sSc(0);}},"\u{1f500} Random"),
+      ce("button",{className:"btn "+(fcMode==="hard"?"btn-g":"btn-t"),style:{fontSize:12,padding:"4px 12px",position:"relative"},onClick:function(){sFcMode("hard");var hc=getCards("hard");sCards(hc);sI(0);sF(false);sD(false);sSc(0);}},"\u{1f525} Moeilijk",getHardWords(st.errs||{},aw).length>0&&ce("span",{style:{background:"#ef4444",color:"#fff",borderRadius:99,fontSize:10,padding:"1px 5px",marginLeft:4}},getHardWords(st.errs||{},aw).length))),
     ce("div",{className:"dots",style:{margin:"8px 0"}},cards.map(function(c,i){
       return ce("div",{key:i,className:"dot",style:{background:i<idx?"#10b981":i===idx?"#14b8a6":"#e2e8f0"}});})),
     ce("div",{className:"fc-deck"},
@@ -1797,9 +1835,9 @@ function Flashcards({go,st,sS}){
             ce("div",{style:{fontSize:14,color:"#64748b",marginTop:4}},w.b+" ["+w.p+"]"),
             learned&&ce("div",{style:{color:"#059669",fontSize:12,marginTop:6}},"\u2713 Al geleerd"))))),
     flipped&&ce("div",{className:"fc-rate"},
-      ce("button",{className:"fc-r1",onClick:function(){playSound("wrong");sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS({...st,fc:(st.fc||0)+1,xp:st.xp+20});sD(true);}}},"\u274c Weet ik niet"),
-      ce("button",{className:"fc-r2",onClick:function(){sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS({...st,fc:(st.fc||0)+1,xp:st.xp+20});sD(true);}}},"\u{1f914} Beetje"),
-      ce("button",{className:"fc-r3",onClick:function(){playSound("correct");sSc(score+1);sS({...st,xp:st.xp+2});sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS(function(p){return{...p,fc:(p.fc||0)+1,xp:p.xp+20};});sD(true);}}},"\u2705 Weet ik!")),
+      ce("button",{className:"fc-r1",onClick:function(){playSound("wrong");sS(function(p){return Object.assign({},p,{errs:errTrack(p.errs||{},w.b,false)});});sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS(function(p){return Object.assign({},p,{fc:(p.fc||0)+1,xp:p.xp+20});});sD(true);}}},"\u274c Weet ik niet"),
+      ce("button",{className:"fc-r2",onClick:function(){sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS(function(p){return Object.assign({},p,{fc:(p.fc||0)+1,xp:p.xp+20});});sD(true);}}},"\u{1f914} Beetje"),
+      ce("button",{className:"fc-r3",onClick:function(){playSound("correct");sSc(score+1);sS(function(p){return Object.assign({},p,{xp:p.xp+2,errs:errTrack(p.errs||{},w.b,true)});});sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS(function(p){return Object.assign({},p,{fc:(p.fc||0)+1,xp:p.xp+20});});sD(true);}}},"\u2705 Weet ik!")),
     !flipped&&ce("div",{style:{textAlign:"center",marginTop:12,display:"flex",justifyContent:"center",gap:8}},
       ce("button",{className:"btn btn-g",onClick:function(){speak(w.b);}},"\u{1f50a} Luister"),
       speechRecSupported&&ce(MicButton,{expected:w.b,size:"sm",onResult:function(res){if(res.match){playSound("correct");sS(function(p){return Object.assign({},p,{sp:(p.sp||0)+1});});}else{playSound("wrong");}}})));
@@ -2353,6 +2391,7 @@ function Lesson({go,st,sS,modId}){
   var[sbPool2,sSbPool2]=uS([]);
   var[typedAns,sTypedAns]=uS("");
   var[wrongWords,sWrongWords]=uS([]);
+  var[lRetry,sLRetry]=uS(false);
 
   var genQuestions=function(){
     var sw=sh(pool).slice(0,12);
@@ -2424,11 +2463,19 @@ function Lesson({go,st,sS,modId}){
     playSound(correct?"correct":"wrong");
     if(correct){sScore(score+1);sStreak(streak+1);}
     else{sHearts(hearts-1);sStreak(0);sWrongWords(function(prev){var exists=prev.some(function(x){return x.b===w2.b;});return exists?prev:prev.concat([w2]);});}
-    sS(function(p){return Object.assign({},p,{xp:p.xp+(correct?15:0),lsn:(p.lsn||0)+(qi===qs.length-1?1:0)});});
+    sS(function(p){var ne=w2?errTrack(p.errs||{},w2.b,correct):(p.errs||{});return Object.assign({},p,{xp:p.xp+(correct?15:0),lsn:(p.lsn||0)+(qi===qs.length-1?1:0),errs:ne});});
     sShown(true);
     setTimeout(function(){
-      if(qi+1>=qs.length){sDone(true);}
-      else{sQi(qi+1);sSel(null);sShown(false);sSbAns([]);sSbPool2([]);sTypedAns("");}
+      if(qi+1>=qs.length){
+        if(!lRetry&&wrongWords.length>0&&hearts>0){
+          // Create retry questions from wrong words
+          var retryQs=[];
+          for(var ri=0;ri<wrongWords.length;ri++){var rw=wrongWords[ri];
+            var rwrongs=sh(pool.filter(function(x){return x.b!==rw.b;})).slice(0,3);
+            retryQs.push({tp:"bg-nl",w:rw,prompt:rw.b,answer:rw.n,ops:sh([rw.n].concat(rwrongs.map(function(x){return x.n;})))});}
+          sLRetry(true);sQs(retryQs);sQi(0);sSel(null);sShown(false);sSbAns([]);sSbPool2([]);sTypedAns("");sWrongWords([]);
+        }else{sDone(true);}
+      }else{sQi(qi+1);sSel(null);sShown(false);sSbAns([]);sSbPool2([]);sTypedAns("");}
     },correct?800:1500);
   };
   // Speak question logic
@@ -2497,6 +2544,7 @@ function Lesson({go,st,sS,modId}){
   // Quiz type (bg-nl, nl-bg, listen)
   var promptTxt=q.tp==="listen"?"\ud83d\udd0a Luister en kies":q.tp==="nl-bg"?"\ud83c\uddf3\ud83c\uddf1 Vertaal naar Bulgaars":"\ud83c\udde7\ud83c\uddec Vertaal naar Nederlands";
   return ce("div",{className:"scr sy"},
+    lRetry&&ce("div",{style:{background:"#fef3c7",border:"1px solid #fde68a",borderRadius:12,padding:8,textAlign:"center",fontSize:13,fontWeight:600,color:"#92400e",marginBottom:4}},"\ud83d\udd01 Herhalingsronde — oefen de moeilijke woorden!"),
     ce("div",{className:"nr"},
       ce("span",{style:{fontSize:13,color:"#64748b"}},"Vraag "+(qi+1)+"/"+qs.length),
       ce("div",{style:{display:"flex",alignItems:"center",gap:6}},
@@ -2615,7 +2663,7 @@ function CheckpointTest({go,st,sS,level}){
 
 function App(){
   const[scr,sScr]=uS("home");
-  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0,fc:p.fc||0,gf:p.gf||0,ic:p.ic||0,nt:p.nt||0,cw:p.cw||0,dm:p.dm||false,lt:p.lt||0,om:p.om||0,srs:p.srs||{},lv:p.lv||"all",cp:p.cp||{},lsn:p.lsn||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0};};
+  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0,fc:p.fc||0,gf:p.gf||0,ic:p.ic||0,nt:p.nt||0,cw:p.cw||0,dm:p.dm||false,lt:p.lt||0,om:p.om||0,srs:p.srs||{},lv:p.lv||"all",cp:p.cp||{},lsn:p.lsn||0,sp:p.sp||0,errs:p.errs||{}};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{}};};
   const[st,sS]=uS(loadSt);
   uE(()=>{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}},[st]);
   // Auto-seed SRS for learned words
@@ -2655,7 +2703,7 @@ function App(){
     scr==="stories"&&ce(Stories,{go,st}),
     scr==="culture"&&ce(CultureHub,{go,st}),
     scr==="badges"&&ce(BadgScr,{st}),
-    scr==="flashcards"&&ce(Flashcards,{go,st,sS}),
+    (scr==="flashcards"||scr==="flashcards:hard")&&ce(Flashcards,{go,st,sS,initMode:scr==="flashcards:hard"?"hard":"random"}),
     scr==="review"&&ce(Review,{go,st,sS}),
     scr==="grammarfill"&&ce(GrammarFill,{go,st,sS}),
     scr==="interactive"&&ce(InteractiveConv,{go,st,sS}),
