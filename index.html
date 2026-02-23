@@ -331,6 +331,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <script src="data-stories.js"></script>
 <script src="data-culture.js"></script>
 <script src="data-badges.js"></script>
+<script src="data-words-b1.js"></script>
 <script>
 const R=React,ce=R.createElement,{useState:uS,useEffect:uE}=R;
 
@@ -491,6 +492,15 @@ function Home({go,st,sS}){
     // Phase 3
     ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h",style:{background:"#fef3c7",color:"#b45309"}},"Fase 3: Thema\u2019s & Cultuur")),
     ce("div",{className:"sy3"},MODS.filter(m=>m.ph===3).map(m=>
+      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
+        ce("div",{className:"card-r"},
+          ce("div",{className:"card-i "+m.gr},m.em),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
+            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
+          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    // Phase 4 — B1
+    ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h",style:{background:"#ede9fe",color:"#6d28d9"}},"Fase 4: Gevorderd (B1)")),
+    ce("div",{className:"sy3"},MODS.filter(m=>m.ph===4).map(m=>
       ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
         ce("div",{className:"card-r"},
           ce("div",{className:"card-i "+m.gr},m.em),
