@@ -36,4 +36,5 @@ var BADGES =[
 {id:"lt10",nm:"Schrijver",ic:"\u270d\ufe0f",ds:"10 letters getekend",rq:s=>(s.lt||0)>=10},
 {id:"ic3",nm:"Praat Koning",ic:"\u{1f451}",ds:"3 gesprekken gevoerd",rq:s=>(s.ic||0)>=3},
 {id:"w300",nm:"Woordenboek",ic:"\u{1f4d5}",ds:"300 woorden geleerd",rq:s=>s.wl>=300},
+{id:"srs10",nm:"Herhaal Held",ic:"🔄",ds:"10 herhaalsessies gedaan",rq:s=>{var c=0;var srs=s.srs||{};for(var k in srs){if(srs[k].cor>=2)c++;}return c>=10;}},
 {id:"dm1",nm:"Nachtbraker",ic:"\u{1f319}",ds:"Donkere modus gebruikt",rq:s=>s.dm===true}];
