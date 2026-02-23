@@ -47,4 +47,16 @@ var BADGES =[
 {id:"b1m",nm:"B1 Meester",ic:"\ud83d\udc51",ds:"Alle 456 B1-woorden geleerd",rq:s=>{var c=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===4&&MODS[i].ws){for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return c>=456;}},
 {id:"sp1",nm:"Eerste Woord Gezegd",ic:"\ud83c\udf99\ufe0f",ds:"Eerste woord uitgesproken",rq:s=>(s.sp||0)>=1},
 {id:"sp10",nm:"Spreker",ic:"\ud83d\udde3\ufe0f",ds:"10 woorden uitgesproken",rq:s=>(s.sp||0)>=10},
-{id:"sp50",nm:"Spraak Meester",ic:"\ud83c\udfb6",ds:"50 woorden uitgesproken",rq:s=>(s.sp||0)>=50}];
+{id:"sp50",nm:"Spraak Meester",ic:"\ud83c\udfb6",ds:"50 woorden uitgesproken",rq:s=>(s.sp||0)>=50},
+{id:"cpB2",nm:"B2 Gehaald",ic:"🎖️",ds:"B2 checkpoint test gehaald",rq:s=>(s.cp||{}).B2===true},
+{id:"b2s",nm:"B2 Starter",ic:"🌟",ds:"50 B2-woorden geleerd",rq:s=>{var c=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===5&&MODS[i].ws){for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return c>=50;}},
+{id:"b2m",nm:"B2 Meester",ic:"👨‍🎓",ds:"Alle B2-woorden geleerd",rq:s=>{var c=0;var t=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===5&&MODS[i].ws){t+=MODS[i].ws.length;for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return t>0&&c>=t;}},
+{id:"w500",nm:"Woordenkanon",ic:"💣",ds:"500 woorden geleerd",rq:s=>s.wl>=500},
+{id:"w750",nm:"Woordenexpert",ic:"🧑‍🏫",ds:"750 woorden geleerd",rq:s=>s.wl>=750},
+{id:"w1000",nm:"Woordenmonster",ic:"🐉",ds:"1000 woorden geleerd",rq:s=>s.wl>=1000},
+{id:"w1500",nm:"Polyglot",ic:"🌐",ds:"1500 woorden geleerd",rq:s=>s.wl>=1500},
+{id:"strk7",nm:"Weekstreak",ic:"🔥",ds:"7 dagen op rij geoefend",rq:s=>(s.strk||0)>=7},
+{id:"strk30",nm:"Maandstreak",ic:"🔥",ds:"30 dagen op rij geoefend",rq:s=>(s.strk||0)>=30},
+{id:"strk100",nm:"100-Dagenstreak",ic:"💎",ds:"100 dagen op rij geoefend",rq:s=>(s.strk||0)>=100},
+{id:"ls25",nm:"Les Expert",ic:"🎓",ds:"25 lessen afgerond",rq:s=>(s.lsn||0)>=25},
+{id:"ls50",nm:"Les Legende",ic:"👑",ds:"50 lessen afgerond",rq:s=>(s.lsn||0)>=50}];

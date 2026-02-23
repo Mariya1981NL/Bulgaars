@@ -318,6 +318,21 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .flash-no{animation:flashRed .4s ease-out}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
 .dark .review-banner{background:linear-gradient(135deg,#451a1a,#3b1010)!important;border-color:#7f1d1d!important}
+/* Confetti animation */
+@keyframes confetti-fall{0%{transform:translateY(-100px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden}
+.confetti-piece{position:absolute;width:10px;height:10px;top:-10px;animation:confetti-fall 3s ease-in forwards}
+/* Streak flame */
+@keyframes flame{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.streak-flame{animation:flame 1.5s ease-in-out infinite}
+/* Reward screen glow */
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px rgba(251,191,36,0.3)}50%{box-shadow:0 0 40px rgba(251,191,36,0.6)}}
+.reward-glow{animation:glow-pulse 2s ease-in-out infinite}
+/* Scoreboard */
+.sb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;margin-bottom:6px}
+.sb-rank{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.sb-name{flex:1;font-weight:600;font-size:14px}
+.sb-score{font-size:13px;color:#64748b;font-weight:600}
 </style>
 </head>
 <body>
@@ -332,6 +347,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <script src="data-culture.js"></script>
 <script src="data-badges.js"></script>
 <script src="data-words-b1.js"></script>
+<script src="data-words-b2.js"></script>
 <script>
 const R=React,ce=R.createElement,{useState:uS,useEffect:uE}=R;
 
@@ -455,8 +471,8 @@ function MicButton(props){
 // === COMPONENTS ===
 
 function Nav({scr,go,st,sS}){
-  var lvls=["all","A1","A2","B1"];
-  var lvColors={"all":"#64748b","A1":"#059669","A2":"#b45309","B1":"#6d28d9"};
+  var lvls=["all","A1","A2","B1","B2"];
+  var lvColors={"all":"#64748b","A1":"#059669","A2":"#b45309","B1":"#6d28d9","B2":"#db2777"};
   var curLv=st.lv||"all";
   var cycleLv=function(){var i=lvls.indexOf(curLv);sS(function(p){return Object.assign({},p,{lv:lvls[(i+1)%lvls.length]});});};
   return ce("div",{className:"nav"},
@@ -530,6 +546,35 @@ function getHardWords(errs,allW){
   return hard;
 }
 
+// === CONFETTI ===
+function launchConfetti(){
+  var c=document.createElement("div");c.className="confetti-container";
+  var colors=["#f59e0b","#10b981","#6366f1","#ec4899","#ef4444","#14b8a6","#8b5cf6"];
+  for(var i=0;i<50;i++){
+    var p=document.createElement("div");p.className="confetti-piece";
+    p.style.left=Math.random()*100+"%";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=Math.random()*2+"s";
+    p.style.animationDuration=(2+Math.random()*2)+"s";
+    p.style.width=(6+Math.random()*8)+"px";
+    p.style.height=(6+Math.random()*8)+"px";
+    p.style.borderRadius=Math.random()>0.5?"50%":"2px";
+    p.style.transform="rotate("+Math.random()*360+"deg)";
+    c.appendChild(p);
+  }
+  document.body.appendChild(c);
+  setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},4000);
+}
+
+// === STREAK TRACKING ===
+function checkStreak(st,sS){
+  var today=new Date().toISOString().slice(0,10);
+  if(st.lastDay===today)return;
+  var yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  var newStrk=(st.lastDay===yesterday)?(st.strk||0)+1:1;
+  sS(function(p){return Object.assign({},p,{strk:newStrk,lastDay:today});});
+}
+
 function Home({go,st,sS}){
   const tl=ALPHA.reduce((s,g)=>s+g.ls.length,0);
   const tw=allWords(MODS).length;
@@ -595,6 +640,21 @@ function Home({go,st,sS}){
           ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
             (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    // Phase 5 (B2)
+    MODS.some(m=>m.ph===5)&&ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h",style:{background:"#fce7f3",color:"#db2777"}},"Fase 5: Expert (B2)")),
+    MODS.some(m=>m.ph===5)&&ce("div",{className:"sy3"},MODS.filter(m=>m.ph===5).map(m=>
+      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
+        ce("div",{className:"card-r"},
+          ce("div",{className:"card-i "+m.gr},m.em),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
+            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
+          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    // Streak banner
+    (st.strk||0)>0&&ce("div",{style:{background:"linear-gradient(135deg,#fff7ed,#fffbeb)",border:"2px solid #fed7aa",borderRadius:16,padding:14,textAlign:"center",marginTop:4,display:"flex",alignItems:"center",justifyContent:"center",gap:10}},
+      ce("span",{className:"streak-flame",style:{fontSize:28}},"\ud83d\udd25"),
+      ce("div",null,
+        ce("div",{style:{fontWeight:700,fontSize:16,color:"#c2410c"}},(st.strk||0)+" dagen streak!"),
+        ce("div",{style:{fontSize:11,color:"#ea580c"}},"Ga zo door! Oefen elke dag."))),
     // Daily challenge banner
     // SRS Review banner
     (function(){var dueCount=srsCountDue(st.srs||{},allWords(MODS,st.lv));return dueCount>0?ce("button",{onClick:function(){go("review");},style:{width:"100%",background:"linear-gradient(135deg,#fef2f2,#fff1f2)",border:"2px solid #fca5a5",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4,animation:"pulse 2s infinite"}},ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},ce("span",{style:{fontSize:24}},"🔄"),ce("div",null,ce("div",{style:{fontWeight:700,fontSize:14,color:"#dc2626"}},"Herhalen! ("+dueCount+" woorden)"),ce("div",{style:{fontSize:11,color:"#e11d48"}},"Herhaal woorden voordat je ze vergeet")),ce("span",{style:{fontSize:13,background:"#ef4444",color:"#fff",padding:"2px 10px",borderRadius:99,fontWeight:700}},dueCount))):null;})(),
@@ -617,7 +677,7 @@ function Home({go,st,sS}){
     // Checkpoint tests
     ce("div",{style:{marginTop:8}},
       ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:6}},"\ud83c\udfc6 Checkpoint Tests")),
-    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}},
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
       ce("button",{className:"card",onClick:()=>go("checkpoint:A1"),style:{textAlign:"center",padding:12,border:(st.cp||{}).A1?"2px solid #34d399":"1px solid #e2e8f0"}},
         ce("div",{style:{fontSize:20}},(st.cp||{}).A1?"\u2705":"\ud83d\udcdd"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#059669"}},"A1 Test")),
@@ -626,7 +686,10 @@ function Home({go,st,sS}){
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#b45309"}},"A2 Test")),
       ce("button",{className:"card",onClick:()=>go("checkpoint:B1"),style:{textAlign:"center",padding:12,border:(st.cp||{}).B1?"2px solid #34d399":"1px solid #e2e8f0"}},
         ce("div",{style:{fontSize:20}},(st.cp||{}).B1?"\u2705":"\ud83d\udcdd"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"B1 Test"))),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"B1 Test")),
+      ce("button",{className:"card",onClick:()=>go("checkpoint:B2"),style:{textAlign:"center",padding:12,border:(st.cp||{}).B2?"2px solid #34d399":"1px solid #e2e8f0"}},
+        ce("div",{style:{fontSize:20}},(st.cp||{}).B2?"\u2705":"\ud83d\udcdd"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#db2777"}},"B2 Test"))),
     // Moeilijke woorden sectie
     (function(){var hw=getHardWords(st.errs||{},allWords(MODS));if(hw.length===0)return null;return ce("div",{style:{marginTop:8,marginBottom:8}},
       ce("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
@@ -703,7 +766,7 @@ function Home({go,st,sS}){
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>go("parentdash")},"\u{1f4ca} Ouder-dashboard")),
     ce("div",{style:{textAlign:"center",marginTop:12}},
-      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{}});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
+      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:""});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
       ce("span",null,"\u2728"),
       ce("div",null,
@@ -2443,13 +2506,18 @@ function Lesson({go,st,sS,modId}){
   if(done){
     var pct=Math.round(score/qs.length*100);
     sS(function(p){return p;});
+    // Fire confetti on good result
+    uE(function(){if(done&&pct>=50){try{launchConfetti();}catch(e){}}},[ done]);
     return ce("div",{className:"scr sy ctr"},
-      ce("div",{style:{fontSize:56}},pct>=80?"\ud83c\udf89":pct>=50?"\ud83d\udc4f":"\ud83d\udcaa"),
-      ce("h2",{className:"h1",style:{marginTop:8}},pct>=80?"Les gehaald!":pct>=50?"Goed gedaan!":"Blijf oefenen!"),
+      ce("div",{className:pct>=80?"reward-glow":"",style:{fontSize:56,display:"inline-block",borderRadius:"50%",padding:12}},pct>=80?"\ud83c\udf89":pct>=50?"\ud83d\udc4f":"\ud83d\udcaa"),
+      ce("h2",{className:"h1",style:{marginTop:8}},pct>=80?"Les klaar! \ud83c\udf8a":pct>=50?"Goed gedaan!":"Blijf oefenen!"),
       ce("div",{style:{fontSize:36,fontWeight:800,color:"#6d28d9",margin:"8px 0"}},score+"/"+qs.length),
       ce("div",{style:{display:"flex",justifyContent:"center",gap:8,marginBottom:8}},
         [0,1,2].map(function(i){return ce("span",{key:i,style:{fontSize:24}},i<hearts?"\u2764\ufe0f":"\ud83e\ude76");})),
       ce("p",{style:{color:"#64748b",fontSize:13}},"+"+score*15+" XP verdiend!"),
+      (st.strk||0)>1&&ce("div",{style:{marginTop:8,background:"#fff7ed",borderRadius:12,padding:10,border:"1px solid #fed7aa",textAlign:"center"}},
+        ce("span",{className:"streak-flame",style:{fontSize:22}},"\ud83d\udd25"),
+        ce("span",{style:{fontWeight:700,color:"#c2410c",marginLeft:6}},(st.strk||0)+" dagen streak!")),
       wrongWords.length>0&&ce("div",{style:{marginTop:12,background:"#fef2f2",borderRadius:12,padding:12,border:"1px solid #fca5a5"}},
         ce("div",{style:{fontSize:13,fontWeight:600,color:"#dc2626",marginBottom:6}},"Nog oefenen:"),
         wrongWords.map(function(ww,i){return ce("div",{key:i,style:{fontSize:13,color:"#991b1b",padding:"2px 0"}},ww.b+" = "+ww.n);})),
@@ -2568,7 +2636,7 @@ function Lesson({go,st,sS,modId}){
 
 // === CHECKPOINT TEST ===
 function CheckpointTest({go,st,sS,level}){
-  var lvMap={"A1":{phases:[1,2],color:"#059669",bg:"#ecfdf5",border:"#a7f3d0",label:"A1 Checkpoint",next:"A2"},"A2":{phases:[3],color:"#b45309",bg:"#fffbeb",border:"#fde68a",label:"A2 Checkpoint",next:"B1"},"B1":{phases:[4],color:"#6d28d9",bg:"#f5f3ff",border:"#ddd6fe",label:"B1 Checkpoint",next:null}};
+  var lvMap={"A1":{phases:[1,2],color:"#059669",bg:"#ecfdf5",border:"#a7f3d0",label:"A1 Checkpoint",next:"A2"},"A2":{phases:[3],color:"#b45309",bg:"#fffbeb",border:"#fde68a",label:"A2 Checkpoint",next:"B1"},"B1":{phases:[4],color:"#6d28d9",bg:"#f5f3ff",border:"#ddd6fe",label:"B1 Checkpoint",next:"B2"},"B2":{phases:[5],color:"#db2777",bg:"#fdf2f8",border:"#fbcfe8",label:"B2 Checkpoint",next:null}};
   var cfg=lvMap[level]||lvMap["A1"];
   var pool=[];
   for(var i=0;i<MODS.length;i++){if(cfg.phases.indexOf(MODS[i].ph)>=0&&MODS[i].ws){pool=pool.concat(MODS[i].ws);}}
@@ -2609,13 +2677,14 @@ function CheckpointTest({go,st,sS,level}){
         setTimeout(function(){sS(function(p){var newCp=Object.assign({},p.cp||{});newCp[cpKey]=true;return Object.assign({},p,{cp:newCp,xp:p.xp+100});});},100);
       }
     }
+    uE(function(){if(done&&passed){try{launchConfetti();}catch(e){}}},[done]);
     return ce("div",{className:"scr sy ctr"},
-      ce("div",{style:{fontSize:56}},passed?"\ud83c\udf1f":"\ud83d\udcaa"),
-      ce("h2",{className:"h1",style:{color:cfg.color}},passed?cfg.label+" Gehaald!":"Nog niet gehaald"),
+      ce("div",{className:passed?"reward-glow":"",style:{fontSize:56,display:"inline-block",borderRadius:"50%",padding:12}},passed?"\ud83c\udf1f":"\ud83d\udcaa"),
+      ce("h2",{className:"h1",style:{color:cfg.color}},passed?cfg.label+" Gehaald! \ud83c\udf8a":"Nog niet gehaald"),
       ce("div",{style:{fontSize:44,fontWeight:800,color:cfg.color}},pct+"%"),
       ce("div",{style:{fontSize:14,color:"#64748b",marginTop:4}},score+"/"+qs.length+" goed (minimaal 80% nodig)"),
       passed&&ce("div",{style:{marginTop:12,background:cfg.bg,border:"2px solid "+cfg.border,borderRadius:16,padding:16,textAlign:"center"}},
-        ce("div",{style:{fontSize:24}},"🏆"),
+        ce("div",{style:{fontSize:24}},"\ud83c\udfc6"),
         ce("div",{style:{fontWeight:700,fontSize:14,color:cfg.color}},level+" niveau behaald!"),
         cfg.next&&ce("div",{style:{fontSize:12,color:"#64748b",marginTop:4}},"Je kunt nu door naar "+cfg.next+"!")),
       !passed&&wrongList.length>0&&ce("div",{style:{marginTop:12,background:"#fef2f2",borderRadius:12,padding:12,border:"1px solid #fca5a5",textAlign:"left"}},
@@ -2663,7 +2732,7 @@ function CheckpointTest({go,st,sS,level}){
 
 function App(){
   const[scr,sScr]=uS("home");
-  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0,fc:p.fc||0,gf:p.gf||0,ic:p.ic||0,nt:p.nt||0,cw:p.cw||0,dm:p.dm||false,lt:p.lt||0,om:p.om||0,srs:p.srs||{},lv:p.lv||"all",cp:p.cp||{},lsn:p.lsn||0,sp:p.sp||0,errs:p.errs||{}};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{}};};
+  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0,fc:p.fc||0,gf:p.gf||0,ic:p.ic||0,nt:p.nt||0,cw:p.cw||0,dm:p.dm||false,lt:p.lt||0,om:p.om||0,srs:p.srs||{},lv:p.lv||"all",cp:p.cp||{},lsn:p.lsn||0,sp:p.sp||0,errs:p.errs||{},strk:p.strk||0,lastDay:p.lastDay||""};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:""};};
   const[st,sS]=uS(loadSt);
   uE(()=>{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}},[st]);
   // Auto-seed SRS for learned words
@@ -2680,6 +2749,8 @@ function App(){
     }
     if(changed)sS(function(p){return Object.assign({},p,{srs:newSrs});});
   },[st.wi.length]);
+  // Daily streak tracking
+  uE(function(){checkStreak(st,sS);},[]);
   const go=(s)=>sScr(s);
 
   // Find module
@@ -2716,6 +2787,7 @@ function App(){
     scr==="checkpoint:A1"&&ce(CheckpointTest,{go,st,sS,level:"A1"}),
     scr==="checkpoint:A2"&&ce(CheckpointTest,{go,st,sS,level:"A2"}),
     scr==="checkpoint:B1"&&ce(CheckpointTest,{go,st,sS,level:"B1"}),
+    scr==="checkpoint:B2"&&ce(CheckpointTest,{go,st,sS,level:"B2"}),
     scr==="speaking"&&ce(SpeakingPractice,{go,st,sS}));
 }
 
