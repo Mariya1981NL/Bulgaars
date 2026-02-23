@@ -44,4 +44,7 @@ var BADGES =[
 {id:"cpA2",nm:"A2 Gehaald",ic:"\ud83e\udd47",ds:"A2 checkpoint test gehaald",rq:s=>(s.cp||{}).A2===true},
 {id:"cpB1",nm:"B1 Gehaald",ic:"\ud83c\udf1f",ds:"B1 checkpoint test gehaald",rq:s=>(s.cp||{}).B1===true},
 {id:"b1s",nm:"B1 Starter",ic:"\ud83d\ude80",ds:"50 B1-woorden geleerd",rq:s=>{var c=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===4&&MODS[i].ws){for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return c>=50;}},
-{id:"b1m",nm:"B1 Meester",ic:"\ud83d\udc51",ds:"Alle 456 B1-woorden geleerd",rq:s=>{var c=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===4&&MODS[i].ws){for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return c>=456;}}];
+{id:"b1m",nm:"B1 Meester",ic:"\ud83d\udc51",ds:"Alle 456 B1-woorden geleerd",rq:s=>{var c=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===4&&MODS[i].ws){for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return c>=456;}},
+{id:"sp1",nm:"Eerste Woord Gezegd",ic:"\ud83c\udf99\ufe0f",ds:"Eerste woord uitgesproken",rq:s=>(s.sp||0)>=1},
+{id:"sp10",nm:"Spreker",ic:"\ud83d\udde3\ufe0f",ds:"10 woorden uitgesproken",rq:s=>(s.sp||0)>=10},
+{id:"sp50",nm:"Spraak Meester",ic:"\ud83c\udfb6",ds:"50 woorden uitgesproken",rq:s=>(s.sp||0)>=50}];
