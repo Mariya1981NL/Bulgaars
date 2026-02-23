@@ -220,6 +220,102 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .song-line:last-child{border-bottom:none}
 .song-bg{font-size:14px;font-weight:600;color:#1e293b;flex:1}
 .song-nl{font-size:12px;color:#64748b;flex:1}
+
+/* Dark Mode */
+.dark .app{background:#1e293b}
+.dark .nav{background:#0f172a;border-color:#334155}
+.dark .nav-title{background:linear-gradient(to right,#2dd4bf,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dark .card{background:#334155;border-color:#475569}
+.dark .card-t,.dark .h1,.dark .h2,.dark .h3{color:#f1f5f9}
+.dark .card-d,.dark .sub{color:#94a3b8}
+.dark .scr{color:#e2e8f0}
+.dark .qo{background:#334155;border-color:#475569;color:#e2e8f0}
+.dark .qo:hover:not(:disabled){border-color:#a78bfa;background:#3b0764}
+.dark .search-input{background:#334155;border-color:#475569;color:#e2e8f0}
+.dark .fact{background:#334155;border-color:#475569}
+.dark .tab-row{background:#334155}
+.dark .tab{color:#94a3b8}
+.dark .tab-on{background:#475569;color:#f1f5f9}
+.dark .gram-box{background:#1e3a5f;border-color:#2563eb}
+.dark .gram-tbl th{background:#1e3a5f}
+.dark .gram-tbl td{border-color:#334155}
+.dark .badge-n{background:#334155;border-color:#475569}
+.dark .pb{background:#334155}
+.dark body{background:#1e293b;color:#e2e8f0}
+.dark .mem-face{border-color:#475569;background:#334155}
+.dark .mem-front{background:#334155}
+
+/* Flashcards */
+.fc-deck{perspective:800px;width:100%;max-width:340px;margin:0 auto}
+.fc-card{width:100%;min-height:200px;cursor:pointer;perspective:800px}
+.fc-inner{position:relative;width:100%;min-height:200px;transition:transform .6s;transform-style:preserve-3d}
+.fc-card.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-face{position:absolute;width:100%;min-height:200px;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.fc-front{background:linear-gradient(135deg,#0d9488,#059669);color:#fff;border:2px solid #0f766e}
+.fc-back{background:#fff;border:2px solid #e2e8f0;transform:rotateY(180deg)}
+.fc-rate{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.fc-rate button{padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;border:2px solid;transition:all .2s}
+.fc-r1{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+.fc-r1:hover{background:#fee2e2}
+.fc-r2{background:#fffbeb;border-color:#fcd34d;color:#b45309}
+.fc-r2:hover{background:#fef3c7}
+.fc-r3{background:#ecfdf5;border-color:#6ee7b7;color:#059669}
+.fc-r3:hover{background:#d1fae5}
+
+/* Numbers */
+.num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.num-btn{padding:8px 4px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;text-align:center;cursor:pointer;transition:all .15s}
+.num-btn:hover{border-color:#14b8a6;background:#f0fdfa}
+.num-btn.num-done{border-color:#6ee7b7;background:#ecfdf5}
+.num-big{font-size:18px;font-weight:700;color:#1e293b}
+.num-sm{font-size:9px;color:#64748b;margin-top:1px}
+
+/* Crossword */
+.cw-grid{display:inline-grid;gap:2px}
+.cw-cell{width:32px;height:32px;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;background:#fff;text-transform:uppercase}
+.cw-cell-black{background:#1e293b;border-color:#1e293b}
+.cw-cell-active{border-color:#8b5cf6;background:#ede9fe}
+.cw-cell-correct{background:#ecfdf5;border-color:#34d399}
+.cw-cell-num{position:relative}
+.cw-cell-num::before{position:absolute;top:1px;left:2px;font-size:7px;color:#94a3b8}
+.cw-clue{padding:8px 12px;border-radius:10px;background:#f5f3ff;border:1px solid #ddd6fe;font-size:13px;margin-top:4px}
+
+/* Interactive Conversation */
+.ic-scene{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border-radius:16px;padding:16px;border:1px solid #a7f3d0;min-height:100px;margin-bottom:12px}
+.ic-bubble{padding:10px 14px;border-radius:14px;margin-bottom:8px;max-width:85%;font-size:14px}
+.ic-bubble-oma{background:#fff;border:1px solid #e2e8f0;border-bottom-left-radius:4px;margin-right:auto}
+.ic-bubble-kid{background:#0d9488;color:#fff;border-bottom-right-radius:4px;margin-left:auto}
+.ic-choices{display:flex;flex-direction:column;gap:8px}
+.ic-choice{padding:12px 16px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;text-align:left;font-size:14px;transition:all .15s;cursor:pointer}
+.ic-choice:hover{border-color:#14b8a6;background:#f0fdfa}
+.ic-choice-ok{background:#ecfdf5;border-color:#34d399}
+.ic-choice-no{background:#fef2f2;border-color:#f87171}
+
+/* Letter Trace */
+.lt-canvas-wrap{position:relative;display:inline-block;border-radius:16px;overflow:hidden;border:2px solid #e2e8f0}
+.lt-canvas{touch-action:none;display:block}
+.lt-guide{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:120px;font-weight:800;color:rgba(0,0,0,.06);pointer-events:none}
+
+/* Write to Oma */
+.oma-area{width:100%;min-height:100px;padding:12px;border-radius:12px;border:2px solid #e2e8f0;font-size:16px;font-family:inherit;resize:vertical;transition:border-color .2s}
+.oma-area:focus{border-color:#14b8a6;outline:none}
+.oma-kb{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+.oma-key{padding:6px 2px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
+.oma-key:hover{background:#f0fdfa;border-color:#14b8a6}
+
+/* Parent Dashboard */
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pd-card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:14px;text-align:center}
+.pd-val{font-size:24px;font-weight:800;color:#0d9488}
+.pd-lbl{font-size:11px;color:#64748b;margin-top:2px}
+.pd-bar-wrap{height:16px;background:#f1f5f9;border-radius:8px;overflow:hidden;margin-top:4px}
+.pd-bar{height:100%;border-radius:8px;transition:width .5s}
+
+/* Sound flash */
+@keyframes flashGreen{0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}100%{box-shadow:0 0 0 20px rgba(16,185,129,0)}}
+@keyframes flashRed{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}100%{box-shadow:0 0 0 20px rgba(239,68,68,0)}}
+.flash-ok{animation:flashGreen .4s ease-out}
+.flash-no{animation:flashRed .4s ease-out}
 </style>
 </head>
 <body>
@@ -1257,9 +1353,148 @@ const BADGES=[
 {id:"sb1",nm:"Zinnen Bouwer",ic:"\u{1f3d7}\ufe0f",ds:"Eerste zin gebouwd",rq:s=>(s.sbg||0)>=1},
 {id:"sb10",nm:"Zinnen Meester",ic:"\u{1f4ac}",ds:"10 zinnen gebouwd",rq:s=>(s.sbg||0)>=10},
 {id:"dc7",nm:"Week Streak",ic:"\u{1f525}",ds:"7 dagen dagelijkse uitdaging",rq:s=>(s.dw||0)>=7},
-{id:"dc30",nm:"Maand Streak",ic:"\u{1f4aa}",ds:"30 dagen dagelijkse uitdaging",rq:s=>(s.dw||0)>=30}];
+{id:"dc30",nm:"Maand Streak",ic:"\u{1f4aa}",ds:"30 dagen dagelijkse uitdaging",rq:s=>(s.dw||0)>=30},
+{id:"fc1",nm:"Flashcard Fan",ic:"\u{1f4c7}",ds:"Eerste flashcard sessie",rq:s=>(s.fc||0)>=1},
+{id:"fc10",nm:"Flashcard Meester",ic:"\u{1f9e0}",ds:"10 flashcard sessies",rq:s=>(s.fc||0)>=10},
+{id:"gf5",nm:"Grammatica Goeroe",ic:"\u{1f4dd}",ds:"5 invuloefeningen goed",rq:s=>(s.gf||0)>=5},
+{id:"nm20",nm:"Telwonder",ic:"\u{1f522}",ds:"Alle getallen 1-20 geleerd",rq:s=>(s.nt||0)>=20},
+{id:"cw1",nm:"Kruiswoord Kraker",ic:"\u{1f9e9}",ds:"Eerste kruiswoordpuzzel",rq:s=>(s.cw||0)>=1},
+{id:"om1",nm:"Oma's Brief",ic:"\u{1f48c}",ds:"Eerste berichtje aan oma",rq:s=>(s.om||0)>=1},
+{id:"lt10",nm:"Schrijver",ic:"\u270d\ufe0f",ds:"10 letters getekend",rq:s=>(s.lt||0)>=10},
+{id:"ic3",nm:"Praat Koning",ic:"\u{1f451}",ds:"3 gesprekken gevoerd",rq:s=>(s.ic||0)>=3},
+{id:"w300",nm:"Woordenboek",ic:"\u{1f4d5}",ds:"300 woorden geleerd",rq:s=>s.wl>=300},
+{id:"dm1",nm:"Nachtbraker",ic:"\u{1f319}",ds:"Donkere modus gebruikt",rq:s=>s.dm===true}];
 
 function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
+// === SESSION 5 DATA ===
+
+var NUMBERS=[
+{n:1,bg:"\u0435\u0434\u043d\u043e",p:"ed-NO",nl:"een"},
+{n:2,bg:"\u0434\u0432\u0435",p:"dve",nl:"twee"},
+{n:3,bg:"\u0442\u0440\u0438",p:"tri",nl:"drie"},
+{n:4,bg:"\u0447\u0435\u0442\u0438\u0440\u0438",p:"che-TI-ri",nl:"vier"},
+{n:5,bg:"\u043f\u0435\u0442",p:"pet",nl:"vijf"},
+{n:6,bg:"\u0448\u0435\u0441\u0442",p:"shest",nl:"zes"},
+{n:7,bg:"\u0441\u0435\u0434\u0435\u043c",p:"SE-dem",nl:"zeven"},
+{n:8,bg:"\u043e\u0441\u0435\u043c",p:"O-sem",nl:"acht"},
+{n:9,bg:"\u0434\u0435\u0432\u0435\u0442",p:"DE-vet",nl:"negen"},
+{n:10,bg:"\u0434\u0435\u0441\u0435\u0442",p:"DE-set",nl:"tien"},
+{n:11,bg:"\u0435\u0434\u0438\u043d\u0430\u0439\u0441\u0435\u0442",p:"e-di-NAJ-set",nl:"elf"},
+{n:12,bg:"\u0434\u0432\u0430\u043d\u0430\u0439\u0441\u0435\u0442",p:"dva-NAJ-set",nl:"twaalf"},
+{n:13,bg:"\u0442\u0440\u0438\u043d\u0430\u0439\u0441\u0435\u0442",p:"tri-NAJ-set",nl:"dertien"},
+{n:14,bg:"\u0447\u0435\u0442\u0438\u0440\u0438\u043d\u0430\u0439\u0441\u0435\u0442",p:"che-ti-ri-NAJ-set",nl:"veertien"},
+{n:15,bg:"\u043f\u0435\u0442\u043d\u0430\u0439\u0441\u0435\u0442",p:"pet-NAJ-set",nl:"vijftien"},
+{n:16,bg:"\u0448\u0435\u0441\u0442\u043d\u0430\u0439\u0441\u0435\u0442",p:"shest-NAJ-set",nl:"zestien"},
+{n:17,bg:"\u0441\u0435\u0434\u0435\u043c\u043d\u0430\u0439\u0441\u0435\u0442",p:"se-dem-NAJ-set",nl:"zeventien"},
+{n:18,bg:"\u043e\u0441\u0435\u043c\u043d\u0430\u0439\u0441\u0435\u0442",p:"o-sem-NAJ-set",nl:"achttien"},
+{n:19,bg:"\u0434\u0435\u0432\u0435\u0442\u043d\u0430\u0439\u0441\u0435\u0442",p:"de-vet-NAJ-set",nl:"negentien"},
+{n:20,bg:"\u0434\u0432\u0430\u0439\u0441\u0435\u0442",p:"DVAJ-set",nl:"twintig"},
+{n:30,bg:"\u0442\u0440\u0438\u0439\u0441\u0435\u0442",p:"TRI-set",nl:"dertig"},
+{n:40,bg:"\u0447\u0435\u0442\u0438\u0440\u0438\u0439\u0441\u0435\u0442",p:"che-ti-RI-set",nl:"veertig"},
+{n:50,bg:"\u043f\u0435\u0442\u0434\u0435\u0441\u0435\u0442",p:"pet-de-SET",nl:"vijftig"},
+{n:60,bg:"\u0448\u0435\u0441\u0442\u0434\u0435\u0441\u0435\u0442",p:"shest-de-SET",nl:"zestig"},
+{n:70,bg:"\u0441\u0435\u0434\u0435\u043c\u0434\u0435\u0441\u0435\u0442",p:"se-dem-de-SET",nl:"zeventig"},
+{n:80,bg:"\u043e\u0441\u0435\u043c\u0434\u0435\u0441\u0435\u0442",p:"o-sem-de-SET",nl:"tachtig"},
+{n:90,bg:"\u0434\u0435\u0432\u0435\u0442\u0434\u0435\u0441\u0435\u0442",p:"de-vet-de-SET",nl:"negentig"},
+{n:100,bg:"\u0441\u0442\u043e",p:"sto",nl:"honderd"}
+];
+
+var DIALOGUES=[
+{id:"d1",title:"Bij oma thuis",em:"\u{1f475}",steps:[
+{speaker:"oma",bg:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439, \u0441\u043a\u044a\u043f\u0438!",nl:"Hallo, lieverd!"},
+{speaker:"kid",bg:"",nl:"Begroet oma terug",choices:[
+  {bg:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439, \u0431\u0430\u0431\u043e!",nl:"Hallo, oma!",ok:true},
+  {bg:"\u0414\u043e\u0432\u0438\u0436\u0434\u0430\u043d\u0435!",nl:"Tot ziens!",ok:false},
+  {bg:"\u041b\u0435\u043a\u0430 \u043d\u043e\u0449!",nl:"Welterusten!",ok:false}]},
+{speaker:"oma",bg:"\u041a\u0430\u043a \u0441\u0438?",nl:"Hoe gaat het?"},
+{speaker:"kid",bg:"",nl:"Zeg dat het goed gaat",choices:[
+  {bg:"\u0414\u043e\u0431\u0440\u0435 \u0441\u044a\u043c!",nl:"Goed met mij!",ok:true},
+  {bg:"\u041d\u0435 \u0437\u043d\u0430\u043c",nl:"Ik weet het niet",ok:false},
+  {bg:"\u0413\u043b\u0430\u0434\u0435\u043d \u0441\u044a\u043c",nl:"Ik heb honger",ok:false}]},
+{speaker:"oma",bg:"\u0418\u0441\u043a\u0430\u0448 \u043b\u0438 \u0431\u0430\u043d\u0438\u0446\u0430?",nl:"Wil je banitsa?"},
+{speaker:"kid",bg:"",nl:"Zeg ja alsjeblieft",choices:[
+  {bg:"\u0414\u0430, \u043c\u043e\u043b\u044f!",nl:"Ja, alsjeblieft!",ok:true},
+  {bg:"\u041d\u0435, \u043c\u0435\u0440\u0441\u0438",nl:"Nee, dankjewel",ok:false},
+  {bg:"\u041a\u0430\u043a\u0432\u043e \u0435 \u0442\u043e\u0432\u0430?",nl:"Wat is dat?",ok:false}]},
+{speaker:"oma",bg:"\u041c\u043d\u043e\u0433\u043e \u0432\u043a\u0443\u0441\u043d\u043e!",nl:"Heel lekker!"},
+{speaker:"kid",bg:"",nl:"Zeg dankjewel",choices:[
+  {bg:"\u041c\u0435\u0440\u0441\u0438, \u0431\u0430\u0431\u043e!",nl:"Dankjewel, oma!",ok:true},
+  {bg:"\u041e\u0449\u0435 \u0435\u0434\u043d\u043e",nl:"Nog eentje",ok:false},
+  {bg:"\u041d\u0435 \u043c\u0438 \u0445\u0430\u0440\u0435\u0441\u0432\u0430",nl:"Ik vind het niet lekker",ok:false}]}
+]},
+{id:"d2",title:"In het park",em:"\u{1f333}",steps:[
+{speaker:"oma",bg:"\u0425\u0430\u0439\u0434\u0435 \u043d\u0430 \u043f\u0430\u0440\u043a\u0430!",nl:"Laten we naar het park gaan!"},
+{speaker:"kid",bg:"",nl:"Zeg dat je dat leuk vindt",choices:[
+  {bg:"\u0414\u0430, \u0441\u0442\u0440\u0430\u0445\u043e\u0442\u043d\u043e!",nl:"Ja, geweldig!",ok:true},
+  {bg:"\u041d\u0435 \u0438\u0441\u043a\u0430\u043c",nl:"Ik wil niet",ok:false},
+  {bg:"\u0423\u043c\u043e\u0440\u0435\u043d \u0441\u044a\u043c",nl:"Ik ben moe",ok:false}]},
+{speaker:"oma",bg:"\u0412\u0438\u0436 \u043a\u0430\u043a\u0432\u043e \u0445\u0443\u0431\u0430\u0432\u043e \u0432\u0440\u0435\u043c\u0435!",nl:"Kijk wat mooi weer!"},
+{speaker:"kid",bg:"",nl:"Zeg dat de zon schijnt",choices:[
+  {bg:"\u0421\u043b\u044a\u043d\u0446\u0435\u0442\u043e \u0433\u0440\u0435\u0435!",nl:"De zon schijnt!",ok:true},
+  {bg:"\u0412\u0430\u043b\u0438 \u0434\u044a\u0436\u0434",nl:"Het regent",ok:false},
+  {bg:"\u0421\u0442\u0443\u0434\u0435\u043d\u043e \u0435",nl:"Het is koud",ok:false}]},
+{speaker:"oma",bg:"\u0418\u0441\u043a\u0430\u0448 \u043b\u0438 \u0441\u043b\u0430\u0434\u043e\u043b\u0435\u0434?",nl:"Wil je een ijsje?"},
+{speaker:"kid",bg:"",nl:"Zeg ja en bedank oma",choices:[
+  {bg:"\u0414\u0430, \u043c\u0435\u0440\u0441\u0438!",nl:"Ja, dankjewel!",ok:true},
+  {bg:"\u041d\u0435 \u0438\u0441\u043a\u0430\u043c",nl:"Ik wil niet",ok:false},
+  {bg:"\u041a\u043e\u043b\u043a\u043e \u0441\u0442\u0440\u0443\u0432\u0430?",nl:"Hoeveel kost het?",ok:false}]}
+]},
+{id:"d3",title:"Bellen met oma",em:"\u{1f4de}",steps:[
+{speaker:"oma",bg:"\u0410\u043b\u043e? \u041a\u043e\u0439 \u0435?",nl:"Hallo? Wie is het?"},
+{speaker:"kid",bg:"",nl:"Zeg wie je bent",choices:[
+  {bg:"\u0410\u0437 \u0441\u044a\u043c, \u0431\u0430\u0431\u043e!",nl:"Ik ben het, oma!",ok:true},
+  {bg:"\u0417\u0434\u0440\u0430\u0432\u0435\u0439\u0442\u0435",nl:"Goedendag (formeel)",ok:false},
+  {bg:"\u041d\u0435 \u0437\u043d\u0430\u043c",nl:"Ik weet het niet",ok:false}]},
+{speaker:"oma",bg:"\u041e, \u0441\u043a\u044a\u043f\u0438! \u041a\u0430\u043a\u0432\u043e \u043f\u0440\u0430\u0432\u0438\u0448?",nl:"Oh, lieverd! Wat doe je?"},
+{speaker:"kid",bg:"",nl:"Zeg dat je leert",choices:[
+  {bg:"\u0423\u0447\u0430 \u0431\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438!",nl:"Ik leer Bulgaars!",ok:true},
+  {bg:"\u0418\u0433\u0440\u0430\u044f",nl:"Ik speel",ok:false},
+  {bg:"\u0421\u043f\u044f",nl:"Ik slaap",ok:false}]},
+{speaker:"oma",bg:"\u0411\u0440\u0430\u0432\u043e! \u041e\u0431\u0438\u0447\u0430\u043c \u0442\u0435!",nl:"Goed zo! Ik hou van je!"},
+{speaker:"kid",bg:"",nl:"Zeg dat je ook van oma houdt",choices:[
+  {bg:"\u0418 \u0430\u0437 \u0442\u0435 \u043e\u0431\u0438\u0447\u0430\u043c!",nl:"Ik hou ook van jou!",ok:true},
+  {bg:"\u0414\u043e\u0432\u0438\u0436\u0434\u0430\u043d\u0435!",nl:"Tot ziens!",ok:false},
+  {bg:"\u041c\u0435\u0440\u0441\u0438",nl:"Dankjewel",ok:false}]}
+]}
+];
+
+var GRAMMAR_EXERCISES=[
+{sentence:"\u041c\u0430\u043c\u0430 ___ \u0441\u0443\u043f.",nl:"Mama kookt soep.",answer:"\u0432\u0430\u0440\u0438",opts:["\u0432\u0430\u0440\u0438","\u0447\u0435\u0442\u0435","\u0441\u043f\u0438","\u043f\u0438\u0435"]},
+{sentence:"\u0410\u0437 ___ \u0432\u043e\u0434\u0430.",nl:"Ik drink water.",answer:"\u043f\u0438\u044f",opts:["\u043f\u0438\u044f","\u044f\u043c","\u0441\u043f\u044f","\u0445\u043e\u0434\u044f"]},
+{sentence:"\u0411\u0430\u0431\u0430 ___ \u043a\u043d\u0438\u0433\u0430.",nl:"Oma leest een boek.",answer:"\u0447\u0435\u0442\u0435",opts:["\u0447\u0435\u0442\u0435","\u043f\u0438\u0448\u0435","\u0432\u0430\u0440\u0438","\u0441\u043f\u0438"]},
+{sentence:"\u0414\u0435\u0446\u0430\u0442\u0430 ___ \u0432 \u043f\u0430\u0440\u043a\u0430.",nl:"De kinderen spelen in het park.",answer:"\u0438\u0433\u0440\u0430\u044f\u0442",opts:["\u0438\u0433\u0440\u0430\u044f\u0442","\u0441\u043f\u044f\u0442","\u0447\u0435\u0442\u0430\u0442","\u044f\u0434\u0430\u0442"]},
+{sentence:"\u0422\u0430\u0442\u043a\u043e ___ \u043a\u043e\u043b\u0430.",nl:"Papa rijdt auto.",answer:"\u043a\u0430\u0440\u0430",opts:["\u043a\u0430\u0440\u0430","\u043f\u0438\u0448\u0435","\u0438\u0433\u0440\u0430\u0435","\u0441\u043f\u0438"]},
+{sentence:"\u0410\u0437 ___ \u0432\u044a\u0432 \u0432\u0442\u043e\u0440\u0438 \u043a\u043b\u0430\u0441.",nl:"Ik zit in de tweede klas.",answer:"\u0441\u044a\u043c",opts:["\u0441\u044a\u043c","\u0435","\u0441\u0430","\u0438\u043c\u0430\u043c"]},
+{sentence:"\u041a\u043e\u0442\u043a\u0430\u0442\u0430 ___ \u043c\u043b\u044f\u043a\u043e.",nl:"De kat drinkt melk.",answer:"\u043f\u0438\u0435",opts:["\u043f\u0438\u0435","\u044f\u0434\u0435","\u0441\u043f\u0438","\u0445\u043e\u0434\u0438"]},
+{sentence:"\u0414\u044f\u0434\u043e ___ \u0432\u0435\u0441\u0442\u043d\u0438\u043a.",nl:"Opa leest de krant.",answer:"\u0447\u0435\u0442\u0435",opts:["\u0447\u0435\u0442\u0435","\u043f\u0438\u0448\u0435","\u043a\u0443\u043f\u0443\u0432\u0430","\u0434\u0430\u0432\u0430"]},
+{sentence:"\u041d\u0438\u0435 ___ \u0432 \u0443\u0447\u0438\u043b\u0438\u0449\u0435.",nl:"Wij gaan naar school.",answer:"\u0445\u043e\u0434\u0438\u043c",opts:["\u0445\u043e\u0434\u0438\u043c","\u0441\u043f\u0438\u043c","\u044f\u0434\u0435\u043c","\u043f\u0438\u0448\u0435\u043c"]},
+{sentence:"\u0422\u043e\u0432\u0430 ___ \u043c\u043e\u044f\u0442\u0430 \u043a\u044a\u0449\u0430.",nl:"Dit is mijn huis.",answer:"\u0435",opts:["\u0435","\u0441\u044a\u043c","\u0441\u0430","\u0438\u043c\u0430"]}
+];
+
+var CYRILLIC_KB="\u0410\u0411\u0412\u0413\u0414\u0415\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042e\u042f".split("");
+
+var OMA_PROMPTS=[
+{nl:"Schrijf aan oma: Hallo oma, hoe gaat het?",hint:["\u0417\u0434\u0440\u0430\u0432\u0435\u0439","\u0431\u0430\u0431\u043e","\u041a\u0430\u043a","\u0441\u0438"],key:["\u0437\u0434\u0440\u0430\u0432\u0435\u0439","\u0431\u0430\u0431"]},
+{nl:"Schrijf: Ik hou van je, oma!",hint:["\u041e\u0431\u0438\u0447\u0430\u043c","\u0442\u0435","\u0431\u0430\u0431\u043e"],key:["\u043e\u0431\u0438\u0447\u0430\u043c","\u0442\u0435"]},
+{nl:"Schrijf: Dankjewel voor de banitsa!",hint:["\u041c\u0435\u0440\u0441\u0438","\u0437\u0430","\u0431\u0430\u043d\u0438\u0446\u0430\u0442\u0430"],key:["\u043c\u0435\u0440\u0441\u0438","\u0431\u0430\u043d\u0438\u0446"]},
+{nl:"Schrijf: Goedemorgen! Het gaat goed met mij.",hint:["\u0414\u043e\u0431\u0440\u043e","\u0443\u0442\u0440\u043e","\u0414\u043e\u0431\u0440\u0435","\u0441\u044a\u043c"],key:["\u0434\u043e\u0431\u0440\u043e","\u0443\u0442\u0440\u043e"]},
+{nl:"Schrijf: Welterusten, oma!",hint:["\u041b\u0435\u043a\u0430","\u043d\u043e\u0449","\u0431\u0430\u0431\u043e"],key:["\u043b\u0435\u043a\u0430","\u043d\u043e\u0449"]}
+];
+
+// Sound effects
+function playSound(type){
+try{
+var ac=new(window.AudioContext||window.webkitAudioContext)();
+var osc=ac.createOscillator();var g=ac.createGain();
+osc.connect(g);g.connect(ac.destination);
+g.gain.value=0.15;
+if(type==="correct"){osc.frequency.value=523;osc.type="sine";osc.start();osc.frequency.setValueAtTime(659,ac.currentTime+0.1);g.gain.setValueAtTime(0,ac.currentTime+0.2);osc.stop(ac.currentTime+0.2);}
+else if(type==="wrong"){osc.frequency.value=300;osc.type="sawtooth";osc.start();osc.frequency.setValueAtTime(200,ac.currentTime+0.15);g.gain.setValueAtTime(0,ac.currentTime+0.3);osc.stop(ac.currentTime+0.3);}
+else if(type==="badge"){osc.frequency.value=523;osc.type="sine";osc.start();osc.frequency.setValueAtTime(659,ac.currentTime+0.12);osc.frequency.setValueAtTime(784,ac.currentTime+0.24);g.gain.setValueAtTime(0,ac.currentTime+0.4);osc.stop(ac.currentTime+0.4);}
+else if(type==="xp"){osc.frequency.value=880;osc.type="sine";osc.start();g.gain.setValueAtTime(0,ac.currentTime+0.1);osc.stop(ac.currentTime+0.1);}
+}catch(e){}
+}
+
 
 // All words from all modules for quiz
 function allWords(mods){return mods.filter(m=>m.ws).flatMap(m=>m.ws);}
@@ -1316,7 +1551,7 @@ function modProgress(mod,st){
   return{learned:learned,total:total,pct:total>0?Math.round(learned/total*100):0};
 }
 
-function Home({go,st}){
+function Home({go,st,sS}){
   const tl=ALPHA.reduce((s,g)=>s+g.ls.length,0);
   const tw=allWords(MODS).length;
   const lp=Math.round(st.ll/tl*100);
@@ -1381,8 +1616,23 @@ function Home({go,st}){
           ce("div",{style:{fontSize:11,color:"#b45309"}},"5 nieuwe woorden elke dag!")),
         ce("span",{style:{fontSize:11,background:"#f59e0b",color:"#fff",padding:"2px 8px",borderRadius:99,fontWeight:700}},(st.dw||0)+" dagen"))
     ),
-    // Quick links
-    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginTop:8}},
+    // Quick links - Slim Leren
+    ce("div",{style:{marginTop:8}},
+      ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:6}},"\u{1f9e0} Slim Leren")),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}},
+      ce("button",{className:"card",onClick:()=>go("flashcards"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f4c7}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Flashcards")),
+      ce("button",{className:"card",onClick:()=>go("grammarfill"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f4dd}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Grammatica")),
+      ce("button",{className:"card",onClick:()=>go("interactive"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f4ac}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Gesprekken"))),
+    // Quick links - Spelletjes
+    ce("div",{style:{marginTop:12}},
+      ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:6}},"\u{1f3ae} Spelletjes")),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}},
       ce("button",{className:"card",onClick:()=>go("quiz"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f3af}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Quiz")),
@@ -1398,20 +1648,37 @@ function Home({go,st}){
       ce("button",{className:"card",onClick:()=>go("sentences"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f3d7}\ufe0f"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Zinnen")),
+      ce("button",{className:"card",onClick:()=>go("numbers"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f522}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Getallen"))),
+    // Quick links - Ontdek & Oefen
+    ce("div",{style:{marginTop:12}},
+      ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:6}},"\u{1f30d} Ontdek & Oefen")),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}},
       ce("button",{className:"card",onClick:()=>go("stories"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f4d6}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Verhalen")),
       ce("button",{className:"card",onClick:()=>go("culture"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f30d}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Cultuur")),
+      ce("button",{className:"card",onClick:()=>go("writeoma"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u{1f48c}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Schrijf oma")),
+      ce("button",{className:"card",onClick:()=>go("lettertrace"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\u270d\ufe0f"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Letters")),
       ce("button",{className:"card",onClick:()=>go("search"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f50d}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Zoeken")),
       ce("button",{className:"card",onClick:()=>go("badges"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f3c6}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},eb+"/"+BADGES.length))),
+    // Dark mode & Parent dashboard
+    ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
+      ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
+      ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>go("parentdash")},"\u{1f4ca} Ouder-dashboard")),
     ce("div",{style:{textAlign:"center",marginTop:12}},
-      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
+      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
       ce("span",null,"\u2728"),
       ce("div",null,
@@ -2401,7 +2668,43 @@ var STORIES=[
     {bg:"\u0410\u0437 \u043e\u0431\u0438\u0447\u0430\u043c \u0434\u0430 \u0447\u0435\u0442\u0430 \u043a\u043d\u0438\u0433\u0438.",nl:"Ik hou ervan om boeken te lezen."},
     {bg:"\u0421\u043b\u0435\u0434 \u0443\u0447\u0438\u043b\u0438\u0449\u0435 \u0438\u0433\u0440\u0430\u044f \u0441 \u043f\u0440\u0438\u044f\u0442\u0435\u043b\u0438.",nl:"Na school speel ik met vrienden."}
   ]}
-];
+
+,{id:"s6",title:"\u0420\u043e\u0436\u0434\u0435\u043d \u0434\u0435\u043d",titleNl:"Verjaardagsfeest",em:"\u{1f382}",level:"Gemiddeld",lines:[
+{bg:"\u0414\u043d\u0435\u0441 \u0435 \u043c\u043e\u044f\u0442 \u0440\u043e\u0436\u0434\u0435\u043d \u0434\u0435\u043d!",nl:"Vandaag is mijn verjaardag!"},
+{bg:"\u0418\u043c\u0430\u043c \u0433\u043e\u043b\u044f\u043c\u0430 \u0442\u043e\u0440\u0442\u0430.",nl:"Ik heb een grote taart."},
+{bg:"\u041f\u0440\u0438\u044f\u0442\u0435\u043b\u0438\u0442\u0435 \u043c\u0438 \u0438\u0434\u0432\u0430\u0442.",nl:"Mijn vrienden komen."},
+{bg:"\u0418\u0433\u0440\u0430\u0435\u043c \u0438 \u0441\u0435 \u0441\u043c\u0435\u0435\u043c.",nl:"We spelen en lachen."},
+{bg:"\u041f\u043e\u043b\u0443\u0447\u0430\u0432\u0430\u043c \u043f\u043e\u0434\u0430\u0440\u044a\u0446\u0438!",nl:"Ik krijg cadeautjes!"},
+{bg:"\u041c\u0435\u0440\u0441\u0438 \u043d\u0430 \u0432\u0441\u0438\u0447\u043a\u0438!",nl:"Dankjewel aan iedereen!"}
+]},
+{id:"s7",title:"\u041d\u0430 \u043f\u043b\u0430\u0436\u0430",titleNl:"Op het strand",em:"\u{1f3d6}\ufe0f",level:"Beginner",lines:[
+{bg:"\u041e\u0442\u0438\u0432\u0430\u043c\u0435 \u043d\u0430 \u043c\u043e\u0440\u0435\u0442\u043e.",nl:"We gaan naar de zee."},
+{bg:"\u0412\u043e\u0434\u0430\u0442\u0430 \u0435 \u0442\u043e\u043f\u043b\u0430.",nl:"Het water is warm."},
+{bg:"\u041f\u0440\u0430\u0432\u044f \u0437\u0430\u043c\u044a\u043a \u043e\u0442 \u043f\u044f\u0441\u044a\u043a.",nl:"Ik maak een zandkasteel."},
+{bg:"\u0421\u043b\u044a\u043d\u0446\u0435\u0442\u043e \u0433\u0440\u0435\u0435.",nl:"De zon schijnt."},
+{bg:"\u042f\u043c \u0441\u043b\u0430\u0434\u043e\u043b\u0435\u0434.",nl:"Ik eet een ijsje."}
+]},
+{id:"s8",title:"\u0421\u043d\u0435\u0436\u0435\u043d \u0434\u0435\u043d",titleNl:"Een sneeuwdag",em:"\u2744\ufe0f",level:"Beginner",lines:[
+{bg:"\u0412\u0430\u043b\u0438 \u0441\u043d\u044f\u0433!",nl:"Het sneeuwt!"},
+{bg:"\u0412\u0441\u0438\u0447\u043a\u043e \u0435 \u0431\u044f\u043b\u043e.",nl:"Alles is wit."},
+{bg:"\u041f\u0440\u0430\u0432\u0438\u043c \u0441\u043d\u0435\u0436\u0435\u043d \u0447\u043e\u0432\u0435\u043a.",nl:"We maken een sneeuwpop."},
+{bg:"\u0420\u044a\u0446\u0435\u0442\u0435 \u043c\u0438 \u0441\u0430 \u0441\u0442\u0443\u0434\u0435\u043d\u0438.",nl:"Mijn handen zijn koud."},
+{bg:"\u041f\u0438\u0435\u043c \u0433\u043e\u0440\u0435\u0449 \u0448\u043e\u043a\u043e\u043b\u0430\u0434.",nl:"We drinken warme chocolademelk."}
+]},
+{id:"s9",title:"\u0423\u0447\u0438\u043b\u0438\u0449\u0435\u043d \u0434\u0435\u043d",titleNl:"Een schooldag",em:"\u{1f3eb}",level:"Gemiddeld",lines:[
+{bg:"\u0417\u0432\u044a\u043d\u0435\u0446\u044a\u0442 \u0437\u0432\u044a\u043d\u0438!",nl:"De bel gaat!"},
+{bg:"\u0412\u043b\u0438\u0437\u0430\u043c \u0432 \u043a\u043b\u0430\u0441\u043d\u0430\u0442\u0430 \u0441\u0442\u0430\u044f.",nl:"Ik ga het klaslokaal in."},
+{bg:"\u0423\u0447\u0438\u0442\u0435\u043b\u043a\u0430\u0442\u0430 \u0435 \u0434\u043e\u0431\u0440\u0430.",nl:"De juf is aardig."},
+{bg:"\u041f\u0438\u0448\u0435\u043c \u0432 \u0442\u0435\u0442\u0440\u0430\u0434\u043a\u0438\u0442\u0435.",nl:"We schrijven in onze schriften."},
+{bg:"\u041e\u0431\u0438\u0447\u0430\u043c \u0443\u0447\u0438\u043b\u0438\u0449\u0435!",nl:"Ik hou van school!"}
+]},
+{id:"s10",title:"\u0418\u0433\u0440\u0430 \u0441 \u043f\u0440\u0438\u044f\u0442\u0435\u043b\u0438",titleNl:"Spelen met vrienden",em:"\u{1f46b}",level:"Beginner",lines:[
+{bg:"\u041e\u0442\u0438\u0432\u0430\u043c \u0432 \u043f\u0430\u0440\u043a\u0430.",nl:"Ik ga naar het park."},
+{bg:"\u0421\u0440\u0435\u0449\u0430\u043c \u043f\u0440\u0438\u044f\u0442\u0435\u043b\u0438\u0442\u0435 \u0441\u0438.",nl:"Ik ontmoet mijn vrienden."},
+{bg:"\u0418\u0433\u0440\u0430\u0435\u043c \u043d\u0430 \u0444\u0443\u0442\u0431\u043e\u043b.",nl:"We spelen voetbal."},
+{bg:"\u041c\u043d\u043e\u0433\u043e \u0435 \u0437\u0430\u0431\u0430\u0432\u043d\u043e!",nl:"Het is heel leuk!"},
+{bg:"\u0429\u0435 \u0434\u043e\u0439\u0434\u0430 \u043f\u0430\u043a \u0443\u0442\u0440\u0435!",nl:"Ik kom morgen weer!"}
+]}];
 
 function Stories({go,st}){
   var[sel,sSel]=uS(null);
@@ -2593,9 +2896,404 @@ function BadgScr({st}){
 }
 
 // === APP ===
+
+// === SESSION 5 COMPONENTS ===
+
+function Flashcards({go,st,sS}){
+  var aw=allWords(MODS);
+  var [cards,sCards]=uS(function(){return sh(aw).slice(0,10);});
+  var [idx,sI]=uS(0);
+  var [flipped,sF]=uS(false);
+  var [done,sD]=uS(false);
+  var [score,sSc]=uS(0);
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"\u{1f4c7}"),
+      ce("h2",{className:"h2"},"Flashcards klaar!"),
+      ce("p",{className:"sub"},"Score: "+score+"/"+cards.length+" geweten"),
+      ce("div",{style:{marginTop:16}},
+        ce("button",{className:"btn btn-t",onClick:function(){sCards(sh(aw).slice(0,10));sI(0);sF(false);sD(false);sSc(0);}},"\u{1f504} Opnieuw"),
+        ce("button",{className:"btn btn-g",style:{marginLeft:8},onClick:function(){go("home");}},"Terug")));
+  }
+  var w=cards[idx];
+  if(!w) return null;
+  var learned=st.wi&&st.wi.indexOf(w.b)>=0;
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
+      ce("div",{className:"h2"},"\u{1f4c7} Flashcards"),
+      ce("span",{className:"sub"},(idx+1)+"/"+cards.length)),
+    ce("div",{className:"dots",style:{margin:"8px 0"}},cards.map(function(c,i){
+      return ce("div",{key:i,className:"dot",style:{background:i<idx?"#10b981":i===idx?"#14b8a6":"#e2e8f0"}});})),
+    ce("div",{className:"fc-deck"},
+      ce("div",{className:"fc-card"+(flipped?" flipped":""),onClick:function(){sF(!flipped);}},
+        ce("div",{className:"fc-inner"},
+          ce("div",{className:"fc-face fc-front"},
+            ce("div",{style:{fontSize:28}},w.m),
+            ce("div",{style:{fontSize:28,fontWeight:700,marginTop:8}},w.b),
+            ce("div",{style:{fontSize:12,marginTop:6,opacity:.7}},"["+w.p+"]"),
+            ce("div",{style:{fontSize:11,marginTop:8,opacity:.6}},"Tik om te draaien")),
+          ce("div",{className:"fc-face fc-back"},
+            ce("div",{style:{fontSize:24}},w.m),
+            ce("div",{style:{fontSize:22,fontWeight:700,color:"#1e293b",marginTop:8}},w.n),
+            ce("div",{style:{fontSize:14,color:"#64748b",marginTop:4}},w.b+" ["+w.p+"]"),
+            learned&&ce("div",{style:{color:"#059669",fontSize:12,marginTop:6}},"\u2713 Al geleerd"))))),
+    flipped&&ce("div",{className:"fc-rate"},
+      ce("button",{className:"fc-r1",onClick:function(){playSound("wrong");sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS({...st,fc:(st.fc||0)+1,xp:st.xp+20});sD(true);}}},"\u274c Weet ik niet"),
+      ce("button",{className:"fc-r2",onClick:function(){sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS({...st,fc:(st.fc||0)+1,xp:st.xp+20});sD(true);}}},"\u{1f914} Beetje"),
+      ce("button",{className:"fc-r3",onClick:function(){playSound("correct");sSc(score+1);sS({...st,xp:st.xp+2});sF(false);if(idx<cards.length-1){sI(idx+1);}else{sS(function(p){return{...p,fc:(p.fc||0)+1,xp:p.xp+20};});sD(true);}}},"\u2705 Weet ik!")),
+    !flipped&&ce("div",{style:{textAlign:"center",marginTop:12}},
+      ce("button",{className:"btn btn-g",onClick:function(){speak(w.b);}},"\u{1f50a} Luister")));
+}
+
+function GrammarFill({go,st,sS}){
+  var [qs]=uS(function(){return sh(GRAMMAR_EXERCISES).slice(0,5);});
+  var [idx,sI]=uS(0);
+  var [sel,sSel]=uS(null);
+  var [done,sD]=uS(false);
+  var [correct,sCo]=uS(0);
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"\u{1f4dd}"),
+      ce("h2",{className:"h2"},"Grammatica klaar!"),
+      ce("p",{className:"sub"},correct+"/5 goed \u2014 +"+((correct*5)+25)+" XP"),
+      ce("button",{className:"btn btn-t",style:{marginTop:16},onClick:function(){go("home");}},"Terug"));
+  }
+  var q=qs[idx];
+  if(!q) return null;
+  var opts=sh(q.opts);
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
+      ce("div",{className:"h2"},"\u{1f4dd} Grammatica"),
+      ce("span",{className:"sub"},(idx+1)+"/5")),
+    ce("div",{className:"dots",style:{margin:"8px 0"}},qs.map(function(x,i){
+      return ce("div",{key:i,className:"dot",style:{background:i<idx?"#10b981":i===idx?"#8b5cf6":"#e2e8f0"}});})),
+    ce("div",{className:"card",style:{padding:20}},
+      ce("p",{style:{fontSize:13,color:"#64748b",marginBottom:8}},q.nl),
+      ce("p",{style:{fontSize:18,fontWeight:600}},q.sentence.replace("___",sel===null?"\u2581\u2581\u2581\u2581":sel))),
+    ce("div",{className:"sy3",style:{marginTop:16}},opts.map(function(o){
+      var isSelected=sel===o;
+      var isCorrect=o===q.answer;
+      var cls="qo";
+      if(sel!==null){cls+=" "+(isCorrect?"qo-ok":isSelected&&!isCorrect?"qo-no":"qo-x");}
+      return ce("button",{key:o,className:cls,disabled:sel!==null,onClick:function(){
+        sSel(o);
+        if(o===q.answer){
+          playSound("correct");
+          sCo(correct+1);
+          sS({...st,gf:(st.gf||0)+1,xp:st.xp+5});
+        }else{playSound("wrong");}
+        setTimeout(function(){
+          sSel(null);
+          if(idx<4){sI(idx+1);}
+          else{sS(function(p){return{...p,xp:p.xp+25};});sD(true);}
+        },1200);
+      }},o);})));
+}
+
+function InteractiveConv({go,st,sS}){
+  var [di,sDi]=uS(null);
+  var [step,sSt]=uS(0);
+  var [sel,sSel]=uS(null);
+  var [history,sH]=uS([]);
+  var [done,sD]=uS(false);
+  if(di===null){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"nr"},ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),ce("h2",{className:"h2"},"\u{1f4ac} Gesprekken")),
+      ce("p",{className:"sub"},"Praat met oma! Kies het juiste antwoord."),
+      ce("div",{className:"sy3"},DIALOGUES.map(function(d,i){
+        return ce("button",{key:d.id,className:"card",style:{width:"100%"},onClick:function(){sDi(i);sSt(0);sH([]);sD(false);}},
+          ce("div",{className:"card-r"},
+            ce("div",{style:{fontSize:32}},d.em),
+            ce("div",{className:"card-b"},
+              ce("div",{className:"card-t"},d.title),
+              ce("div",{className:"card-d"},d.steps.length+" stappen")),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a")));})));
+  }
+  var dlg=DIALOGUES[di];
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"\u{1f389}"),
+      ce("h2",{className:"h2"},"Gesprek klaar!"),
+      ce("p",{className:"sub"},"Goed gedaan! +25 XP"),
+      ce("div",{style:{marginTop:16}},
+        ce("button",{className:"btn btn-t",onClick:function(){sDi(null);}},"\u{1f4ac} Meer gesprekken"),
+        ce("button",{className:"btn btn-g",style:{marginLeft:8},onClick:function(){go("home");}},"Terug")));
+  }
+  var visSteps=dlg.steps.slice(0,step+1);
+  var curStep=dlg.steps[step];
+  var isChoice=curStep&&curStep.choices;
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){sDi(null);}},"\u2190"),
+      ce("div",{className:"h2"},dlg.em+" "+dlg.title)),
+    ce("div",{className:"ic-scene"},
+      history.map(function(h,i){
+        return ce("div",{key:i,className:"ic-bubble "+(h.speaker==="oma"?"ic-bubble-oma":"ic-bubble-kid")},
+          ce("div",{style:{fontSize:12,fontWeight:700,marginBottom:2}},h.speaker==="oma"?"\u{1f475} Oma":"\u{1f466} Jij"),
+          ce("div",null,h.bg),
+          ce("div",{style:{fontSize:11,color:h.speaker==="oma"?"#94a3b8":"rgba(255,255,255,.7)",marginTop:2}},h.nl));
+      }),
+      !isChoice&&curStep&&ce("div",{className:"ic-bubble ic-bubble-oma"},
+        ce("div",{style:{fontSize:12,fontWeight:700,marginBottom:2}},"\u{1f475} Oma"),
+        ce("div",null,curStep.bg),
+        ce("div",{style:{fontSize:11,color:"#94a3b8",marginTop:2}},curStep.nl))),
+    isChoice&&ce("div",null,
+      ce("p",{style:{fontSize:13,color:"#64748b",marginBottom:8}},curStep.nl),
+      ce("div",{className:"ic-choices"},curStep.choices.map(function(c,ci){
+        var cls="ic-choice";
+        if(sel!==null){cls+=" "+(c.ok?"ic-choice-ok":ci===sel?"ic-choice-no":"");}
+        return ce("button",{key:ci,className:cls,disabled:sel!==null,onClick:function(){
+          sSel(ci);
+          if(c.ok){
+            playSound("correct");
+            var newH=history.concat([{speaker:"oma",bg:curStep.bg||dlg.steps[step-1].bg,nl:curStep.bg?curStep.nl:dlg.steps[step-1].nl},{speaker:"kid",bg:c.bg,nl:c.nl}]);
+            setTimeout(function(){
+              sH(newH);
+              sSel(null);
+              if(step+1<dlg.steps.length){sSt(step+1);}
+              else{sS({...st,ic:(st.ic||0)+1,xp:st.xp+25});sD(true);}
+            },800);
+          }else{
+            playSound("wrong");
+            setTimeout(function(){sSel(null);},800);
+          }
+        }},
+          ce("div",{style:{fontWeight:600}},c.bg),
+          ce("div",{style:{fontSize:12,color:"#64748b"}},c.nl));
+      }))),
+    !isChoice&&curStep&&ce("div",{style:{textAlign:"center",marginTop:8}},
+      ce("button",{className:"btn btn-t",onClick:function(){
+        sH(history.concat([{speaker:"oma",bg:curStep.bg,nl:curStep.nl}]));
+        if(step+1<dlg.steps.length){sSt(step+1);}
+        else{sS({...st,ic:(st.ic||0)+1,xp:st.xp+25});sD(true);}
+      }},"Verder \u2192")));
+}
+
+function NumbersModule({go,st,sS}){
+  var [mode,sMode]=uS("learn");
+  var [sel,sSel]=uS(null);
+  var [qIdx,sQI]=uS(0);
+  var [qNums,sQN]=uS(function(){return sh(NUMBERS.filter(function(n){return n.n<=20;})).slice(0,10);});
+  var [qSel,sQSel]=uS(null);
+  var [qScore,sQSc]=uS(0);
+  if(mode==="learn"){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"nr"},
+        ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
+        ce("div",{className:"h2"},"\u{1f522} Getallen")),
+      ce("div",{className:"tab-row"},
+        ce("button",{className:"tab tab-on",onClick:function(){sMode("learn");}},"Leren"),
+        ce("button",{className:"tab",onClick:function(){sMode("quiz");sQI(0);sQSc(0);sQSel(null);sQN(sh(NUMBERS.filter(function(n){return n.n<=20;})).slice(0,10));}},"Quiz")),
+      ce("h3",{className:"h3"},"1 \u2014 20"),
+      ce("div",{className:"num-grid"},NUMBERS.filter(function(n){return n.n<=20;}).map(function(nm){
+        var isLearned=(st.nt||0)>=nm.n;
+        return ce("button",{key:nm.n,className:"num-btn"+(sel===nm.n?" num-done":""),onClick:function(){
+          sSel(nm.n);speak(nm.bg);
+          if((st.nt||0)<nm.n){sS({...st,nt:nm.n,xp:st.xp+2});}
+        }},
+          ce("div",{className:"num-big"},nm.n),
+          ce("div",{className:"num-sm"},nm.bg));
+      })),
+      sel&&ce("div",{className:"card",style:{marginTop:12,textAlign:"center",padding:16}},
+        ce("div",{style:{fontSize:32,fontWeight:800,color:"#0d9488"}},NUMBERS.find(function(n){return n.n===sel;}).bg),
+        ce("div",{style:{fontSize:14,color:"#64748b",marginTop:4}},"["+NUMBERS.find(function(n){return n.n===sel;}).p+"]"),
+        ce("div",{style:{fontSize:18,marginTop:4}},NUMBERS.find(function(n){return n.n===sel;}).nl),
+        ce("button",{className:"btn btn-g",style:{marginTop:8},onClick:function(){speak(NUMBERS.find(function(n){return n.n===sel;}).bg);}},"\u{1f50a} Luister")),
+      ce("h3",{className:"h3",style:{marginTop:16}},"Tientallen"),
+      ce("div",{className:"num-grid"},NUMBERS.filter(function(n){return n.n>20;}).map(function(nm){
+        return ce("button",{key:nm.n,className:"num-btn",onClick:function(){sSel(nm.n);speak(nm.bg);}},
+          ce("div",{className:"num-big"},nm.n),
+          ce("div",{className:"num-sm"},nm.bg));
+      })));
+  }
+  // Quiz mode
+  if(qIdx>=qNums.length){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"\u{1f522}"),
+      ce("h2",{className:"h2"},"Getallen Quiz klaar!"),
+      ce("p",{className:"sub"},qScore+"/"+qNums.length+" goed!"),
+      ce("button",{className:"btn btn-t",style:{marginTop:16},onClick:function(){sMode("learn");}},"Terug naar leren"));
+  }
+  var qn=qNums[qIdx];
+  var opts=sh([qn].concat(sh(NUMBERS.filter(function(n){return n.n!==qn.n&&n.n<=20;})).slice(0,3)));
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){sMode("learn");}},"\u2190"),
+      ce("div",{className:"h2"},"\u{1f522} Getallen Quiz"),
+      ce("span",{className:"sub"},(qIdx+1)+"/"+qNums.length)),
+    ce("div",{className:"ctr",style:{margin:"20px 0"}},
+      ce("div",{style:{fontSize:48,fontWeight:800,color:"#0d9488"}},qn.n)),
+    ce("div",{className:"sy3"},opts.map(function(o){
+      var cls="qo";
+      if(qSel!==null){cls+=" "+(o.n===qn.n?"qo-ok":o.n===qSel?"qo-no":"qo-x");}
+      return ce("button",{key:o.n,className:cls,disabled:qSel!==null,onClick:function(){
+        sQSel(o.n);
+        if(o.n===qn.n){playSound("correct");sQSc(qScore+1);sS({...st,xp:st.xp+2});}
+        else{playSound("wrong");}
+        setTimeout(function(){sQSel(null);sQI(qIdx+1);},1000);
+      }},o.bg+" ("+o.nl+")");
+    })));
+}
+
+function WriteToOma({go,st,sS}){
+  var [pi,sPI]=uS(0);
+  var [txt,sTxt]=uS("");
+  var [sent,sSent]=uS(false);
+  var [showHint,sSH]=uS(false);
+  var prompt=OMA_PROMPTS[pi];
+  if(sent){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"\u{1f48c}"),
+      ce("h2",{className:"h2"},"Bericht verstuurd!"),
+      ce("div",{className:"card",style:{margin:"16px 0",padding:16,textAlign:"left"}},
+        ce("div",{style:{fontSize:12,color:"#64748b"}},"Jouw berichtje:"),
+        ce("div",{style:{fontSize:16,fontWeight:600,marginTop:4}},txt)),
+      ce("p",{className:"sub"},"+10 XP"),
+      ce("div",{style:{marginTop:12}},
+        ce("button",{className:"btn btn-t",onClick:function(){sSent(false);sTxt("");sPI((pi+1)%OMA_PROMPTS.length);}},"Volgend berichtje"),
+        ce("button",{className:"btn btn-g",style:{marginLeft:8},onClick:function(){go("home");}},"Terug")));
+  }
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
+      ce("div",{className:"h2"},"\u{1f48c} Schrijf aan oma")),
+    ce("div",{className:"card",style:{padding:16}},
+      ce("p",{style:{fontSize:14,fontWeight:500}},prompt.nl)),
+    showHint&&ce("div",{style:{display:"flex",gap:6,flexWrap:"wrap",margin:"8px 0"}},
+      prompt.hint.map(function(h,i){return ce("span",{key:i,style:{background:"#ecfdf5",color:"#047857",padding:"3px 10px",borderRadius:99,fontSize:13,fontWeight:500,cursor:"pointer"},onClick:function(){sTxt(txt+h+" ");}},h);})),
+    ce("button",{className:"btn btn-g",style:{fontSize:12},onClick:function(){sSH(!showHint);}},showHint?"\u{1f648} Verberg hints":"\u{1f4a1} Toon hints"),
+    ce("textarea",{className:"oma-area",value:txt,onChange:function(e){sTxt(e.target.value);},placeholder:"\u0422\u0438\u043f hier in Cyrillisch..."}),
+    ce("div",{className:"oma-kb"},CYRILLIC_KB.map(function(k){
+      return ce("button",{key:k,className:"oma-key",onClick:function(){sTxt(txt+k);}},k);
+    }),
+    ce("button",{className:"oma-key",style:{gridColumn:"span 2"},onClick:function(){sTxt(txt+" ");}},"_"),
+    ce("button",{className:"oma-key",onClick:function(){sTxt(txt.slice(0,-1));}},"\u232b")),
+    ce("div",{style:{marginTop:12,textAlign:"center"}},
+      ce("button",{className:"btn btn-t",disabled:txt.length<3,onClick:function(){
+        var lower=txt.toLowerCase();
+        var match=prompt.key.some(function(k){return lower.indexOf(k)>=0;});
+        if(match){
+          playSound("correct");
+          sS({...st,om:(st.om||0)+1,xp:st.xp+10});
+          sSent(true);
+        }else{
+          playSound("wrong");
+          alert("Probeer nog eens! Gebruik de hints als je hulp nodig hebt.");
+        }
+      }},"\u{1f4e8} Verstuur")));
+}
+
+function LetterTrace({go,st,sS}){
+  var letters=ALPHA.flatMap(function(g){return g.ls;});
+  var [li,sLI]=uS(0);
+  var [drawing,sDrawing]=uS(false);
+  var canvasRef=R.useRef(null);
+  var letter=letters[li];
+  function clearCanvas(){
+    var c=canvasRef.current;if(!c)return;
+    var ctx=c.getContext("2d");ctx.clearRect(0,0,c.width,c.height);
+  }
+  function startDraw(e){
+    sDrawing(true);
+    var c=canvasRef.current;if(!c)return;
+    var ctx=c.getContext("2d");
+    var r=c.getBoundingClientRect();
+    var x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+    var y=(e.touches?e.touches[0].clientY:e.clientY)-r.top;
+    ctx.beginPath();ctx.moveTo(x,y);
+    ctx.lineWidth=6;ctx.lineCap="round";ctx.strokeStyle="#0d9488";
+  }
+  function draw(e){
+    if(!drawing)return;
+    var c=canvasRef.current;if(!c)return;
+    var ctx=c.getContext("2d");
+    var r=c.getBoundingClientRect();
+    var x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+    var y=(e.touches?e.touches[0].clientY:e.clientY)-r.top;
+    ctx.lineTo(x,y);ctx.stroke();
+  }
+  function stopDraw(){sDrawing(false);}
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
+      ce("div",{className:"h2"},"\u270d\ufe0f Schrijfoefening"),
+      ce("span",{className:"sub"},(li+1)+"/"+letters.length)),
+    ce("div",{className:"ctr"},
+      ce("div",{style:{fontSize:14,color:"#64748b",marginBottom:6}},"Teken de letter:"),
+      ce("div",{style:{fontSize:64,fontWeight:800,color:"#0d9488"}},letter.u),
+      ce("div",{style:{fontSize:13,color:"#64748b"}},"\""+letter.du+"\"")),
+    ce("div",{className:"lt-canvas-wrap",style:{margin:"12px auto",display:"block",width:260}},
+      ce("div",{className:"lt-guide"},letter.u),
+      ce("canvas",{ref:canvasRef,className:"lt-canvas",width:260,height:260,
+        onMouseDown:startDraw,onMouseMove:draw,onMouseUp:stopDraw,onMouseLeave:stopDraw,
+        onTouchStart:startDraw,onTouchMove:draw,onTouchEnd:stopDraw,
+        style:{background:"#fafafa"}})),
+    ce("div",{style:{display:"flex",gap:8,justifyContent:"center",marginTop:8}},
+      ce("button",{className:"btn btn-g",onClick:clearCanvas},"\u{1f5d1}\ufe0f Wis"),
+      ce("button",{className:"btn btn-t",onClick:function(){
+        playSound("correct");
+        sS({...st,lt:(st.lt||0)+1,xp:st.xp+2});
+        clearCanvas();
+        if(li<letters.length-1){sLI(li+1);}
+        else{sLI(0);alert("Geweldig! Alle letters geoefend!");}
+      }},"\u2713 Volgende")),
+    ce("div",{style:{display:"flex",justifyContent:"center",gap:4,marginTop:8}},
+      ce("button",{className:"btn btn-g",disabled:li===0,onClick:function(){clearCanvas();sLI(li-1);}},"\u2190"),
+      ce("button",{className:"btn btn-g",onClick:function(){speak(letter.ex);}},"\u{1f50a} "+letter.ex),
+      ce("button",{className:"btn btn-g",disabled:li>=letters.length-1,onClick:function(){clearCanvas();sLI(li+1);}},"\u2192")));
+}
+
+function ParentDash({go,st,sS}){
+  var [pin,sPin]=uS("");
+  var [unlocked,sUn]=uS(false);
+  var realPin=st.pp||"1234";
+  if(!unlocked){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"\u{1f512}"),
+      ce("h2",{className:"h2"},"Ouder-dashboard"),
+      ce("p",{className:"sub"},"Voer de PIN in (standaard: 1234)"),
+      ce("input",{type:"password",maxLength:4,value:pin,onChange:function(e){sPin(e.target.value);},
+        style:{width:120,textAlign:"center",fontSize:24,letterSpacing:8,padding:"8px",borderRadius:12,border:"2px solid #e2e8f0",marginTop:12},
+        onKeyDown:function(e){if(e.key==="Enter"&&pin===realPin)sUn(true);}}),
+      ce("button",{className:"btn btn-t",style:{marginTop:12},disabled:pin.length!==4,onClick:function(){
+        if(pin===realPin){sUn(true);}else{alert("Verkeerde PIN!");sPin("");}
+      }},"Open"),
+      ce("button",{className:"btn btn-g",style:{marginTop:8},onClick:function(){go("home");}},"Terug"));
+  }
+  var tw=allWords(MODS).length;
+  var tl=ALPHA.reduce(function(s,g){return s+g.ls.length;},0);
+  var eb=BADGES.filter(function(b){return b.rq(st);}).length;
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
+      ce("div",{className:"h2"},"\u{1f4ca} Ouder-dashboard")),
+    ce("div",{className:"pd-grid"},
+      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.xp),ce("div",{className:"pd-lbl"},"XP totaal")),
+      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.sk),ce("div",{className:"pd-lbl"},"Huidige streak")),
+      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.wl+"/"+tw),ce("div",{className:"pd-lbl"},"Woorden geleerd"),
+        ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.wl/tw*100)+"%",background:"#10b981"}}))),
+      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.ll+"/"+tl),ce("div",{className:"pd-lbl"},"Letters geleerd"),
+        ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.ll/tl*100)+"%",background:"#14b8a6"}}))),
+      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},eb+"/"+BADGES.length),ce("div",{className:"pd-lbl"},"Badges behaald"),
+        ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(eb/BADGES.length*100)+"%",background:"#f59e0b"}}))),
+      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},(st.dw||0)),ce("div",{className:"pd-lbl"},"Dagen dagelijks"))),
+    ce("h3",{className:"h3",style:{marginTop:16}},"Activiteiten"),
+    ce("div",{className:"sy3"},
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Quiz vragen goed"),ce("span",{style:{fontWeight:700}},st.qo))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Memory games"),ce("span",{style:{fontWeight:700}},st.mc))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Galgje gewonnen"),ce("span",{style:{fontWeight:700}},st.hw))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Woordzoekers"),ce("span",{style:{fontWeight:700}},st.wsg||0))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Flashcard sessies"),ce("span",{style:{fontWeight:700}},st.fc||0))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Grammatica goed"),ce("span",{style:{fontWeight:700}},st.gf||0))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Gesprekken gevoerd"),ce("span",{style:{fontWeight:700}},st.ic||0))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Berichten aan oma"),ce("span",{style:{fontWeight:700}},st.om||0))),
+      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Letters getekend"),ce("span",{style:{fontWeight:700}},st.lt||0)))));
+}
 function App(){
   const[scr,sScr]=uS("home");
-  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0};};
+  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0,fc:p.fc||0,gf:p.gf||0,ic:p.ic||0,nt:p.nt||0,cw:p.cw||0,dm:p.dm||false,lt:p.lt||0,om:p.om||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0};};
   const[st,sS]=uS(loadSt);
   uE(()=>{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}},[st]);
   const go=(s)=>sScr(s);
@@ -2605,9 +3303,9 @@ function App(){
   const mod=modId?MODS.find(m=>m.id===modId):null;
   const agIdx=scr.startsWith("ag:")?parseInt(scr.slice(3)):null;
 
-  return ce("div",{className:"app"},
+  return ce("div",{className:"app"+(st.dm?" dark":"")},
     ce(Nav,{scr,go,st}),
-    scr==="home"&&ce(Home,{go,st}),
+    scr==="home"&&ce(Home,{go,st,sS}),
     mod&&mod.type==="alpha"&&ce(AlphaList,{go,st}),
     mod&&mod.type!=="alpha"&&ce(ModScreen,{mod,go,st,sS}),
     agIdx!==null&&ce(AlphaGrp,{gi:agIdx,go,st,sS}),
@@ -2620,7 +3318,14 @@ function App(){
     scr==="daily"&&ce(DailyChallenge,{go,st,sS}),
     scr==="stories"&&ce(Stories,{go,st}),
     scr==="culture"&&ce(CultureHub,{go,st}),
-    scr==="badges"&&ce(BadgScr,{st}));
+    scr==="badges"&&ce(BadgScr,{st}),
+    scr==="flashcards"&&ce(Flashcards,{go,st,sS}),
+    scr==="grammarfill"&&ce(GrammarFill,{go,st,sS}),
+    scr==="interactive"&&ce(InteractiveConv,{go,st,sS}),
+    scr==="numbers"&&ce(NumbersModule,{go,st,sS}),
+    scr==="writeoma"&&ce(WriteToOma,{go,st,sS}),
+    scr==="lettertrace"&&ce(LetterTrace,{go,st,sS}),
+    scr==="parentdash"&&ce(ParentDash,{go,st,sS}));
 }
 
 try{
