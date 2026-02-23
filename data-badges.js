@@ -37,4 +37,11 @@ var BADGES =[
 {id:"ic3",nm:"Praat Koning",ic:"\u{1f451}",ds:"3 gesprekken gevoerd",rq:s=>(s.ic||0)>=3},
 {id:"w300",nm:"Woordenboek",ic:"\u{1f4d5}",ds:"300 woorden geleerd",rq:s=>s.wl>=300},
 {id:"srs10",nm:"Herhaal Held",ic:"🔄",ds:"10 herhaalsessies gedaan",rq:s=>{var c=0;var srs=s.srs||{};for(var k in srs){if(srs[k].cor>=2)c++;}return c>=10;}},
-{id:"dm1",nm:"Nachtbraker",ic:"\u{1f319}",ds:"Donkere modus gebruikt",rq:s=>s.dm===true}];
+{id:"dm1",nm:"Nachtbraker",ic:"\u{1f319}",ds:"Donkere modus gebruikt",rq:s=>s.dm===true},
+{id:"ls1",nm:"Eerste Les",ic:"\ud83c\udfaf",ds:"Eerste les afgerond",rq:s=>(s.lsn||0)>=1},
+{id:"ls10",nm:"Les Meester",ic:"\ud83c\udfc5",ds:"10 lessen afgerond",rq:s=>(s.lsn||0)>=10},
+{id:"cpA1",nm:"A1 Gehaald",ic:"\ud83c\udfc6",ds:"A1 checkpoint test gehaald",rq:s=>(s.cp||{}).A1===true},
+{id:"cpA2",nm:"A2 Gehaald",ic:"\ud83e\udd47",ds:"A2 checkpoint test gehaald",rq:s=>(s.cp||{}).A2===true},
+{id:"cpB1",nm:"B1 Gehaald",ic:"\ud83c\udf1f",ds:"B1 checkpoint test gehaald",rq:s=>(s.cp||{}).B1===true},
+{id:"b1s",nm:"B1 Starter",ic:"\ud83d\ude80",ds:"50 B1-woorden geleerd",rq:s=>{var c=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===4&&MODS[i].ws){for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return c>=50;}},
+{id:"b1m",nm:"B1 Meester",ic:"\ud83d\udc51",ds:"Alle 456 B1-woorden geleerd",rq:s=>{var c=0;var wi=s.wi||[];for(var i=0;i<MODS.length;i++){if(MODS[i].ph===4&&MODS[i].ws){for(var j=0;j<MODS[i].ws.length;j++){if(wi.indexOf(MODS[i].ws[j].b)>=0)c++;}}}return c>=456;}}];
