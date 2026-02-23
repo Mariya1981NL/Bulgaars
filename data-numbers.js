@@ -1,0 +1,32 @@
+// Bulgaars Leren — data-numbers.js
+
+var NUMBERS=[
+{n:1,bg:"\u0435\u0434\u043d\u043e",p:"ed-NO",nl:"een"},
+{n:2,bg:"\u0434\u0432\u0435",p:"dve",nl:"twee"},
+{n:3,bg:"\u0442\u0440\u0438",p:"tri",nl:"drie"},
+{n:4,bg:"\u0447\u0435\u0442\u0438\u0440\u0438",p:"che-TI-ri",nl:"vier"},
+{n:5,bg:"\u043f\u0435\u0442",p:"pet",nl:"vijf"},
+{n:6,bg:"\u0448\u0435\u0441\u0442",p:"shest",nl:"zes"},
+{n:7,bg:"\u0441\u0435\u0434\u0435\u043c",p:"SE-dem",nl:"zeven"},
+{n:8,bg:"\u043e\u0441\u0435\u043c",p:"O-sem",nl:"acht"},
+{n:9,bg:"\u0434\u0435\u0432\u0435\u0442",p:"DE-vet",nl:"negen"},
+{n:10,bg:"\u0434\u0435\u0441\u0435\u0442",p:"DE-set",nl:"tien"},
+{n:11,bg:"\u0435\u0434\u0438\u043d\u0430\u0439\u0441\u0435\u0442",p:"e-di-NAJ-set",nl:"elf"},
+{n:12,bg:"\u0434\u0432\u0430\u043d\u0430\u0439\u0441\u0435\u0442",p:"dva-NAJ-set",nl:"twaalf"},
+{n:13,bg:"\u0442\u0440\u0438\u043d\u0430\u0439\u0441\u0435\u0442",p:"tri-NAJ-set",nl:"dertien"},
+{n:14,bg:"\u0447\u0435\u0442\u0438\u0440\u0438\u043d\u0430\u0439\u0441\u0435\u0442",p:"che-ti-ri-NAJ-set",nl:"veertien"},
+{n:15,bg:"\u043f\u0435\u0442\u043d\u0430\u0439\u0441\u0435\u0442",p:"pet-NAJ-set",nl:"vijftien"},
+{n:16,bg:"\u0448\u0435\u0441\u0442\u043d\u0430\u0439\u0441\u0435\u0442",p:"shest-NAJ-set",nl:"zestien"},
+{n:17,bg:"\u0441\u0435\u0434\u0435\u043c\u043d\u0430\u0439\u0441\u0435\u0442",p:"se-dem-NAJ-set",nl:"zeventien"},
+{n:18,bg:"\u043e\u0441\u0435\u043c\u043d\u0430\u0439\u0441\u0435\u0442",p:"o-sem-NAJ-set",nl:"achttien"},
+{n:19,bg:"\u0434\u0435\u0432\u0435\u0442\u043d\u0430\u0439\u0441\u0435\u0442",p:"de-vet-NAJ-set",nl:"negentien"},
+{n:20,bg:"\u0434\u0432\u0430\u0439\u0441\u0435\u0442",p:"DVAJ-set",nl:"twintig"},
+{n:30,bg:"\u0442\u0440\u0438\u0439\u0441\u0435\u0442",p:"TRI-set",nl:"dertig"},
+{n:40,bg:"\u0447\u0435\u0442\u0438\u0440\u0438\u0439\u0441\u0435\u0442",p:"che-ti-RI-set",nl:"veertig"},
+{n:50,bg:"\u043f\u0435\u0442\u0434\u0435\u0441\u0435\u0442",p:"pet-de-SET",nl:"vijftig"},
+{n:60,bg:"\u0448\u0435\u0441\u0442\u0434\u0435\u0441\u0435\u0442",p:"shest-de-SET",nl:"zestig"},
+{n:70,bg:"\u0441\u0435\u0434\u0435\u043c\u0434\u0435\u0441\u0435\u0442",p:"se-dem-de-SET",nl:"zeventig"},
+{n:80,bg:"\u043e\u0441\u0435\u043c\u0434\u0435\u0441\u0435\u0442",p:"o-sem-de-SET",nl:"tachtig"},
+{n:90,bg:"\u0434\u0435\u0432\u0435\u0442\u0434\u0435\u0441\u0435\u0442",p:"de-vet-de-SET",nl:"negentig"},
+{n:100,bg:"\u0441\u0442\u043e",p:"sto",nl:"honderd"}
+];
