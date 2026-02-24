@@ -493,6 +493,122 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .dark .fw-card{background:#334155}
 .dark .fw-word{color:#f1f5f9}
 .dark .fw-add{background:#1e293b;border-color:#475569}
+
+/* Duo Mode */
+.duo-setup{background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:20px;text-align:center}
+.duo-vs{display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0}
+.duo-player{text-align:center;padding:16px;border-radius:16px;border:2px solid #e2e8f0;flex:1;max-width:140px;transition:all .3s}
+.duo-player-active{border-color:var(--accent,#14b8a6);background:#f0fdfa;box-shadow:0 0 0 3px rgba(20,184,166,.15)}
+.duo-player-avatar{font-size:40px;line-height:1}
+.duo-player-name{font-size:13px;font-weight:600;color:#1e293b;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.duo-player-score{font-size:22px;font-weight:800;color:var(--accent,#0d9488);margin-top:2px}
+.duo-vs-icon{font-size:28px;font-weight:800;color:#f59e0b}
+.duo-turn-banner{text-align:center;padding:10px;border-radius:12px;font-size:14px;font-weight:700;margin-bottom:8px}
+.duo-result{text-align:center;padding:24px;background:linear-gradient(135deg,#fef3c7,#fffbeb);border:2px solid #fbbf24;border-radius:16px}
+.duo-result-crown{font-size:56px;margin-bottom:8px}
+.duo-result-msg{font-size:20px;font-weight:800;color:#92400e}
+.duo-result-sub{font-size:14px;color:#b45309;margin-top:4px}
+.dark .duo-setup{background:#334155;border-color:#475569}
+.dark .duo-player{border-color:#475569;background:#1e293b}
+.dark .duo-player-active{border-color:#14b8a6;background:#064e3b}
+.dark .duo-player-name{color:#f1f5f9}
+.dark .duo-result{background:linear-gradient(135deg,#451a03,#78350f);border-color:#f59e0b}
+.dark .duo-result-msg{color:#fbbf24}
+
+/* Lyrics Fill-in-the-Blank */
+.lyr-card{background:#fff;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;transition:all .3s}
+.lyr-header{padding:16px 20px;background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-bottom:1px solid #ddd6fe}
+.lyr-title{font-size:16px;font-weight:700;color:#6d28d9}
+.lyr-artist{font-size:12px;color:#7c3aed;margin-top:2px}
+.lyr-body{padding:16px 20px}
+.lyr-line{padding:12px;border-radius:12px;border:1px solid #f1f5f9;margin-bottom:8px;transition:all .3s}
+.lyr-line-active{border-color:#a78bfa;background:#f5f3ff}
+.lyr-line-done{border-color:#86efac;background:#ecfdf5}
+.lyr-line-wrong{border-color:#fca5a5;background:#fef2f2}
+.lyr-text{font-size:15px;font-weight:600;color:#1e293b;line-height:1.5}
+.lyr-blank{display:inline-block;min-width:80px;border-bottom:2px dashed #a78bfa;color:#6d28d9;font-weight:700;text-align:center;padding:0 4px;margin:0 2px}
+.lyr-blank-filled{border-bottom-style:solid;border-bottom-color:#10b981;color:#059669}
+.lyr-blank-wrong{border-bottom-color:#ef4444;color:#dc2626}
+.lyr-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;justify-content:center}
+.lyr-opt{padding:6px 14px;border-radius:99px;border:2px solid #e2e8f0;background:#fff;font-size:13px;font-weight:600;transition:all .15s;cursor:pointer}
+.lyr-opt:hover:not(:disabled){border-color:#a78bfa;background:#f5f3ff}
+.lyr-opt-ok{background:#ecfdf5!important;border-color:#34d399!important;color:#065f46!important}
+.lyr-opt-no{background:#fef2f2!important;border-color:#f87171!important;color:#991b1b!important}
+.lyr-opt-x{opacity:.4}
+.lyr-pron{font-size:11px;color:#94a3b8;margin-top:4px;font-style:italic}
+.lyr-nav{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.lyr-progress{display:flex;gap:4px;justify-content:center;margin-top:8px}
+.lyr-dot{width:8px;height:8px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.lyr-dot-done{background:#10b981}
+.lyr-dot-cur{background:#8b5cf6;transform:scale(1.3)}
+.dark .lyr-card{background:#334155;border-color:#475569}
+.dark .lyr-header{background:linear-gradient(135deg,#1e1b4b,#312e81);border-color:#4338ca}
+.dark .lyr-title{color:#c4b5fd}
+.dark .lyr-artist{color:#a78bfa}
+.dark .lyr-line{border-color:#475569;background:#1e293b}
+.dark .lyr-line-active{border-color:#7c3aed;background:#2e1065}
+.dark .lyr-text{color:#f1f5f9}
+.dark .lyr-opt{background:#334155;border-color:#475569;color:#e2e8f0}
+
+/* Minimal Pairs */
+.mp-card{background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:20px;text-align:center;transition:all .3s}
+.mp-prompt{font-size:13px;font-weight:600;color:#6d28d9;margin-bottom:12px}
+.mp-listen{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:99px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;border:none;box-shadow:0 4px 12px rgba(109,40,217,.3)}
+.mp-listen:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(109,40,217,.4)}
+.mp-listen:active{transform:scale(0.97)}
+.mp-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mp-choice{padding:16px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;transition:all .2s;text-align:center}
+.mp-choice:hover:not(:disabled){border-color:#a78bfa;background:#f5f3ff;transform:translateY(-2px)}
+.mp-choice-em{font-size:36px;margin-bottom:6px}
+.mp-choice-word{font-size:15px;font-weight:700;color:#1e293b}
+.mp-choice-nl{font-size:12px;color:#64748b;margin-top:2px}
+.mp-choice-ok{border-color:#34d399!important;background:#ecfdf5!important}
+.mp-choice-no{border-color:#f87171!important;background:#fef2f2!important;animation:sb-shake .4s}
+.mp-tip{margin-top:12px;padding:10px 14px;border-radius:10px;background:#faf5ff;border:1px solid #e9d5ff;font-size:12px;color:#7c3aed;text-align:left}
+.mp-score{display:flex;justify-content:center;gap:16px;font-size:14px;font-weight:500;color:#64748b}
+.mp-score-val{font-weight:700;color:#1e293b}
+.dark .mp-card{background:#334155;border-color:#475569}
+.dark .mp-choice{background:#1e293b;border-color:#475569}
+.dark .mp-choice:hover:not(:disabled){border-color:#7c3aed;background:#2e1065}
+.dark .mp-choice-word{color:#f1f5f9}
+.dark .mp-tip{background:#1e1b4b;border-color:#312e81;color:#c4b5fd}
+
+/* Rhythm Tapping Game */
+.rt-card{background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:20px;text-align:center;transition:all .3s}
+.rt-title{font-size:18px;font-weight:700;color:#1e293b}
+.rt-meter{display:flex;align-items:center;font-size:12px;color:#64748b;font-weight:600;margin-bottom:4px}
+.rt-pattern{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.rt-beat{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:2px solid #e2e8f0;background:#fff;transition:all .15s}
+.rt-beat-strong{background:#fef3c7;border-color:#f59e0b;color:#92400e;transform:scale(1.15)}
+.rt-beat-weak{background:#f1f5f9;border-color:#cbd5e1;color:#64748b}
+.rt-beat-active{box-shadow:0 0 0 4px rgba(139,92,246,.3);border-color:#8b5cf6}
+.rt-beat-hit{box-shadow:0 0 0 4px rgba(16,185,129,.4);border-color:#10b981;background:#ecfdf5}
+.rt-beat-miss{box-shadow:0 0 0 4px rgba(239,68,68,.3);border-color:#ef4444;background:#fef2f2}
+.rt-tap-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:32px;font-weight:800;border:4px solid #b45309;cursor:pointer;transition:all .08s;box-shadow:0 6px 20px rgba(217,119,6,.3);user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.rt-tap-btn:active{transform:scale(0.92);box-shadow:0 2px 8px rgba(217,119,6,.4)}
+.rt-feedback{font-size:15px;font-weight:700;margin-top:8px;min-height:24px}
+.rt-stars{display:flex;gap:4px;justify-content:center;margin-top:8px}
+.rt-info{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px;margin-top:12px;text-align:left;font-size:12px;color:#92400e}
+.rt-info-title{font-weight:700;font-size:13px;margin-bottom:4px}
+.dark .rt-card{background:#334155;border-color:#475569}
+.dark .rt-title{color:#f1f5f9}
+.dark .rt-beat{background:#1e293b;border-color:#475569;color:#e2e8f0}
+.dark .rt-beat-strong{background:#451a03;border-color:#f59e0b;color:#fbbf24}
+.dark .rt-info{background:#451a03;border-color:#78350f;color:#fbbf24}
+
+/* Word of the Day Notification */
+.wotd-card{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:2px solid #fbbf24;border-radius:16px;padding:20px;text-align:center}
+.wotd-bell{font-size:48px;margin-bottom:8px}
+.wotd-status{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;font-size:13px;font-weight:700}
+.wotd-on{background:#ecfdf5;color:#059669;border:1px solid #86efac}
+.wotd-off{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5}
+.wotd-time-picker{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:12px}
+.wotd-time-input{padding:8px 12px;border-radius:10px;border:2px solid #e2e8f0;font-size:16px;font-weight:600;text-align:center;width:80px}
+.wotd-preview{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-top:12px;text-align:left}
+.wotd-preview-title{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.dark .wotd-card{background:linear-gradient(135deg,#451a03,#78350f);border-color:#f59e0b}
+.dark .wotd-preview{background:#334155;border-color:#475569}
+.dark .wotd-time-input{background:#334155;border-color:#475569;color:#f1f5f9}
 </style>
 </head>
 <body>
@@ -512,6 +628,8 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <script src="data-missions.js"></script>
 <script src="data-proverbs.js"></script>
 <script src="data-holidays.js"></script>
+<script src="data-lyrics.js"></script>
+<script src="data-minpairs.js"></script>
 <script>
 const R=React,ce=R.createElement,{useState:uS,useEffect:uE}=R;
 
@@ -1274,7 +1392,22 @@ function Home({go,st,sS,profiles,activeId}){
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"var(--accent,#0d9488)"}},"Feestdagen")),
       ce("button",{className:"card",onClick:()=>go("famwall"),style:{textAlign:"center",padding:12,border:"1px solid #c4b5fd"}},
         ce("div",{style:{fontSize:24}},"\u{1f9f2}"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Woordenmuur"))),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Woordenmuur")),
+      ce("button",{className:"card",onClick:()=>go("duo"),style:{textAlign:"center",padding:12,border:"1px solid #fde68a"}},
+        ce("div",{style:{fontSize:24}},"🤝"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#92400e"}},"Duo Modus")),
+      ce("button",{className:"card",onClick:()=>go("lyrics"),style:{textAlign:"center",padding:12,border:"1px solid #ddd6fe"}},
+        ce("div",{style:{fontSize:24}},"🎵"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Liedjes")),
+      ce("button",{className:"card",onClick:()=>go("minpairs"),style:{textAlign:"center",padding:12,border:"1px solid #c4b5fd"}},
+        ce("div",{style:{fontSize:24}},"🎧"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#7c3aed"}},"Luisterquiz")),
+      ce("button",{className:"card",onClick:()=>go("rhythm"),style:{textAlign:"center",padding:12,border:"1px solid #fde68a"}},
+        ce("div",{style:{fontSize:24}},"🥁"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#92400e"}},"Ritme")),
+      ce("button",{className:"card",onClick:()=>go("wotd"),style:{textAlign:"center",padding:12,border:"1px solid #86efac"}},
+        ce("div",{style:{fontSize:24}},"🔔"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#059669"}},"Dagelijks"))),
     // Dark mode & Parent dashboard
     ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
@@ -4094,6 +4227,695 @@ function FamilyWall({go,st,sS,profiles,activeId}){
         ce("div",{style:{fontSize:12}},"Voeg je eerste woord toe."))));
 }
 
+// === DUO MODE — Turn-based parent-child challenge ===
+function DuoMode({go,st,sS,profiles,activeId}){
+  var[phase,sPhase]=uS("setup"); // setup, playing, result
+  var[p1,sP1]=uS(null); // player 1 profile
+  var[p2,sP2]=uS(null); // player 2 profile
+  var[round,sRound]=uS(0);
+  var[turn,sTurn]=uS(0); // 0=p1, 1=p2
+  var[scores,sScores]=uS([0,0]);
+  var[questions,sQuestions]=uS([]);
+  var[sel,sSel]=uS(null);
+  var[shown,sShown]=uS(false);
+  var ROUNDS=10;
+
+  var pList=profiles&&profiles.list?profiles.list:[];
+
+  function startGame(){
+    if(!p1||!p2||p1.id===p2.id)return;
+    // Generate questions
+    var aw=allWords(MODS,"all");
+    if(aw.length<4)return;
+    var qs=[];
+    var pool=sh(aw);
+    for(var i=0;i<ROUNDS&&i<pool.length;i++){
+      var w=pool[i];
+      var others=aw.filter(function(x){return x.b!==w.b;});
+      var picks=sh(others).slice(0,3).map(function(x){return x.n;});
+      picks.push(w.n);
+      var tp=Math.random()<0.5?"bg-nl":"nl-bg";
+      if(tp==="bg-nl"){
+        qs.push({w:w,prompt:w.b,answer:w.n,ops:sh(picks),tp:tp});
+      } else {
+        var bgPicks=sh(others).slice(0,3).map(function(x){return x.b;});
+        bgPicks.push(w.b);
+        qs.push({w:w,prompt:w.n,answer:w.b,ops:sh(bgPicks),tp:tp});
+      }
+    }
+    sQuestions(qs);sRound(0);sTurn(0);sScores([0,0]);sSel(null);sShown(false);
+    sPhase("playing");
+  }
+
+  function handlePick(o){
+    if(shown)return;
+    sSel(o);sShown(true);
+    var correct=o===questions[round].answer;
+    if(correct){
+      playSound("correct");
+      var ns=[...scores];ns[turn]+=10;sScores(ns);
+    } else { playSound("wrong"); }
+    setTimeout(function(){
+      var nextTurn=1-turn;
+      var nextRound=turn===1?round+1:round;
+      if(nextRound>=questions.length){
+        sPhase("result");
+        // Award XP to both players for playing
+        sS(function(s){return Object.assign({},s,{xp:s.xp+20});});
+      } else {
+        sTurn(nextTurn);sRound(nextRound);sSel(null);sShown(false);
+      }
+    },1200);
+  }
+
+  var curPlayer=turn===0?p1:p2;
+  var q=questions[round];
+
+  // Setup screen
+  if(phase==="setup"){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"ctr"},
+        ce("h2",{className:"h2"},"🤝 Duo Modus"),
+        ce("p",{className:"sub"},"Daag elkaar uit! Wie kent de meeste woorden?")),
+      ce("div",{className:"duo-setup"},
+        ce("div",{style:{fontSize:13,fontWeight:600,color:"#64748b",marginBottom:12}},"Kies twee spelers:"),
+        ce("div",{className:"duo-vs"},
+          ce("div",{className:"duo-player"+(p1?" duo-player-active":""),style:{cursor:"default"}},
+            p1?ce("div",null,
+              ce("div",{className:"duo-player-avatar"},p1.avatar),
+              ce("div",{className:"duo-player-name"},p1.name)):
+            ce("div",{style:{fontSize:32,color:"#cbd5e1"}},"?")),
+          ce("div",{className:"duo-vs-icon"},"VS"),
+          ce("div",{className:"duo-player"+(p2?" duo-player-active":""),style:{cursor:"default"}},
+            p2?ce("div",null,
+              ce("div",{className:"duo-player-avatar"},p2.avatar),
+              ce("div",{className:"duo-player-name"},p2.name)):
+            ce("div",{style:{fontSize:32,color:"#cbd5e1"}},"?"))),
+        ce("div",{style:{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center",marginTop:12}},
+          pList.map(function(pr){
+            var isP1=p1&&p1.id===pr.id;
+            var isP2=p2&&p2.id===pr.id;
+            return ce("button",{key:pr.id,onClick:function(){
+              if(!p1||isP1){sP1(isP1?null:pr);}
+              else if(!p2||isP2){sP2(isP2?null:pr);}
+              else{sP1(pr);sP2(null);}
+            },style:{padding:"8px 14px",borderRadius:12,border:"2px solid "+(isP1?"var(--accent,#14b8a6)":isP2?"#8b5cf6":"#e2e8f0"),background:isP1?"#ecfdf5":isP2?"#f5f3ff":"#fff",fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6}},
+              ce("span",{style:{fontSize:20}},pr.avatar),pr.name);
+          })),
+        pList.length<2&&ce("div",{style:{fontSize:12,color:"#94a3b8",marginTop:8}},"Je hebt minimaal 2 profielen nodig."),
+        p1&&p2&&p1.id!==p2.id&&ce("button",{className:"btn btn-t",style:{marginTop:16,width:"100%"},onClick:startGame},"🎮 Start! ("+ROUNDS+" rondes)")));
+  }
+
+  // Result screen
+  if(phase==="result"){
+    var winner=scores[0]>scores[1]?p1:scores[1]>scores[0]?p2:null;
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"duo-result"},
+        ce("div",{className:"duo-result-crown"},winner?"👑":"🤝"),
+        ce("div",{className:"duo-result-msg"},winner?winner.name+" wint!":"Gelijkspel!"),
+        ce("div",{className:"duo-result-sub"},scores[0]+" — "+scores[1]),
+        ce("div",{className:"duo-vs",style:{marginTop:16}},
+          ce("div",{className:"duo-player"+(scores[0]>=scores[1]?" duo-player-active":"")},
+            ce("div",{className:"duo-player-avatar"},p1.avatar),
+            ce("div",{className:"duo-player-name"},p1.name),
+            ce("div",{className:"duo-player-score"},scores[0])),
+          ce("div",{className:"duo-vs-icon"},"VS"),
+          ce("div",{className:"duo-player"+(scores[1]>=scores[0]?" duo-player-active":"")},
+            ce("div",{className:"duo-player-avatar"},p2.avatar),
+            ce("div",{className:"duo-player-name"},p2.name),
+            ce("div",{className:"duo-player-score"},scores[1])))),
+      ce("div",{style:{display:"flex",gap:8,justifyContent:"center",marginTop:12}},
+        ce("button",{className:"btn btn-t",onClick:function(){sPhase("setup");sScores([0,0]);}},"🔄 Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"🏠 Home")));
+  }
+
+  // Playing screen
+  if(!q)return ce("div",{className:"scr sy ctr"},ce("p",null,"Laden..."));
+  var turnColor=turn===0?"var(--accent,#14b8a6)":"#8b5cf6";
+
+  return ce("div",{className:"scr sy"},
+    // Scoreboard
+    ce("div",{className:"duo-vs",style:{marginBottom:0}},
+      ce("div",{className:"duo-player"+(turn===0?" duo-player-active":""),style:{padding:10}},
+        ce("div",{style:{fontSize:24}},p1.avatar),
+        ce("div",{style:{fontSize:11,fontWeight:600}},p1.name),
+        ce("div",{className:"duo-player-score",style:{fontSize:18}},scores[0])),
+      ce("div",{style:{fontSize:12,color:"#94a3b8",textAlign:"center"}},
+        ce("div",{style:{fontWeight:700}},round+1+"/"+questions.length),
+        ce("div",null,"Ronde")),
+      ce("div",{className:"duo-player"+(turn===1?" duo-player-active":""),style:{padding:10}},
+        ce("div",{style:{fontSize:24}},p2.avatar),
+        ce("div",{style:{fontSize:11,fontWeight:600}},p2.name),
+        ce("div",{className:"duo-player-score",style:{fontSize:18}},scores[1]))),
+    // Turn banner
+    ce("div",{className:"duo-turn-banner",style:{background:turnColor+"15",color:turnColor}},
+      curPlayer.avatar+" "+curPlayer.name+" is aan de beurt!"),
+    // Question
+    ce("div",{style:{textAlign:"center",padding:16,background:"#fff",borderRadius:16,border:"1px solid #e2e8f0"}},
+      ce("div",{style:{fontSize:12,color:"#94a3b8",marginBottom:4}},q.tp==="bg-nl"?"Vertaal naar Nederlands:":"Vertaal naar Bulgaars:"),
+      ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
+        ce("div",{style:{fontSize:28,fontWeight:700,color:turnColor}},q.prompt),
+        q.tp==="bg-nl"&&ce(SpeakBtn,{text:q.w.b,size:"md"})),
+      q.tp==="bg-nl"&&q.w.p&&ce("div",{style:{fontSize:12,color:"#94a3b8",marginTop:4}},"["+q.w.p+"]")),
+    // Options
+    ce("div",{className:"sy3",style:{marginTop:8}},q.ops.map(function(o,idx){
+      var cls="qo";
+      if(shown){if(o===q.answer)cls+=" qo-ok";else if(o===sel&&o!==q.answer)cls+=" qo-no";else cls+=" qo-x";}
+      return ce("button",{key:idx,className:cls,disabled:shown,onClick:function(){handlePick(o);}},
+        ce("span",null,o),shown&&o===q.answer&&ce("span",null," ✓"),shown&&o===sel&&sel!==q.answer&&ce("span",null," ✗"));
+    })));
+}
+
+// === LYRICS FILL-IN-THE-BLANK ===
+function LyricsScreen({go,st,sS}){
+  var[songIdx,sSongIdx]=uS(0);
+  var[lineIdx,sLineIdx]=uS(0);
+  var[answers,sAnswers]=uS({}); // {songId-lineIdx: "answer"}
+  var[sel,sSel]=uS(null);
+  var[showResult,sShowResult]=uS(false);
+
+  var song=BG_LYRICS[songIdx%BG_LYRICS.length];
+  var line=song.lines[lineIdx];
+  var key=song.id+"-"+lineIdx;
+  var answered=answers[key]!==undefined;
+  var isCorrect=answers[key]===line.blank;
+
+  // Count completed lines for this song
+  var doneCnt=song.lines.reduce(function(n,l,i){return answers[song.id+"-"+i]!==undefined?n+1:n;},0);
+  var allDone=doneCnt===song.lines.length;
+
+  function pickOpt(o){
+    if(answered)return;
+    sSel(o);
+    var correct=o===line.blank;
+    var na=Object.assign({},answers);na[key]=o;sAnswers(na);
+    if(correct){
+      playSound("correct");
+      sS(function(s){return Object.assign({},s,{xp:s.xp+10});});
+    } else { playSound("wrong"); }
+  }
+
+  function nextLine(){
+    if(lineIdx<song.lines.length-1){sLineIdx(lineIdx+1);sSel(null);}
+    else{sShowResult(true);}
+  }
+  function prevLine(){if(lineIdx>0){sLineIdx(lineIdx-1);sSel(null);}}
+
+  function nextSong(){
+    sSongIdx((songIdx+1)%BG_LYRICS.length);sLineIdx(0);sSel(null);sShowResult(false);
+  }
+  function prevSong(){
+    sSongIdx(songIdx<=0?BG_LYRICS.length-1:songIdx-1);sLineIdx(0);sSel(null);sShowResult(false);
+  }
+
+  // Song completion summary
+  if(showResult){
+    var correct=song.lines.reduce(function(n,l,i){return answers[song.id+"-"+i]===l.blank?n+1:n;},0);
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"ctr"},
+        ce("div",{style:{fontSize:48,marginBottom:8}},correct===song.lines.length?"🎉":"🎵"),
+        ce("h2",{className:"h2"},correct===song.lines.length?"Perfect!":"Resultaat"),
+        ce("p",{className:"sub"},correct+"/"+song.lines.length+" correct — "+song.title+" ("+song.artist+")")),
+      ce("div",{className:"lyr-card"},
+        ce("div",{className:"lyr-body"},
+          song.lines.map(function(l,i){
+            var k=song.id+"-"+i;var ans=answers[k];var ok=ans===l.blank;
+            return ce("div",{key:i,className:"lyr-line "+(ok?"lyr-line-done":"lyr-line-wrong")},
+              ce("div",{className:"lyr-text"},l.text.replace("___",ok?l.blank:"["+l.blank+"]")),
+              !ok&&ans&&ce("div",{style:{fontSize:11,color:"#dc2626",marginTop:2}},"Jouw antwoord: "+ans),
+              ce("div",{className:"lyr-pron"},l.pron+" — "+l.nl));
+          }))),
+      ce("div",{style:{display:"flex",gap:8,justifyContent:"center",marginTop:12}},
+        ce("button",{className:"btn btn-v",onClick:nextSong},"🎵 Volgend liedje"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"🏠 Home")));
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},
+      ce("h2",{className:"h2"},"🎵 Liedjes invullen"),
+      ce("p",{className:"sub"},"Vul het ontbrekende woord in!")),
+    // Song counter
+    ce("div",{className:"ctr",style:{fontSize:12,color:"#94a3b8"}},"Liedje "+(songIdx+1)+"/"+BG_LYRICS.length),
+    // Song card
+    ce("div",{className:"lyr-card"},
+      ce("div",{className:"lyr-header"},
+        ce("div",{style:{display:"flex",alignItems:"center",gap:10}},
+          ce("span",{style:{fontSize:28}},song.em),
+          ce("div",{style:{flex:1}},
+            ce("div",{className:"lyr-title"},song.title),
+            ce("div",{className:"lyr-artist"},song.artist))),
+        ce("div",{style:{fontSize:11,color:"#94a3b8",marginTop:6}},doneCnt+"/"+song.lines.length+" ingevuld")),
+      ce("div",{className:"lyr-body"},
+        // Show all lines, highlight current
+        song.lines.map(function(l,i){
+          var k2=song.id+"-"+i;var ans=answers[k2];var isCur=i===lineIdx;
+          var ok=ans===l.blank;
+          var lineClass="lyr-line"+(isCur?" lyr-line-active":"")+(ans!==undefined?(ok?" lyr-line-done":" lyr-line-wrong"):"");
+          var displayText=l.text.replace("___",ans||"___");
+          return ce("div",{key:i,className:lineClass,onClick:function(){if(ans!==undefined)return;sLineIdx(i);sSel(null);}},
+            ce("div",{className:"lyr-text"},displayText),
+            ans!==undefined&&ce("div",{className:"lyr-pron"},l.pron+" — "+l.nl));
+        }),
+        // Options for current line
+        !answered&&ce("div",{className:"lyr-opts",style:{marginTop:12}},
+          sh(line.opts).map(function(o,oi){
+            return ce("button",{key:oi,className:"lyr-opt",onClick:function(){pickOpt(o);}},o);
+          })),
+        answered&&ce("div",{style:{textAlign:"center",marginTop:8}},
+          ce("div",{style:{fontSize:13,fontWeight:600,color:isCorrect?"#059669":"#dc2626"}},
+            isCorrect?"✓ Goed! +10 XP":"✗ Het was: "+line.blank),
+          ce("button",{className:"btn btn-t",style:{marginTop:8},onClick:nextLine},
+            lineIdx<song.lines.length-1?"Volgende regel →":"Bekijk resultaat")))),
+    // Song navigation
+    ce("div",{className:"lyr-nav"},
+      ce("button",{className:"btn btn-g",onClick:prevSong},"← Vorig liedje"),
+      ce("button",{className:"btn btn-g",onClick:nextSong},"Volgend liedje →")));
+}
+
+// === MINIMAL PAIRS LISTENING QUIZ ===
+function MinimalPairs({go,st,sS}){
+  var[idx,sIdx]=uS(0);
+  var[cat,sCat]=uS("all");
+  var[target,sTarget]=uS(null); // "a" or "b"
+  var[sel,sSel]=uS(null);
+  var[score,sScore]=uS(0);
+  var[total,sTotal]=uS(0);
+  var[showTip,sShowTip]=uS(false);
+
+  var filtered=cat==="all"?BG_MINPAIRS:BG_MINPAIRS.filter(function(p){return p.cat===cat;});
+  var pair=filtered[idx%filtered.length];
+
+  function newRound(p){
+    var t=Math.random()<0.5?"a":"b";
+    sTarget(t);sSel(null);sShowTip(false);
+    // Auto-play after short delay
+    setTimeout(function(){speak(p[t].bg);},300);
+  }
+
+  // Initialize first round
+  uE(function(){if(pair&&!target)newRound(pair);},[pair]);
+
+  function handleChoice(choice){
+    if(sel)return;
+    sSel(choice);sTotal(total+1);
+    var correct=choice===target;
+    if(correct){
+      playSound("correct");sScore(score+1);
+      sS(function(s){return Object.assign({},s,{xp:s.xp+15});});
+    } else { playSound("wrong"); }
+    sShowTip(true);
+  }
+
+  function nextPair(){
+    var ni=(idx+1)%filtered.length;
+    sIdx(ni);
+    newRound(filtered[ni%filtered.length]);
+  }
+
+  function replay(){
+    if(target&&pair)speak(pair[target].bg);
+  }
+
+  if(!pair)return ce("div",{className:"scr sy ctr"},ce("p",null,"Geen paren gevonden."));
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},
+      ce("h2",{className:"h2"},"🎧 Minimale Paren"),
+      ce("p",{className:"sub"},"Luister en kies het juiste woord!")),
+    // Score
+    total>0&&ce("div",{className:"mp-score",style:{marginBottom:8}},
+      ce("span",null,"✓ ",ce("span",{className:"mp-score-val"},score)),
+      ce("span",null,"Totaal: ",ce("span",{className:"mp-score-val"},total)),
+      ce("span",null,Math.round(score/total*100)+"%")),
+    // Category filter
+    ce("div",{className:"fp"},
+      MINPAIR_CATS.map(function(c){
+        return ce("button",{key:c.id,className:"fpill "+(cat===c.id?"fp-on":"fp-off"),onClick:function(){
+          sCat(c.id);sIdx(0);
+          var f=c.id==="all"?BG_MINPAIRS:BG_MINPAIRS.filter(function(p){return p.cat===c.id;});
+          if(f.length>0)newRound(f[0]);
+        }},c.em+" "+c.name);
+      })),
+    // Counter
+    ce("div",{className:"ctr",style:{fontSize:12,color:"#94a3b8",marginTop:4}},(idx%filtered.length+1)+"/"+filtered.length),
+    // Card
+    ce("div",{className:"mp-card"},
+      ce("div",{className:"mp-prompt"},"Welk woord hoor je?"),
+      // Listen button
+      ce("button",{className:"mp-listen",onClick:replay},"🔊 Luister"+(sel?" opnieuw":"")),
+      // Choices
+      ce("div",{className:"mp-choices"},
+        ["a","b"].map(function(side){
+          var w=pair[side];
+          var cls="mp-choice";
+          if(sel){
+            if(side===target)cls+=" mp-choice-ok";
+            else if(side===sel&&sel!==target)cls+=" mp-choice-no";
+          }
+          return ce("button",{key:side,className:cls,disabled:!!sel,onClick:function(){handleChoice(side);}},
+            ce("div",{className:"mp-choice-em"},w.em),
+            ce("div",{className:"mp-choice-word"},w.bg),
+            ce("div",{className:"mp-choice-nl"},w.nl),
+            sel&&ce("div",{style:{fontSize:11,color:"#94a3b8",marginTop:4,fontStyle:"italic"}},"["+w.pron+"]"));
+        })),
+      // Tip
+      showTip&&ce("div",{className:"mp-tip"},"💡 "+pair.tip)),
+    // Navigation
+    ce("div",{style:{display:"flex",justifyContent:"center",marginTop:12}},
+      ce("button",{className:"btn btn-t",onClick:nextPair,disabled:!sel},"Volgende paar →")));
+}
+
+// === RHYTHM TAPPING GAME ===
+var BG_RHYTHMS=[
+  {id:"r1",name:"Ръченица",nameNl:"Rachenitsa",em:"💃",meter:"7/8",pattern:[3,2,2],beats:["ТА","та","та","ТА","та","ТА","та"],
+   strong:[1,0,0,1,0,1,0],desc:"Het beroemdste Bulgaarse ritme! Drie groepen: 3+2+2. Bekend van de traditionele solodans.",region:"Heel Bulgarije"},
+  {id:"r2",name:"Копаница",nameNl:"Kopanitsa",em:"🎶",meter:"11/8",pattern:[2,2,3,2,2],beats:["ТА","та","ТА","та","ТА","та","та","ТА","та","ТА","та"],
+   strong:[1,0,1,0,1,0,0,1,0,1,0],desc:"Een van de snelste Bulgaarse ritmes: 2+2+3+2+2. Een echte uitdaging!",region:"Winkeldorp (Shopsko)"},
+  {id:"r3",name:"Пайдушко",nameNl:"Pajdoesjko",em:"🥁",meter:"5/8",pattern:[3,2],beats:["ТА","та","та","ТА","та"],
+   strong:[1,0,0,1,0],desc:"Ongelijk 5/8 ritme: 3+2. Een hinkende dans, heel karakteristiek.",region:"Thracië"},
+  {id:"r4",name:"Дайчово",nameNl:"Dajchovo",em:"🪘",meter:"9/8",pattern:[2,2,2,3],beats:["ТА","та","ТА","та","ТА","та","ТА","та","та"],
+   strong:[1,0,1,0,1,0,1,0,0],desc:"9/8 ritme: 2+2+2+3. De laatste groep is langer — voel het verschil!",region:"Noord-Bulgarije"},
+  {id:"r5",name:"Черешово хоро",nameNl:"Chereshovo horo",em:"🍒",meter:"7/8",pattern:[2,2,3],beats:["ТА","та","ТА","та","ТА","та","та"],
+   strong:[1,0,1,0,1,0,0],desc:"Nog een 7/8 maar met een ander accent: 2+2+3 in plaats van 3+2+2.",region:"Pirin"},
+  {id:"r6",name:"Право хоро",nameNl:"Pravo horo",em:"🎵",meter:"6/8",pattern:[3,3],beats:["ТА","та","та","ТА","та","та"],
+   strong:[1,0,0,1,0,0],desc:"Het eenvoudigste horo: 3+3. De basis voor vele volksdansen.",region:"Heel Bulgarije"}
+];
+
+function RhythmGame({go,st,sS}){
+  var[rIdx,sRIdx]=uS(0);
+  var[phase,sPhase]=uS("intro"); // intro, listen, play, result
+  var[beatIdx,sBeatIdx]=uS(-1);
+  var[taps,sTaps]=uS([]);
+  var[expected,sExpected]=uS([]);
+  var[score,sScore]=uS(0);
+  var[feedback,sFeedback]=uS("");
+  var acRef=React.useRef(null);
+  var timerRef=React.useRef(null);
+  var startRef=React.useRef(0);
+
+  var rhythm=BG_RHYTHMS[rIdx];
+  var beatCount=rhythm.beats.length;
+
+  function getAC(){
+    if(!acRef.current)acRef.current=new(window.AudioContext||window.webkitAudioContext)();
+    return acRef.current;
+  }
+
+  function playBeat(strong,time){
+    var ac=getAC();
+    var osc=ac.createOscillator();var g=ac.createGain();
+    osc.connect(g);g.connect(ac.destination);
+    osc.frequency.value=strong?440:330;
+    osc.type=strong?"triangle":"sine";
+    g.gain.setValueAtTime(strong?0.25:0.12,time);
+    g.gain.exponentialRampToValueAtTime(0.001,time+0.15);
+    osc.start(time);osc.stop(time+0.15);
+  }
+
+  function playPattern(){
+    var ac=getAC();
+    var bpm=rhythm.meter==="11/8"?160:200; // slower for complex meters
+    var eighthDur=60/bpm;
+    var t=ac.currentTime+0.1;
+    var times=[];
+    for(var i=0;i<beatCount;i++){
+      playBeat(rhythm.strong[i]===1,t);
+      times.push(t);
+      t+=eighthDur;
+    }
+    // Animate beats
+    sBeatIdx(-1);
+    var base=performance.now();
+    var eighth=eighthDur*1000;
+    for(var j=0;j<beatCount;j++){
+      (function(idx,delay){
+        setTimeout(function(){sBeatIdx(idx);},delay);
+      })(j,j*eighth+100);
+    }
+    setTimeout(function(){sBeatIdx(-1);},beatCount*eighth+200);
+    return {times:times,eighthDur:eighthDur};
+  }
+
+  function startListen(){
+    sPhase("listen");sTaps([]);sScore(0);sFeedback("");
+    playPattern();
+    var bpm=rhythm.meter==="11/8"?160:200;
+    var totalMs=beatCount*(60/bpm)*1000+400;
+    setTimeout(function(){sPhase("play");},totalMs);
+  }
+
+  function startPlay(){
+    sPhase("play");sTaps([]);sFeedback("");
+    // Play metronome and record expected times
+    var ac=getAC();
+    var bpm=rhythm.meter==="11/8"?160:200;
+    var eighthDur=60/bpm;
+    var t=ac.currentTime+0.3;
+    var exp=[];
+    for(var i=0;i<beatCount;i++){
+      if(rhythm.strong[i]===1) exp.push(t);
+      // quiet metronome tick
+      var osc2=ac.createOscillator();var g2=ac.createGain();
+      osc2.connect(g2);g2.connect(ac.destination);
+      osc2.frequency.value=800;osc2.type="sine";
+      g2.gain.setValueAtTime(0.03,t);g2.gain.exponentialRampToValueAtTime(0.001,t+0.05);
+      osc2.start(t);osc2.stop(t+0.05);
+      t+=eighthDur;
+    }
+    sExpected(exp);
+    startRef.current=ac.currentTime+0.3;
+    // Animate
+    var base=performance.now()+300;
+    var eighth=eighthDur*1000;
+    for(var j=0;j<beatCount;j++){
+      (function(idx,delay){setTimeout(function(){sBeatIdx(idx);},delay);})(j,j*eighth);
+    }
+    setTimeout(function(){
+      sBeatIdx(-1);
+      sPhase("result");
+    },beatCount*eighth+200);
+  }
+
+  function handleTap(){
+    if(phase!=="play")return;
+    var ac=getAC();
+    var now=ac.currentTime;
+    // Play tap sound
+    var osc=ac.createOscillator();var g=ac.createGain();
+    osc.connect(g);g.connect(ac.destination);
+    osc.frequency.value=520;osc.type="triangle";
+    g.gain.setValueAtTime(0.2,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.1);
+    osc.start(now);osc.stop(now+0.1);
+    sTaps(function(prev){return prev.concat([now]);});
+  }
+
+  // Score calculation
+  uE(function(){
+    if(phase!=="result"||expected.length===0)return;
+    var tolerance=0.15; // 150ms tolerance
+    var hits=0;
+    var matched=new Array(expected.length).fill(false);
+    taps.forEach(function(tap){
+      for(var i=0;i<expected.length;i++){
+        if(!matched[i]&&Math.abs(tap-expected[i])<tolerance){
+          matched[i]=true;hits++;break;
+        }
+      }
+    });
+    var pct=Math.round(hits/expected.length*100);
+    sScore(pct);
+    var stars=pct>=90?3:pct>=60?2:pct>=30?1:0;
+    if(stars>=2){
+      sS(function(s){return Object.assign({},s,{xp:s.xp+(stars===3?25:15)});});
+      playSound("correct");
+    } else if(stars===1){ playSound("xp"); }
+    else { playSound("wrong"); }
+    sFeedback(pct>=90?"Geweldig! Je voelt het ritme!":pct>=60?"Goed! Bijna perfect.":pct>=30?"Niet slecht, probeer opnieuw!":"Luister nog een keer goed.");
+  },[phase]);
+
+  function nextRhythm(){sRIdx((rIdx+1)%BG_RHYTHMS.length);sPhase("intro");sTaps([]);sScore(0);sFeedback("");sBeatIdx(-1);}
+  function prevRhythm(){sRIdx(rIdx<=0?BG_RHYTHMS.length-1:rIdx-1);sPhase("intro");sTaps([]);sScore(0);sFeedback("");sBeatIdx(-1);}
+
+  var stars=score>=90?3:score>=60?2:score>=30?1:0;
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},
+      ce("h2",{className:"h2"},"🥁 Ritme tikken"),
+      ce("p",{className:"sub"},"Leer Bulgaarse volksritmes!")),
+    ce("div",{className:"ctr",style:{fontSize:12,color:"#94a3b8"}},(rIdx+1)+"/"+BG_RHYTHMS.length),
+    ce("div",{className:"rt-card"},
+      ce("div",{style:{fontSize:36,marginBottom:4}},rhythm.em),
+      ce("div",{className:"rt-title"},rhythm.name),
+      ce("div",{style:{fontSize:13,color:"#64748b"}},rhythm.nameNl),
+      ce("div",{className:"rt-meter",style:{justifyContent:"center",marginTop:6}},
+        ce("span",{style:{background:"#fef3c7",padding:"2px 10px",borderRadius:99,color:"#92400e",fontWeight:700}},rhythm.meter),
+        ce("span",{style:{marginLeft:6}},rhythm.pattern.join("+"))),
+      // Beat pattern visualization
+      ce("div",{className:"rt-pattern"},
+        rhythm.beats.map(function(b,i){
+          var cls="rt-beat"+(rhythm.strong[i]?" rt-beat-strong":" rt-beat-weak");
+          if(beatIdx===i)cls+=" rt-beat-active";
+          return ce("div",{key:i,className:cls},b);
+        })),
+      // Phase-specific content
+      phase==="intro"&&ce("div",null,
+        ce("div",{className:"rt-info"},
+          ce("div",{className:"rt-info-title"},rhythm.name+" — "+rhythm.meter),
+          ce("div",null,rhythm.desc),
+          ce("div",{style:{marginTop:4,fontStyle:"italic"}},"Regio: "+rhythm.region)),
+        ce("button",{className:"btn btn-t",style:{marginTop:12,width:"100%"},onClick:startListen},"🔊 Luister & leer")),
+      phase==="listen"&&ce("div",null,
+        ce("div",{style:{fontSize:14,fontWeight:600,color:"#6d28d9",marginTop:8}},"🎵 Luister naar het ritme..."),
+        ce("div",{style:{fontSize:12,color:"#94a3b8",marginTop:4}},"Na het luisteren mag jij tikken!")),
+      phase==="play"&&ce("div",null,
+        ce("div",{style:{fontSize:14,fontWeight:600,color:"#059669",marginTop:8}},"Tik op de sterke tellen!"),
+        ce("div",{style:{display:"flex",justifyContent:"center",marginTop:12}},
+          ce("button",{className:"rt-tap-btn",onClick:handleTap,onTouchStart:function(e){e.preventDefault();handleTap();}},"🥁")),
+        ce("div",{style:{fontSize:11,color:"#94a3b8",marginTop:6}},"Tik bij elke ТА (sterke tel)")),
+      phase==="result"&&ce("div",null,
+        ce("div",{className:"rt-feedback",style:{color:score>=60?"#059669":"#dc2626"}},feedback),
+        ce("div",{className:"rt-stars"},
+          [1,2,3].map(function(s){return ce("span",{key:s,style:{fontSize:28,opacity:s<=stars?1:0.2}},"⭐");})),
+        ce("div",{style:{fontSize:13,color:"#64748b",marginTop:4}},score+"% nauwkeurig"+(score>=60?" — +"+( stars===3?25:15)+" XP":"")),
+        ce("div",{style:{display:"flex",gap:8,justifyContent:"center",marginTop:12}},
+          ce("button",{className:"btn btn-t",onClick:startListen},"🔄 Opnieuw"),
+          ce("button",{className:"btn btn-v",onClick:nextRhythm},"Volgend ritme →")))),
+    // Navigation
+    ce("div",{className:"prov-nav"},
+      ce("button",{className:"btn btn-g",onClick:prevRhythm},"← Vorige"),
+      ce("button",{className:"btn btn-g",onClick:nextRhythm},"Volgende →")));
+}
+
+// === WORD OF THE DAY NOTIFICATION ===
+function WotdNotify({go,st,sS}){
+  var[perm,sPerm]=uS(typeof Notification!=="undefined"?Notification.permission:"unsupported");
+  var[enabled,sEnabled]=uS(function(){
+    try{return localStorage.getItem("bg-leren-wotd-notif")==="on";}catch(e){return false;}
+  });
+  var[hour,sHour]=uS(function(){
+    try{return parseInt(localStorage.getItem("bg-leren-wotd-hour"))||9;}catch(e){return 9;}
+  });
+  var[testSent,sTestSent]=uS(false);
+
+  var todayWord=getWoordVanDeDag();
+
+  function requestPerm(){
+    if(typeof Notification==="undefined")return;
+    Notification.requestPermission().then(function(result){
+      sPerm(result);
+      if(result==="granted"){
+        sEnabled(true);
+        try{localStorage.setItem("bg-leren-wotd-notif","on");}catch(e){}
+        scheduleNotif();
+      }
+    });
+  }
+
+  function toggleNotif(){
+    if(!enabled){
+      if(perm!=="granted"){requestPerm();return;}
+      sEnabled(true);
+      try{localStorage.setItem("bg-leren-wotd-notif","on");}catch(e){}
+      scheduleNotif();
+    } else {
+      sEnabled(false);
+      try{localStorage.setItem("bg-leren-wotd-notif","off");}catch(e){}
+      // Clear scheduled
+      if(timerIdRef.current){clearTimeout(timerIdRef.current);timerIdRef.current=null;}
+    }
+  }
+
+  var timerIdRef=React.useRef(null);
+
+  function scheduleNotif(){
+    if(timerIdRef.current)clearTimeout(timerIdRef.current);
+    var now=new Date();
+    var target=new Date(now);
+    target.setHours(hour,0,0,0);
+    if(target<=now)target.setDate(target.getDate()+1);
+    var delay=target-now;
+    timerIdRef.current=setTimeout(function(){
+      sendNotif();
+      // Reschedule for next day
+      scheduleNotif();
+    },delay);
+  }
+
+  function sendNotif(){
+    var w=getWoordVanDeDag();
+    if(!w)return;
+    if(typeof Notification!=="undefined"&&Notification.permission==="granted"){
+      try{
+        new Notification("Woord van de dag: "+w.m+" "+w.b,{
+          body:w.n+" — "+w.e+"\nUitspraak: "+w.p,
+          icon:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇧🇬</text></svg>",
+          tag:"bg-leren-wotd",
+          requireInteraction:false
+        });
+      }catch(e){}
+    }
+  }
+
+  function sendTest(){
+    sendNotif();
+    sTestSent(true);
+    setTimeout(function(){sTestSent(false);},3000);
+  }
+
+  function changeHour(newH){
+    sHour(newH);
+    try{localStorage.setItem("bg-leren-wotd-hour",newH.toString());}catch(e){}
+    if(enabled)scheduleNotif();
+  }
+
+  // Schedule on mount if enabled
+  uE(function(){
+    if(enabled&&perm==="granted")scheduleNotif();
+    return function(){if(timerIdRef.current)clearTimeout(timerIdRef.current);};
+  },[]);
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},
+      ce("h2",{className:"h2"},"🔔 Woord van de Dag"),
+      ce("p",{className:"sub"},"Dagelijkse herinnering om Bulgaars te oefenen")),
+    ce("div",{className:"wotd-card"},
+      ce("div",{className:"wotd-bell"},"🔔"),
+      // Status
+      ce("div",{className:"wotd-status "+(enabled&&perm==="granted"?"wotd-on":"wotd-off")},
+        enabled&&perm==="granted"?"✓ Notificaties aan":"✗ Notificaties uit"),
+      // Permission / toggle
+      perm==="unsupported"?
+        ce("div",{style:{marginTop:12,fontSize:13,color:"#94a3b8"}},"Je browser ondersteunt geen notificaties."):
+      perm==="denied"?
+        ce("div",{style:{marginTop:12,fontSize:13,color:"#dc2626"}},"Notificaties geblokkeerd. Sta ze toe in je browserinstellingen."):
+      ce("div",null,
+        ce("button",{className:"btn "+(enabled?"btn-g":"btn-t"),style:{marginTop:12,width:"100%"},onClick:toggleNotif},
+          enabled?"🔕 Uitschakelen":"🔔 Inschakelen"),
+        // Time picker
+        enabled&&ce("div",{className:"wotd-time-picker"},
+          ce("span",{style:{fontSize:13,color:"#64748b"}},"Dagelijks om:"),
+          ce("input",{type:"number",min:0,max:23,value:hour,onChange:function(e){changeHour(parseInt(e.target.value)||9);},
+            className:"wotd-time-input"}),
+          ce("span",{style:{fontSize:13,color:"#64748b"}},":00")),
+        // Test button
+        enabled&&perm==="granted"&&ce("button",{className:"btn btn-g",style:{marginTop:8,width:"100%"},onClick:sendTest},
+          testSent?"✓ Verstuurd!":"📩 Test notificatie versturen"))),
+    // Preview
+    todayWord&&ce("div",{className:"wotd-preview"},
+      ce("div",{className:"wotd-preview-title"},"Vandaag:"),
+      ce("div",{style:{display:"flex",alignItems:"center",gap:10}},
+        ce("span",{style:{fontSize:28}},todayWord.m),
+        ce("div",{style:{flex:1}},
+          ce("div",{style:{fontSize:18,fontWeight:700,color:"#1e293b"}},todayWord.b),
+          ce("div",{style:{fontSize:12,color:"#64748b",fontStyle:"italic"}},"["+todayWord.p+"]"),
+          ce("div",{style:{fontSize:14,color:"#475569",marginTop:2}},todayWord.n)),
+        ce(SpeakBtn,{text:todayWord.b,size:"md"}))),
+    // Info
+    ce("div",{style:{fontSize:12,color:"#94a3b8",textAlign:"center",marginTop:12}},
+      "Elke dag een nieuw woord om te leren. ",
+      enabled?"Je krijgt een melding om "+hour+":00.":"Schakel notificaties in om dagelijks herinnerd te worden."));
+}
+
 function App(){
   const[scr,sScr]=uS("home");
   const[profiles,sProfiles]=uS(function(){return loadProfiles();});
@@ -4234,7 +5056,12 @@ function App(){
     scr.startsWith("speed:")&&ce(SpeedRound,{go,st,sS,modId:scr.slice(6)}),
     scr==="proverbs"&&ce(ProverbsScreen,{go,st,sS}),
     scr==="holidays"&&ce(HolidayCalendar,{go,st}),
-    scr==="famwall"&&ce(FamilyWall,{go,st,sS,profiles,activeId}));
+    scr==="famwall"&&ce(FamilyWall,{go,st,sS,profiles,activeId}),
+    scr==="duo"&&ce(DuoMode,{go,st,sS,profiles,activeId}),
+    scr==="lyrics"&&ce(LyricsScreen,{go,st,sS}),
+    scr==="minpairs"&&ce(MinimalPairs,{go,st,sS}),
+    scr==="rhythm"&&ce(RhythmGame,{go,st,sS}),
+    scr==="wotd"&&ce(WotdNotify,{go,st,sS}));
 }
 
 try{
