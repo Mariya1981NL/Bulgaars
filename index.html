@@ -6720,10 +6720,31 @@ try{
 }
 </script>
 <script>
-// Register Service Worker for offline support
+// Register Service Worker for offline support + auto-update detection
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
-    navigator.serviceWorker.register('./sw.js').catch(function(){});
+    navigator.serviceWorker.register('./sw.js').then(function(reg){
+      // Check for updates every 60 seconds
+      setInterval(function(){reg.update();},60000);
+      // Detect when a new service worker is waiting
+      reg.addEventListener('updatefound',function(){
+        var nw=reg.installing;
+        if(!nw)return;
+        nw.addEventListener('statechange',function(){
+          if(nw.state==='installed'&&navigator.serviceWorker.controller){
+            // New version available! Show update banner
+            var bar=document.createElement('div');
+            bar.style.cssText='position:fixed;bottom:0;left:0;right:0;background:linear-gradient(90deg,#6366f1,#8b5cf6);color:#fff;padding:12px 16px;text-align:center;z-index:9999;font-family:Inter,system-ui,sans-serif;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 -2px 12px rgba(0,0,0,.15)';
+            bar.innerHTML='<span>\u{1f389} Update beschikbaar!</span><button style="background:#fff;color:#6366f1;border:none;padding:6px 16px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit" onclick="window.location.reload()">Vernieuwen</button>';
+            document.body.appendChild(bar);
+          }
+        });
+      });
+    }).catch(function(){});
+  });
+  // When a new SW takes control, reload to get fresh content
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    window.location.reload();
   });
 }
 // Capture PWA install prompt for custom install button
