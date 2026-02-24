@@ -67,8 +67,11 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .phase-h{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:600;margin-bottom:4px;display:inline-block}
 .ph1{background:#ecfdf5;color:#047857}
 .ph2{background:#ede9fe;color:#6d28d9}
-.lock-card{opacity:.5}
+.lock-card{opacity:.45;position:relative}
 .lock-card .card{pointer-events:none}
+.lock-msg{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:#f8fafc;border:1px dashed #cbd5e1;font-size:12px;color:#64748b;margin-bottom:6px}
+.lock-msg-icon{font-size:18px}
+.dark .lock-msg{background:#1e293b;border-color:#475569;color:#94a3b8}
 .gram-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:16px}
 .gram-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
 .gram-tbl th{background:#e0f2fe;padding:8px;text-align:left;font-weight:600;border-radius:4px}
@@ -741,6 +744,30 @@ function modProgress(mod,st){
   return{learned:learned,total:total,pct:total>0?Math.round(learned/total*100):0};
 }
 
+// Progressive unlocking: check if a phase is accessible
+function phaseProgress(phase,st){
+  var phaseMods=MODS.filter(function(m){return m.ph===phase;});
+  var totalWords=0;var learnedWords=0;
+  phaseMods.forEach(function(m){
+    if(m.ws){totalWords+=m.ws.length;learnedWords+=m.ws.filter(function(w){return(st.wi||[]).indexOf(w.b)>=0;}).length;}
+  });
+  return{total:totalWords,learned:learnedWords,pct:totalWords>0?Math.round(learnedWords/totalWords*100):0};
+}
+
+function isPhaseUnlocked(phase,st){
+  // Phase 1: always open
+  if(phase<=1)return{open:true};
+  // Phase 2: ≥50% Phase 1 words (lower threshold to not frustrate beginners)
+  if(phase===2){var p1=phaseProgress(1,st);return p1.pct>=50?{open:true}:{open:false,reason:"Leer eerst "+Math.max(0,Math.ceil(p1.total*0.5)-p1.learned)+" meer woorden uit Fase 1",pct:p1.pct,need:50};}
+  // Phase 3: A1 checkpoint passed OR ≥80% Phase 1+2 words
+  if(phase===3){if((st.cp||{}).A1)return{open:true};var p12=phaseProgress(1,st);var p2=phaseProgress(2,st);var combined=p12.learned+p2.learned;var combiTotal=p12.total+p2.total;return{open:false,reason:"Haal eerst de A1 Checkpoint Test",checkpoint:"A1"};}
+  // Phase 4: A2 checkpoint passed
+  if(phase===4){if((st.cp||{}).A2)return{open:true};return{open:false,reason:"Haal eerst de A2 Checkpoint Test",checkpoint:"A2"};}
+  // Phase 5: B1 checkpoint passed
+  if(phase===5){if((st.cp||{}).B1)return{open:true};return{open:false,reason:"Haal eerst de B1 Checkpoint Test",checkpoint:"B1"};}
+  return{open:true};
+}
+
 // === SPACED REPETITION SYSTEM ===
 var SRS_INTERVALS=[1,3,7,14,30]; // days per box
 function srsGetDue(srs,words){
@@ -851,7 +878,7 @@ function Home({go,st,sS,profiles,activeId}){
       "\u{1f50a} Geen Bulgaarse stem gevonden. Op Mac: Systeeminstellingen \u2192 Toegankelijkheid \u2192 Gesproken materiaal \u2192 Beheer stemmen \u2192 zoek 'Bulgarian'. Op Chrome werkt het meestal automatisch."),
     bgVoice&&ce("div",{style:{background:"#ecfdf5",border:"1px solid #a7f3d0",borderRadius:12,padding:10,fontSize:12,color:"#047857",display:"flex",alignItems:"center",gap:6}},
       "\u{1f50a} Bulgaarse spraak actief! Tik op de ",ce("span",{style:{fontSize:16}},"\uD83D\uDD0A")," knop bij woorden om ze te horen."),
-    // Phase 1
+    // Phase 1 — always open
     ce("div",null,ce("span",{className:"phase-h ph1"},"Fase 1: Ontdekking (Week 1-6)")),
     ce("div",{className:"sy3"},MODS.filter(m=>m.ph===1).map(m=>
       ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
@@ -861,41 +888,49 @@ function Home({go,st,sS,profiles,activeId}){
             (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
     // Phase 2
-    ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h ph2"},"Fase 2: Gesprekken (Week 7-16)")),
-    ce("div",{className:"sy3"},MODS.filter(m=>m.ph===2).map(m=>
-      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
-        ce("div",{className:"card-r"},
-          ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc),
-            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
-          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    (function(){var u2=isPhaseUnlocked(2,st);return ce("div",null,
+      ce("div",{style:{marginTop:20,display:"flex",alignItems:"center",gap:8}},ce("span",{className:"phase-h ph2"},"Fase 2: Gesprekken (Week 7-16)"),!u2.open&&ce("span",{style:{fontSize:14}},"\u{1f512}")),
+      !u2.open&&ce("div",{className:"lock-msg"},ce("span",{className:"lock-msg-icon"},"\u{1f512}"),ce("span",null,u2.reason),u2.need&&ce("span",{style:{fontWeight:600,color:"#0d9488",marginLeft:4}},u2.pct+"%/"+u2.need+"%")),
+      ce("div",{className:"sy3"+(u2.open?"":" lock-card")},MODS.filter(m=>m.ph===2).map(m=>
+        ce("button",{key:m.id,className:"card",onClick:u2.open?()=>go("mod:"+m.id):undefined,style:{width:"100%"}},
+          ce("div",{className:"card-r"},
+            ce("div",{className:"card-i "+m.gr},m.em),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc),
+              (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},u2.open?"\u203a":"\u{1f512}"))))));})(),
     // Phase 3
-    ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h",style:{background:"#fef3c7",color:"#b45309"}},"Fase 3: Thema\u2019s & Cultuur")),
-    ce("div",{className:"sy3"},MODS.filter(m=>m.ph===3).map(m=>
-      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
-        ce("div",{className:"card-r"},
-          ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
-            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
-          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    (function(){var u3=isPhaseUnlocked(3,st);return ce("div",null,
+      ce("div",{style:{marginTop:20,display:"flex",alignItems:"center",gap:8}},ce("span",{className:"phase-h",style:{background:"#fef3c7",color:"#b45309"}},"Fase 3: Thema\u2019s & Cultuur"),!u3.open&&ce("span",{style:{fontSize:14}},"\u{1f512}")),
+      !u3.open&&ce("div",{className:"lock-msg"},ce("span",{className:"lock-msg-icon"},"\u{1f512}"),ce("span",null,u3.reason),u3.checkpoint&&ce("button",{className:"btn btn-t",style:{fontSize:11,padding:"2px 10px",marginLeft:8},onClick:function(){go("checkpoint:"+u3.checkpoint);}},"Doe de test \u203a")),
+      ce("div",{className:"sy3"+(u3.open?"":" lock-card")},MODS.filter(m=>m.ph===3).map(m=>
+        ce("button",{key:m.id,className:"card",onClick:u3.open?()=>go("mod:"+m.id):undefined,style:{width:"100%"}},
+          ce("div",{className:"card-r"},
+            ce("div",{className:"card-i "+m.gr},m.em),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
+              (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},u3.open?"\u203a":"\u{1f512}"))))));})(),
     // Phase 4
-    MODS.some(m=>m.ph===4)&&ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h",style:{background:"#ede9fe",color:"#6d28d9"}},"Fase 4: Gevorderd (B1)")),
-    MODS.some(m=>m.ph===4)&&ce("div",{className:"sy3"},MODS.filter(m=>m.ph===4).map(m=>
-      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
-        ce("div",{className:"card-r"},
-          ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
-            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
-          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    (function(){var u4=isPhaseUnlocked(4,st);return MODS.some(m=>m.ph===4)?ce("div",null,
+      ce("div",{style:{marginTop:20,display:"flex",alignItems:"center",gap:8}},ce("span",{className:"phase-h",style:{background:"#ede9fe",color:"#6d28d9"}},"Fase 4: Gevorderd (B1)"),!u4.open&&ce("span",{style:{fontSize:14}},"\u{1f512}")),
+      !u4.open&&ce("div",{className:"lock-msg"},ce("span",{className:"lock-msg-icon"},"\u{1f512}"),ce("span",null,u4.reason),u4.checkpoint&&ce("button",{className:"btn btn-t",style:{fontSize:11,padding:"2px 10px",marginLeft:8},onClick:function(){go("checkpoint:"+u4.checkpoint);}},"Doe de test \u203a")),
+      ce("div",{className:"sy3"+(u4.open?"":" lock-card")},MODS.filter(m=>m.ph===4).map(m=>
+        ce("button",{key:m.id,className:"card",onClick:u4.open?()=>go("mod:"+m.id):undefined,style:{width:"100%"}},
+          ce("div",{className:"card-r"},
+            ce("div",{className:"card-i "+m.gr},m.em),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
+              (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},u4.open?"\u203a":"\u{1f512}")))))):null;})(),
     // Phase 5 (B2)
-    MODS.some(m=>m.ph===5)&&ce("div",{style:{marginTop:20}},ce("span",{className:"phase-h",style:{background:"#fce7f3",color:"#db2777"}},"Fase 5: Expert (B2)")),
-    MODS.some(m=>m.ph===5)&&ce("div",{className:"sy3"},MODS.filter(m=>m.ph===5).map(m=>
-      ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
-        ce("div",{className:"card-r"},
-          ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
-            (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
-          ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
+    (function(){var u5=isPhaseUnlocked(5,st);return MODS.some(m=>m.ph===5)?ce("div",null,
+      ce("div",{style:{marginTop:20,display:"flex",alignItems:"center",gap:8}},ce("span",{className:"phase-h",style:{background:"#fce7f3",color:"#db2777"}},"Fase 5: Expert (B2)"),!u5.open&&ce("span",{style:{fontSize:14}},"\u{1f512}")),
+      !u5.open&&ce("div",{className:"lock-msg"},ce("span",{className:"lock-msg-icon"},"\u{1f512}"),ce("span",null,u5.reason),u5.checkpoint&&ce("button",{className:"btn btn-t",style:{fontSize:11,padding:"2px 10px",marginLeft:8},onClick:function(){go("checkpoint:"+u5.checkpoint);}},"Doe de test \u203a")),
+      ce("div",{className:"sy3"+(u5.open?"":" lock-card")},MODS.filter(m=>m.ph===5).map(m=>
+        ce("button",{key:m.id,className:"card",onClick:u5.open?()=>go("mod:"+m.id):undefined,style:{width:"100%"}},
+          ce("div",{className:"card-r"},
+            ce("div",{className:"card-i "+m.gr},m.em),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
+              (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},u5.open?"\u203a":"\u{1f512}")))))):null;})(),
     // Streak banner
     (st.strk||0)>0&&ce("div",{style:{background:"linear-gradient(135deg,#fff7ed,#fffbeb)",border:"2px solid #fed7aa",borderRadius:16,padding:14,textAlign:"center",marginTop:4,display:"flex",alignItems:"center",justifyContent:"center",gap:10}},
       ce("span",{className:"streak-flame",style:{fontSize:28}},"\ud83d\udd25"),
