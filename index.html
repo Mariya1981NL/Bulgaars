@@ -41,7 +41,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .fc-big{font-size:64px;font-weight:800;line-height:1.1}
 .fc-hint{font-size:13px;color:#94a3b8;margin-top:16px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:12px;font-size:14px;font-weight:500;transition:all .2s}
-.btn-t{background:#14b8a6;color:#fff}.btn-t:hover{background:#0d9488}
+.btn-t{background:var(--accent,#14b8a6);color:#fff}.btn-t:hover{opacity:0.9}
 .btn-v{background:#8b5cf6;color:#fff}.btn-v:hover{background:#7c3aed}
 .btn-e{background:#10b981;color:#fff}.btn-e:hover{background:#059669}
 .btn-g{color:#64748b}.btn-g:hover{background:#f1f5f9}
@@ -680,7 +680,7 @@ function getAllProfileStats(profiles){
 }
 
 // Profile Picker component
-function ProfilePicker({onSelect,profiles,setProfiles}){
+function ProfilePicker({onSelect,profiles,setProfiles,st}){
   var[creating,sCreating]=uS(false);
   var[name,sName]=uS("");
   var[avatar,sAvatar]=uS(PROFILE_AVATARS[0]);
@@ -725,7 +725,16 @@ function ProfilePicker({onSelect,profiles,setProfiles}){
         ce("p",{style:{fontSize:13,color:"#64748b",marginBottom:16}},"Kies een avatar en vul je naam in"),
         ce("div",{className:"pp-avatars"},PROFILE_AVATARS.map(function(a){
           return ce("button",{key:a,className:"pp-ava-btn"+(a===avatar?" pp-ava-sel":""),onClick:function(){sAvatar(a);}},a);
-        })),
+        }).concat(BONUS_AVATARS.map(function(ba){
+          var checkSt=st||DEFAULT_STATE;
+          var unlocked=isAvatarUnlocked(ba,checkSt);
+          return ce("button",{key:"b-"+ba.emoji,className:"pp-ava-btn"+(ba.emoji===avatar?" pp-ava-sel":""),
+            onClick:unlocked?function(){sAvatar(ba.emoji);}:undefined,
+            disabled:!unlocked,
+            title:unlocked?ba.name:ba.name+" — "+ba.desc,
+            style:unlocked?{}:{opacity:0.35,cursor:"not-allowed",filter:"grayscale(0.8)"}
+          },ba.emoji);
+        }))),
         ce("input",{type:"text",value:name,onChange:function(e){sName(e.target.value);},
           placeholder:"Je naam...",maxLength:15,
           onKeyDown:function(e){if(e.key==="Enter")handleCreate();},
@@ -2794,7 +2803,7 @@ function ParentDash({go,st,sS}){
     return ce("div",{className:"scr sy ctr"},
       ce("div",{style:{fontSize:48}},"🔒"),
       ce("h2",{className:"h2"},"Ouder-dashboard"),
-      ce("p",{className:"sub"},"Voer de PIN in (standaard: 1234)"),
+      ce("p",{className:"sub"},"Voer de ouder-PIN in"),
       ce("input",{type:"password",maxLength:4,value:pin,onChange:function(e){sPin(e.target.value);},
         style:{width:120,textAlign:"center",fontSize:24,letterSpacing:8,padding:"8px",borderRadius:12,border:"2px solid #e2e8f0",marginTop:12},
         onKeyDown:function(e){if(e.key==="Enter"&&pin===realPin)sUn(true);}}),
@@ -2864,7 +2873,19 @@ function ParentDash({go,st,sS}){
           [["Quiz goed",st.qo],["Memory",st.mc],["Galgje",st.hw],["Woordzoekers",st.wsg||0],["Flashcards",st.fc||0],["Grammatica",st.gf||0],["Gesprekken",st.ic||0],["Brieven oma",st.om||0],["Letters getekend",st.lt||0],["Speed Rounds",st.sr||0]].map(function(r){
             return ce("div",{key:r[0],className:"card",style:{padding:10}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},
               ce("span",{style:{fontSize:12}},r[0]),ce("span",{style:{fontWeight:700,fontSize:12}},r[1])));
-          })))),
+          }))),
+      // Parent controls
+      ce("div",{className:"pd-section",style:{borderTop:"2px dashed #e2e8f0",paddingTop:16}},
+        ce("div",{className:"pd-section-title"},"⚙️ Ouder-instellingen"),
+        ce("div",{style:{display:"flex",flexWrap:"wrap",gap:8}},
+          ce("button",{className:"btn btn-t",style:{fontSize:12},onClick:function(){
+            if(!confirm("Alle fases en niveaus ontgrendelen voor dit profiel?"))return;
+            sS(function(p){return Object.assign({},p,{cp:{A1:true,A2:true,B1:true,B2:true},xp:Math.max(p.xp,5000),wl:Math.max(p.wl,200),ll:Math.max(p.ll,20)});});
+          }},"🔓 Ontgrendel alles"),
+          ce("button",{className:"btn btn-g",style:{fontSize:12},onClick:function(){
+            var np=prompt("Nieuwe PIN (4 cijfers):",st.pp||"1234");
+            if(np&&np.length===4&&/^\d{4}$/.test(np)){sS(function(p){return Object.assign({},p,{pp:np});});alert("PIN gewijzigd!");}
+          }},"🔑 PIN wijzigen")))),
     // === WEEK TAB ===
     tab==="week"&&ce("div",null,
       ce("div",{className:"pd-section"},
@@ -3446,6 +3467,24 @@ function App(){
   // Daily streak tracking
   uE(function(){checkStreak(st,sS);},[activeId]);
 
+  // Auto-track XP in xpLog for ParentDash week chart
+  var prevXPRef=React.useRef(st.xp);
+  uE(function(){
+    var diff=st.xp-prevXPRef.current;
+    if(diff>0){
+      sS(function(p){
+        var today=new Date().toISOString().slice(0,10);
+        var log=Object.assign({},p.xpLog||{});
+        log[today]=(log[today]||0)+diff;
+        return Object.assign({},p,{xpLog:log});
+      });
+    }
+    prevXPRef.current=st.xp;
+  },[st.xp]);
+
+  // Apply theme colors
+  var activeTheme=APP_THEMES.find(function(t){return t.id===(st.theme||"default");})||APP_THEMES[0];
+
   const go=function(s){
     if(s==="profiles"){sScr("profiles");return;}
     sScr(s);
@@ -3465,7 +3504,8 @@ function App(){
       ce(ProfilePicker,{
         onSelect:switchProfile,
         profiles:profiles,
-        setProfiles:sProfiles
+        setProfiles:sProfiles,
+        st:st
       }));
   }
 
@@ -3476,7 +3516,8 @@ function App(){
   const mod=modId?MODS.find(m=>m.id===modId):null;
   const agIdx=scr.startsWith("ag:")?parseInt(scr.slice(3)):null;
 
-  return ce("div",{className:"app"+(st.dm?" dark":"")},
+  var themeStyle=activeTheme.id!=="default"&&!st.dm?{background:activeTheme.colors.bg,"--accent":activeTheme.colors.accent}:{};
+  return ce("div",{className:"app"+(st.dm?" dark":""),style:themeStyle},
     ce(Nav,{scr,go,st,sS,profile}),
     scr==="home"&&ce(Home,{go,st,sS,profiles,activeId}),
     mod&&mod.type==="alpha"&&ce(AlphaList,{go,st}),
