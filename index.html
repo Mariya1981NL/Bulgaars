@@ -399,6 +399,41 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .sb-rank{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
 .sb-name{flex:1;font-weight:600;font-size:14px}
 .sb-score{font-size:13px;color:#64748b;font-weight:600}
+/* Missions & Weekly Goals */
+.msn-card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:12px;display:flex;align-items:center;gap:12px;transition:all .2s}
+.msn-card.msn-done{background:#ecfdf5;border-color:#86efac}
+.msn-em{font-size:24px;flex-shrink:0;width:36px;text-align:center}
+.msn-info{flex:1;min-width:0}
+.msn-title{font-size:13px;font-weight:600;color:#1e293b}
+.msn-desc{font-size:11px;color:#64748b;margin-top:1px}
+.msn-prog{height:5px;background:#f1f5f9;border-radius:99px;overflow:hidden;margin-top:4px}
+.msn-prog-fill{height:100%;border-radius:99px;transition:width .3s}
+.msn-check{font-size:20px;flex-shrink:0}
+.msn-reward{font-size:11px;font-weight:700;color:#b45309;background:#fef3c7;padding:2px 8px;border-radius:99px;flex-shrink:0}
+/* Leaderboard */
+.lb-row{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;border:1px solid #e2e8f0;background:#fff;margin-bottom:8px;transition:all .2s}
+.lb-row.lb-me{border-color:var(--accent,#14b8a6);background:#f0fdfa}
+.lb-medal{font-size:24px;width:32px;text-align:center;flex-shrink:0}
+.lb-avatar{font-size:28px;flex-shrink:0}
+.lb-info{flex:1}
+.lb-name{font-weight:600;font-size:14px;color:#1e293b}
+.lb-stats{font-size:11px;color:#64748b;margin-top:1px}
+.lb-xp{font-weight:700;font-size:16px;color:var(--accent,#0d9488)}
+/* Pronunciation feedback */
+.pron-meter{width:100%;height:10px;background:#f1f5f9;border-radius:99px;overflow:hidden;margin-top:8px}
+.pron-meter-fill{height:100%;border-radius:99px;transition:width .5s}
+.pron-result{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px;border-radius:16px;margin-top:12px;text-align:center}
+.pron-good{background:#ecfdf5;border:2px solid #6ee7b7}
+.pron-close{background:#fefce8;border:2px solid #fde047}
+.pron-retry{background:#fef2f2;border:2px solid #fca5a5}
+.pron-icon{font-size:36px}
+.pron-label{font-size:15px;font-weight:700}
+.pron-hint{font-size:12px;color:#64748b;margin-top:2px}
+/* Culture quiz */
+.cq-opt{width:100%;padding:14px;border-radius:12px;border:2px solid #e2e8f0;text-align:left;font-size:14px;font-weight:500;transition:all .15s;background:#fff;cursor:pointer}
+.cq-opt:hover:not(:disabled){border-color:var(--accent,#14b8a6);background:#f0fdfa}
+.cq-ok{background:#ecfdf5!important;border-color:#34d399!important;color:#065f46!important}
+.cq-no{background:#fef2f2!important;border-color:#f87171!important;color:#991b1b!important}
 </style>
 </head>
 <body>
@@ -414,6 +449,8 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <script src="data-badges.js"></script>
 <script src="data-words-b1.js"></script>
 <script src="data-words-b2.js"></script>
+<script src="data-fairytales.js"></script>
+<script src="data-missions.js"></script>
 <script>
 const R=React,ce=R.createElement,{useState:uS,useEffect:uE}=R;
 
@@ -640,7 +677,13 @@ function logXP(st,amount){
   log[today]=(log[today]||0)+amount;
   return log;
 }
-var DEFAULT_STATE={xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:"",sr:0,xpLog:{},theme:"default",uAvatars:[]};
+var DEFAULT_STATE={xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:"",sr:0,xpLog:{},theme:"default",uAvatars:[],
+  // Gamification — sessie 16
+  msnDay:"",msnDone:[],msnSnap:{},  // missions: date, completed IDs, snapshot of counters at start of day
+  wkNum:0,wkDone:[],wkSnap:{},      // weekly goals: week number, completed IDs, snapshot at start of week
+  storiesRead:0,cultureRead:0,       // extra counters for missions
+  ftRead:0                           // fairy tales read
+};
 
 function loadProfiles(){
   try{
@@ -936,7 +979,7 @@ function Home({go,st,sS,profiles,activeId}){
   const eb=BADGES.filter(b=>b.rq(st)).length;
 
   return ce("div",{className:"scr sy"},
-    ce("div",{className:"ctr"},ce("h1",{className:"h1"},"\u0414\u043e\u0431\u0440\u0435 \u0434\u043e\u0448\u043b\u0438! \u{1f1e7}\u{1f1ec}"),ce("p",{className:"sub",style:{marginTop:4}},"16 weken Bulgaars \u2014 kies een module")),
+    ce("div",{className:"ctr"},ce("h1",{className:"h1"},"\u0414\u043e\u0431\u0440\u0435 \u0434\u043e\u0448\u043b\u0438! \u{1f1e7}\u{1f1ec}"),ce("p",{className:"sub",style:{marginTop:4}},"Bulgaars leren \u2014 kies een module")),
     ce("div",{style:{background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)",borderRadius:16,padding:16,border:"1px solid #ccfbf1"}},
       ce("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:12}},
         ce("span",{style:{fontSize:13,fontWeight:500,color:"#134e4a"}},"Voortgang"),
@@ -959,23 +1002,23 @@ function Home({go,st,sS,profiles,activeId}){
     bgVoice&&ce("div",{style:{background:"#ecfdf5",border:"1px solid #a7f3d0",borderRadius:12,padding:10,fontSize:12,color:"#047857",display:"flex",alignItems:"center",gap:6}},
       "\u{1f50a} Bulgaarse spraak actief! Tik op de ",ce("span",{style:{fontSize:16}},"\uD83D\uDD0A")," knop bij woorden om ze te horen."),
     // Phase 1 — always open
-    ce("div",null,ce("span",{className:"phase-h ph1"},"Fase 1: Ontdekking (Week 1-6)")),
+    ce("div",null,ce("span",{className:"phase-h ph1"},"Fase 1: Ontdekking")),
     ce("div",{className:"sy3"},MODS.filter(m=>m.ph===1).map(m=>
       ce("button",{key:m.id,className:"card",onClick:()=>go("mod:"+m.id),style:{width:"100%"}},
         ce("div",{className:"card-r"},
           ce("div",{className:"card-i "+m.gr},m.em),
-          ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc),
+          ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
             (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
           ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a"))))),
     // Phase 2
     (function(){var u2=isPhaseUnlocked(2,st);return ce("div",null,
-      ce("div",{style:{marginTop:20,display:"flex",alignItems:"center",gap:8}},ce("span",{className:"phase-h ph2"},"Fase 2: Gesprekken (Week 7-16)"),!u2.open&&ce("span",{style:{fontSize:14}},"\u{1f512}")),
+      ce("div",{style:{marginTop:20,display:"flex",alignItems:"center",gap:8}},ce("span",{className:"phase-h ph2"},"Fase 2: Gesprekken"),!u2.open&&ce("span",{style:{fontSize:14}},"\u{1f512}")),
       !u2.open&&ce("div",{className:"lock-msg"},ce("span",{className:"lock-msg-icon"},"\u{1f512}"),ce("span",null,u2.reason),u2.need&&ce("span",{style:{fontWeight:600,color:"var(--accent,#0d9488)",marginLeft:4}},u2.pct+"%/"+u2.need+"%")),
       ce("div",{className:"sy3"+(u2.open?"":" lock-card")},MODS.filter(m=>m.ph===2).map(m=>
         ce("button",{key:m.id,className:"card",onClick:u2.open?()=>go("mod:"+m.id):undefined,style:{width:"100%"}},
           ce("div",{className:"card-r"},
             ce("div",{className:"card-i "+m.gr},m.em),
-            ce("div",{className:"card-b"},ce("div",{className:"card-t"},"Week "+m.wk+": "+m.t),ce("div",{className:"card-d"},m.desc),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
               (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
             ce("span",{style:{color:"#94a3b8",fontSize:18}},u2.open?"\u203a":"\u{1f512}"))))));})(),
     // Phase 3
@@ -1031,6 +1074,22 @@ function Home({go,st,sS,profiles,activeId}){
     // Daily challenge banner
     // SRS Review banner
     (function(){var dueCount=srsCountDue(st.srs||{},allWords(MODS,st.lv));return dueCount>0?ce("button",{onClick:function(){go("review");},style:{width:"100%",background:"linear-gradient(135deg,#fef2f2,#fff1f2)",border:"2px solid #fca5a5",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4,animation:"pulse 2s infinite"}},ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},ce("span",{style:{fontSize:24}},"🔄"),ce("div",null,ce("div",{style:{fontWeight:700,fontSize:14,color:"#dc2626"}},"Herhalen! ("+dueCount+" woorden)"),ce("div",{style:{fontSize:11,color:"#e11d48"}},"Herhaal woorden voordat je ze vergeet")),ce("span",{style:{fontSize:13,background:"#ef4444",color:"#fff",padding:"2px 10px",borderRadius:99,fontWeight:700}},dueCount))):null;})(),
+    // Missions banner
+    (function(){var today=new Date().toISOString().slice(0,10);var msns=typeof getMissionsForDay==="function"?getMissionsForDay(today):[];var mDone=(st.msnDone||[]);var mCount=msns.filter(function(m){return mDone.indexOf(m.id)>=0;}).length;
+      return ce("button",{onClick:function(){go("missions");},style:{width:"100%",background:"linear-gradient(135deg,#fff7ed,#fffbeb)",border:"2px solid #fed7aa",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4}},
+        ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
+          ce("span",{style:{fontSize:24}},"\ud83c\udfaf"),
+          ce("div",null,ce("div",{style:{fontWeight:700,fontSize:14,color:"#c2410c"}},"Dagelijkse Missies"),ce("div",{style:{fontSize:11,color:"#ea580c"}},mCount>=3?"Allemaal gehaald! \ud83c\udf89":"Voltooi 3 missies voor bonus XP")),
+          ce("span",{style:{fontSize:13,background:mCount>=3?"#10b981":"#f97316",color:"#fff",padding:"2px 10px",borderRadius:99,fontWeight:700}},mCount+"/3")));
+    })(),
+    // Weekly goals banner
+    (function(){var wDone=(st.wkDone||[]).length;
+      return ce("button",{onClick:function(){go("weeklygoals");},style:{width:"100%",background:"linear-gradient(135deg,#f5f3ff,#ede9fe)",border:"2px solid #c4b5fd",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4}},
+        ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
+          ce("span",{style:{fontSize:24}},"\ud83d\udcc5"),
+          ce("div",null,ce("div",{style:{fontWeight:700,fontSize:14,color:"#6d28d9"}},"Weekdoelen"),ce("div",{style:{fontSize:11,color:"#7c3aed"}},"Bereik je doelen deze week")),
+          ce("span",{style:{fontSize:13,background:"#8b5cf6",color:"#fff",padding:"2px 10px",borderRadius:99,fontWeight:700}},wDone+"/3")));
+    })(),
     ce("button",{onClick:()=>go("daily"),style:{width:"100%",background:"linear-gradient(135deg,#fef3c7,#fffbeb)",border:"2px solid #fbbf24",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4}},
       ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
         ce("span",{style:{fontSize:24}},"\u2b50"),
@@ -1122,9 +1181,18 @@ function Home({go,st,sS,profiles,activeId}){
       ce("button",{className:"card",onClick:()=>go("stories"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f4d6}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Verhalen")),
+      ce("button",{className:"card",onClick:()=>go("fairytales"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\ud83e\uddd9"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Sprookjes")),
       ce("button",{className:"card",onClick:()=>go("culture"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f30d}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Cultuur")),
+      ce("button",{className:"card",onClick:()=>go("culturequiz"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\ud83e\uddea"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Quiz")),
+      ce("button",{className:"card",onClick:()=>go("leaderboard"),style:{textAlign:"center",padding:12}},
+        ce("div",{style:{fontSize:24}},"\ud83c\udfc6"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Ranglijst")),
       ce("button",{className:"card",onClick:()=>go("writeoma"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f48c}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Schrijf oma")),
@@ -1220,7 +1288,7 @@ function Vocab({mod,go,st,sS}){
   const mk=()=>{if(!wi.includes(w.b)){const n=[...wi,w.b];sS(s=>({...s,wl:n.length,wi:n,xp:s.xp+10}));}};
 
   return ce("div",{className:"scr sy"},
-    ce("div",{className:"ctr"},ce("h2",{className:"h2"},"Week "+mod.wk+": "+mod.t),ce("p",{className:"sub"},mod.desc)),
+    ce("div",{className:"ctr"},ce("h2",{className:"h2"},mod.t),ce("p",{className:"sub"},mod.desc)),
     ce("div",{className:"ctr",style:{fontSize:13,color:"#64748b"}},(idx+1)+"/"+ws.length),
     ce("div",{className:"fc",style:{borderColor:"#99f6e4",background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)"},onClick:()=>sF(!fl)},
       !fl?ce(R.Fragment,null,
@@ -1315,7 +1383,7 @@ function ModScreen({mod,go,st,sS}){
   return ce("div",{className:"scr sy"},
     ce("div",{className:"nr"},
       ce("button",{className:"btn btn-g",onClick:()=>go("home")},"\u2190 Home"),
-      ce("span",{style:{fontSize:13,color:"#64748b"}},"Week "+mod.wk)),
+      ce("span",{style:{fontSize:13,color:"#64748b"}},mod.desc)),
     ce("div",{className:"ctr"},
       ce("div",{style:{fontSize:36}},mod.em),
       ce("h2",{className:"h2",style:{marginTop:4}},mod.t),
@@ -2387,6 +2455,24 @@ function CultureHub({go,st}){
           ce("div",{className:"culture-em"},p.em),
           ce("div",{className:"culture-t"},p.title));
       })),
+    ce("h3",{className:"h3",style:{marginTop:20}},"\ud83e\uddea Quiz & Sprookjes"),
+    ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
+      ce("button",{className:"card",onClick:function(){go("culturequiz");},style:{textAlign:"center",padding:14}},
+        ce("div",{style:{fontSize:28}},"\ud83e\uddea"),
+        ce("div",{className:"card-t",style:{marginTop:4}},"Cultuur Quiz"),
+        ce("div",{className:"card-d"},"Test je kennis!")),
+      ce("button",{className:"card",onClick:function(){go("fairytales");},style:{textAlign:"center",padding:14}},
+        ce("div",{style:{fontSize:28}},"\ud83e\uddd9"),
+        ce("div",{className:"card-t",style:{marginTop:4}},"Sprookjes"),
+        ce("div",{className:"card-d"},"Bulgaarse volksverhalen"))),
+    ce("h3",{className:"h3",style:{marginTop:20}},"\ud83c\udfa5 Kookvideo's"),
+    ce("div",{className:"sy3"},
+      [{t:"Banitsa maken",url:"https://www.youtube.com/results?search_query=banitsa+recipe+kids",em:"\ud83e\udd50"},
+       {t:"Shopska salade",url:"https://www.youtube.com/results?search_query=shopska+salad+recipe",em:"\ud83e\udd57"},
+       {t:"Mekitsi bakken",url:"https://www.youtube.com/results?search_query=mekitsi+recipe+Bulgarian",em:"\ud83e\udd5e"},
+       {t:"Tarator soep",url:"https://www.youtube.com/results?search_query=tarator+cold+soup+Bulgarian",em:"\ud83e\udd63"}
+      ].map(function(v,i){return ce("a",{key:i,href:v.url,target:"_blank",rel:"noopener",className:"card",style:{width:"100%",textDecoration:"none",display:"block"}},
+        ce("div",{className:"card-r"},ce("div",{style:{fontSize:22}},v.em),ce("div",{className:"card-b"},ce("div",{className:"card-t"},v.t),ce("div",{className:"card-d"},"Zoek video's op YouTube \u203a"))));})),
     ce("h3",{className:"h3",style:{marginTop:20}},"\u{1f3b5} Kinderliedjes"),
     ce("div",{className:"sy3"},
       SONGS.map(function(s,i){
@@ -2412,6 +2498,225 @@ function BadgScr({st}){
         ce("div",{style:{fontSize:10,color:"#64748b",marginTop:3}},b.ds),
         ea?ce("div",{style:{fontSize:10,color:"#d97706",fontWeight:500,marginTop:6}},"Verdiend! \u2728"):
           ce("div",{style:{fontSize:14,color:"#cbd5e1",marginTop:6}},"\u{1f512}"));})));
+}
+
+// === SESSIE 16: GAMIFICATION, CULTURE, PRONUNCIATION ===
+
+// === DAILY MISSIONS ===
+function DailyMissions({st,sS,go}){
+  var today=new Date().toISOString().slice(0,10);
+  var missions=getMissionsForDay(today);
+  uE(function(){
+    if(st.msnDay!==today){
+      sS(function(p){return Object.assign({},p,{
+        msnDay:today,msnDone:[],
+        msnSnap:{wl:p.wl,xp:p.xp,mc:p.mc,qo:p.qo,sp:p.sp,lsn:p.lsn,hw:p.hw,storiesRead:p.storiesRead||0,fc:p.fc,sr:p.sr,gl:p.gl,wsg:p.wsg,sbg:p.sbg,cultureRead:p.cultureRead||0,nt:p.nt,lt:p.lt}
+      });});
+    }
+  },[today]);
+  var getProgress=function(m){
+    var snap=st.msnSnap||{};
+    switch(m.type){
+      case"words":return(st.wl||0)-(snap.wl||0);case"xp":return(st.xp||0)-(snap.xp||0);
+      case"memory":return(st.mc||0)-(snap.mc||0);case"quiz":return(st.qo||0)-(snap.qo||0);
+      case"speaking":return(st.sp||0)-(snap.sp||0);case"lesson":return(st.lsn||0)-(snap.lsn||0);
+      case"hangman":return(st.hw||0)-(snap.hw||0);case"stories":return(st.storiesRead||0)-(snap.storiesRead||0);
+      case"flashcards":return(st.fc||0)-(snap.fc||0);case"speed":return(st.sr||0)>0?1:0;
+      case"grammar":return(st.gl||0)-(snap.gl||0);case"wordsearch":return(st.wsg||0)-(snap.wsg||0);
+      case"sentences":return(st.sbg||0)-(snap.sbg||0);case"culture":return(st.cultureRead||0)-(snap.cultureRead||0);
+      case"numbers":return(st.nt||0)-(snap.nt||0);case"letters":return(st.lt||0)-(snap.lt||0);
+      default:return 0;
+    }
+  };
+  uE(function(){
+    var done=(st.msnDone||[]).slice();var changed=false;
+    missions.forEach(function(m){if(done.indexOf(m.id)<0&&getProgress(m)>=m.target){done.push(m.id);changed=true;}});
+    if(changed){
+      var xpBonus=0;missions.forEach(function(m){if(done.indexOf(m.id)>=0&&(st.msnDone||[]).indexOf(m.id)<0)xpBonus+=m.xpReward;});
+      sS(function(p){return Object.assign({},p,{msnDone:done,xp:p.xp+xpBonus});});
+      playSound("correct");
+    }
+  },[st.wl,st.xp,st.mc,st.qo,st.sp,st.lsn,st.hw,st.storiesRead,st.fc,st.sr,st.gl,st.wsg,st.sbg,st.cultureRead,st.nt,st.lt]);
+  var done=st.msnDone||[];
+  var completedCount=missions.filter(function(m){return done.indexOf(m.id)>=0;}).length;
+  var allDone=completedCount>=3;
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190"),ce("span",{style:{fontSize:14,fontWeight:700,color:"#f59e0b"}},"\ud83c\udfaf Dagelijkse Missies"),ce("span",{style:{fontSize:13,color:"#64748b"}},completedCount+"/3")),
+    allDone&&ce("div",{style:{background:"linear-gradient(135deg,#ecfdf5,#d1fae5)",borderRadius:16,padding:16,textAlign:"center",border:"2px solid #6ee7b7",marginBottom:8}},ce("div",{style:{fontSize:36}},"\ud83c\udf89"),ce("div",{style:{fontWeight:700,fontSize:16,color:"#047857"}},"Alle missies voltooid!"),ce("div",{style:{fontSize:12,color:"#059669"}},"Geweldig! Kom morgen terug voor nieuwe missies.")),
+    ce("div",{className:"sy3"},missions.map(function(m){
+      var prog=Math.max(0,getProgress(m));var isDone=done.indexOf(m.id)>=0;var pct=Math.min(100,Math.round(prog/m.target*100));
+      return ce("div",{key:m.id,className:"msn-card"+(isDone?" msn-done":"")},
+        ce("div",{className:"msn-em"},m.em),
+        ce("div",{className:"msn-info"},ce("div",{className:"msn-title"},m.title),ce("div",{className:"msn-desc"},m.desc),
+          ce("div",{className:"msn-prog"},ce("div",{className:"msn-prog-fill",style:{width:pct+"%",background:isDone?"#10b981":"var(--accent,#14b8a6)"}})),
+          ce("div",{style:{fontSize:11,color:isDone?"#059669":"#64748b",marginTop:2}},prog+"/"+m.target)),
+        isDone?ce("div",{className:"msn-check"},"\u2705"):ce("div",{className:"msn-reward"},"+"+m.xpReward+" XP"));
+    })));
+}
+
+// === WEEKLY GOALS ===
+function WeeklyGoals({st,sS,go}){
+  var weekNum=Math.floor(Date.now()/(7*86400000));
+  var goals=getWeeklyGoals(weekNum);
+  uE(function(){
+    if((st.wkNum||0)!==weekNum){
+      sS(function(p){return Object.assign({},p,{wkNum:weekNum,wkDone:[],
+        wkSnap:{wl:p.wl,xp:p.xp,lsn:p.lsn,mc:p.mc,hw:p.hw,wsg:p.wsg,sbg:p.sbg,sp:p.sp,cultureRead:p.cultureRead||0}
+      });});
+    }
+  },[weekNum]);
+  var getProgress=function(g){
+    var snap=st.wkSnap||{};
+    switch(g.type){
+      case"words":return(st.wl||0)-(snap.wl||0);case"xp":return(st.xp||0)-(snap.xp||0);
+      case"streak":return st.strk||0;case"lessons":return(st.lsn||0)-(snap.lsn||0);
+      case"games":return((st.mc||0)-(snap.mc||0))+((st.hw||0)-(snap.hw||0))+((st.wsg||0)-(snap.wsg||0))+((st.sbg||0)-(snap.sbg||0));
+      case"speaking":return(st.sp||0)-(snap.sp||0);case"culture":return(st.cultureRead||0)-(snap.cultureRead||0);
+      case"dailyMissions":var log=st.xpLog||{};var count=0;for(var d in log){var dw=Math.floor(new Date(d).getTime()/(7*86400000));if(dw===weekNum&&log[d]>0)count++;}return count;
+      default:return 0;
+    }
+  };
+  uE(function(){
+    var done=(st.wkDone||[]).slice();var changed=false;
+    goals.forEach(function(g){if(done.indexOf(g.id)<0&&getProgress(g)>=g.target){done.push(g.id);changed=true;}});
+    if(changed){
+      var xpBonus=0;goals.forEach(function(g){if(done.indexOf(g.id)>=0&&(st.wkDone||[]).indexOf(g.id)<0)xpBonus+=g.xpReward;});
+      sS(function(p){return Object.assign({},p,{wkDone:done,xp:p.xp+xpBonus});});playSound("correct");
+    }
+  },[st.wl,st.xp,st.lsn,st.mc,st.hw,st.wsg,st.sbg,st.sp,st.cultureRead,st.strk]);
+  var done=st.wkDone||[];var completedCount=goals.filter(function(g){return done.indexOf(g.id)>=0;}).length;
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190"),ce("span",{style:{fontSize:14,fontWeight:700,color:"#8b5cf6"}},"\ud83d\udcc5 Weekdoelen"),ce("span",{style:{fontSize:13,color:"#64748b"}},completedCount+"/"+goals.length)),
+    ce("div",{className:"sy3"},goals.map(function(g){
+      var prog=Math.max(0,getProgress(g));var isDone=done.indexOf(g.id)>=0;var pct=Math.min(100,Math.round(prog/g.target*100));
+      return ce("div",{key:g.id,className:"msn-card"+(isDone?" msn-done":"")},
+        ce("div",{className:"msn-em"},g.em),
+        ce("div",{className:"msn-info"},ce("div",{className:"msn-title"},g.title),ce("div",{className:"msn-desc"},g.desc),
+          ce("div",{className:"msn-prog"},ce("div",{className:"msn-prog-fill",style:{width:pct+"%",background:isDone?"#10b981":"#8b5cf6"}})),
+          ce("div",{style:{fontSize:11,color:isDone?"#059669":"#64748b",marginTop:2}},prog+"/"+g.target)),
+        isDone?ce("div",{className:"msn-check"},"\u2705"):ce("div",{className:"msn-reward"},"+"+g.xpReward+" XP"));
+    })));
+}
+
+// === LEADERBOARD ===
+function Leaderboard({profiles,activeId,go}){
+  var[sortBy,sSortBy]=uS("xp");
+  if(!profiles||!profiles.list||profiles.list.length<2){
+    return ce("div",{className:"scr sy ctr"},ce("div",{style:{fontSize:48}},"\ud83c\udfc6"),ce("h2",{className:"h1"},"Ranglijst"),ce("p",{className:"sub"},"Maak meerdere profielen om de ranglijst te zien!"),ce("button",{className:"btn btn-t",onClick:function(){go("home");}},"Terug"));
+  }
+  var data=profiles.list.map(function(p){var pst=loadProfileState(p.id);return{id:p.id,name:p.name,avatar:p.avatar,xp:pst.xp||0,wl:pst.wl||0,strk:pst.strk||0};});
+  data.sort(function(a,b){if(sortBy==="xp")return b.xp-a.xp||(b.wl-a.wl);if(sortBy==="words")return b.wl-a.wl||(b.xp-a.xp);return(b.strk-a.strk)||(b.xp-a.xp);});
+  var medals=["\ud83e\udd47","\ud83e\udd48","\ud83e\udd49"];
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190"),ce("span",{style:{fontSize:14,fontWeight:700,color:"var(--accent,#0d9488)"}},"\ud83c\udfc6 Ranglijst")),
+    ce("div",{className:"tab-row"},
+      ce("button",{className:"tab"+(sortBy==="xp"?" tab-on":""),onClick:function(){sSortBy("xp");}},"XP"),
+      ce("button",{className:"tab"+(sortBy==="words"?" tab-on":""),onClick:function(){sSortBy("words");}},"Woorden"),
+      ce("button",{className:"tab"+(sortBy==="streak"?" tab-on":""),onClick:function(){sSortBy("streak");}},"Streak")),
+    ce("div",{className:"sy3"},data.map(function(u,i){
+      var isMe=u.id===activeId;
+      return ce("div",{key:u.id,className:"lb-row"+(isMe?" lb-me":"")},
+        ce("div",{className:"lb-medal"},i<3?medals[i]:(i+1)),ce("div",{className:"lb-avatar"},u.avatar),
+        ce("div",{className:"lb-info"},ce("div",{className:"lb-name"},u.name),ce("div",{className:"lb-stats"},u.wl+" woorden \u2022 \ud83d\udd25 "+u.strk+" dagen")),
+        ce("div",{className:"lb-xp"},sortBy==="xp"?u.xp+" XP":sortBy==="words"?u.wl+" \ud83d\udcda":"\ud83d\udd25 "+u.strk));
+    })));
+}
+
+// === FAIRY TALES ===
+function FairyTales({go,st,sS}){
+  var[storyIdx,sStoryIdx]=uS(null);var[sceneId,sSceneId]=uS("start");var[trail,sTrail]=uS([]);
+  if(storyIdx===null){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home")),
+      ce("div",{className:"ctr"},ce("div",{style:{fontSize:36}},"\ud83e\uddd9"),ce("h2",{className:"h1"},"Bulgaarse Sprookjes"),ce("p",{className:"sub"},"Echte volksverhalen uit Bulgarije!")),
+      ce("div",{className:"sy3"},FAIRYTALES.map(function(ft,i){
+        return ce("button",{key:ft.id,className:"card",onClick:function(){sStoryIdx(i);sSceneId("start");sTrail([]);},style:{width:"100%"}},
+          ce("div",{className:"card-r"},ce("div",{style:{fontSize:28,marginRight:6}},ft.em),
+            ce("div",{className:"card-b"},ce("div",{className:"card-t"},ft.title),ce("div",{className:"card-d"},ft.titleNl)),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a")));
+      })));
+  }
+  var ft=FAIRYTALES[storyIdx];var scene=ft.scenes.find(function(s){return s.id===sceneId;});if(!scene)return null;
+  var handleChoice=function(next){sTrail(function(p){return p.concat([sceneId]);});sSceneId(next);};
+  var handleFinish=function(){sS(function(p){return Object.assign({},p,{xp:p.xp+10,ftRead:(p.ftRead||0)+1});});playSound("correct");launchConfetti();sStoryIdx(null);};
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){sStoryIdx(null);}},"\u2190 Terug"),ce("span",{style:{fontSize:14,fontWeight:700}},ft.em+" "+ft.title)),
+    trail.length>0&&ce("div",{style:{display:"flex",gap:4,flexWrap:"wrap",marginBottom:8}},
+      trail.map(function(t,i){return ce("span",{key:i,style:{fontSize:10,background:"#f1f5f9",color:"#64748b",padding:"2px 8px",borderRadius:99}},i+1);}),
+      ce("span",{style:{fontSize:10,background:"var(--accent,#14b8a6)",color:"#fff",padding:"2px 8px",borderRadius:99}},trail.length+1)),
+    ce("div",{style:{background:"linear-gradient(135deg,#fefce8,#fef3c7)",borderRadius:16,padding:20,border:"2px solid #fde68a"}},
+      ce("div",{style:{fontSize:18,fontWeight:600,color:"#92400e",lineHeight:1.6}},scene.text.bg),
+      ce("div",{style:{fontSize:14,color:"#a16207",marginTop:8,fontStyle:"italic"}},scene.text.nl)),
+    scene.end?ce("div",{className:"ctr",style:{marginTop:16}},ce("div",{style:{fontSize:48,marginBottom:8}},"\ud83c\udf1f"),
+      ce("div",{style:{fontWeight:700,fontSize:16,color:"#047857"}},"Einde van het sprookje!"),ce("div",{style:{fontSize:12,color:"#059669",marginBottom:12}},"+10 XP verdiend"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center"}},ce("button",{className:"btn btn-t",onClick:handleFinish},"Nog een sprookje"),ce("button",{className:"btn btn-g",onClick:function(){handleFinish();go("home");}},"Home"))):
+    ce("div",{className:"sy3",style:{marginTop:12}},(scene.choices||[]).map(function(ch,i){
+      return ce("button",{key:i,style:{width:"100%",padding:14,borderRadius:12,border:"2px solid #fde68a",background:"#fff",textAlign:"left",cursor:"pointer",transition:"all .15s",fontSize:14,fontWeight:500},onClick:function(){handleChoice(ch.next);}},
+        ce("div",{style:{color:"#92400e"}},ch.text.bg),ce("div",{style:{fontSize:12,color:"#a16207",marginTop:2}},ch.text.nl));
+    })));
+}
+
+// === CULTURE QUIZ ===
+function CultureQuiz({go,st,sS}){
+  var generateQs=function(){
+    var pool=[];CULTURE_PAGES.forEach(function(page){page.items.forEach(function(item){pool.push({q:item.d,a:item.t,page:page.title});});});
+    var shuffled=sh(pool);var qs=[];
+    for(var i=0;i<Math.min(10,shuffled.length);i++){
+      var correct=shuffled[i];var wrongs=sh(pool.filter(function(p){return p.a!==correct.a;})).slice(0,3);
+      var opts=sh([correct.a].concat(wrongs.map(function(w){return w.a;})));
+      qs.push({q:correct.q,answer:correct.a,opts:opts,page:correct.page});
+    }return qs;
+  };
+  var[qs,sQs]=uS(function(){return generateQs();});var[qi,sQi]=uS(0);var[score,sScore]=uS(0);var[sel,sSel]=uS(null);var[shown,sShown]=uS(false);var[done,sDone]=uS(false);
+  if(done){
+    var pct=Math.round(score/qs.length*100);var xpEarned=score*5+(score>=8?50:0);
+    return ce("div",{className:"scr sy ctr"},ce("div",{style:{fontSize:56}},pct>=80?"\ud83c\udf89":pct>=50?"\ud83d\udc4f":"\ud83d\udcaa"),
+      ce("h2",{className:"h1"},"Cultuur Quiz klaar!"),ce("div",{style:{fontSize:36,fontWeight:800,color:"var(--accent,#0d9488)"}},score+"/"+qs.length),
+      ce("p",{style:{color:"#64748b",fontSize:13}},"+"+xpEarned+" XP verdiend!"+(score>=8?" (incl. bonus!)":"")),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",marginTop:16}},
+        ce("button",{className:"btn btn-t",onClick:function(){sQs(generateQs());sQi(0);sScore(0);sSel(null);sShown(false);sDone(false);}},"\ud83d\udd04 Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"Home")));
+  }
+  var q=qs[qi];if(!q)return null;
+  var handlePick=function(o){
+    if(shown)return;sSel(o);sShown(true);var correct=o===q.answer;playSound(correct?"correct":"wrong");
+    if(correct){sScore(score+1);sS(function(p){return Object.assign({},p,{xp:p.xp+5});});}
+    setTimeout(function(){
+      if(qi+1>=qs.length){sS(function(p){return Object.assign({},p,{cultureRead:(p.cultureRead||0)+1,xp:p.xp+(score+(correct?1:0)>=8?50:0)});});sDone(true);}
+      else{sQi(qi+1);sSel(null);sShown(false);}
+    },correct?800:1500);
+  };
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190"),ce("span",{style:{fontSize:14,fontWeight:700,color:"var(--accent,#0d9488)"}},"\ud83e\uddea Cultuur Quiz"),ce("span",{style:{fontSize:13,color:"#64748b"}},(qi+1)+"/"+qs.length)),
+    ce("div",{className:"pb"},ce("div",{style:{height:"100%",borderRadius:999,background:"var(--accent,#14b8a6)",width:((qi+1)/qs.length*100)+"%",transition:"width .3s"}})),
+    ce("div",{style:{background:"#f0f9ff",borderRadius:16,padding:16,border:"1px solid #bae6fd",marginTop:12}},
+      ce("div",{style:{fontSize:11,color:"#0369a1",fontWeight:600,marginBottom:6}},"\ud83d\udca1 Over welk item gaat dit?"),
+      ce("div",{style:{fontSize:14,color:"#1e293b",lineHeight:1.5}},q.q)),
+    ce("div",{className:"sy3",style:{marginTop:12}},q.opts.map(function(o,idx){
+      var cls="cq-opt";if(shown){if(o===q.answer)cls+=" cq-ok";else if(o===sel&&o!==q.answer)cls+=" cq-no";}
+      return ce("button",{key:idx,className:cls,disabled:shown,onClick:function(){handlePick(o);}},o);
+    })),
+    shown&&ce("div",{style:{textAlign:"center",fontSize:13,fontWeight:500,color:sel===q.answer?"#059669":"#dc2626",marginTop:8}},sel===q.answer?"\u2713 Correct!":"\u2717 Het antwoord was: "+q.answer));
+}
+
+// === PRONUNCIATION FEEDBACK ===
+function getPronResult(expected,heard){
+  if(!heard||!expected)return{level:"retry",score:0};
+  var exp=expected.trim().toLowerCase().replace(/[?!.,;:]/g,"");var hrd=heard.trim().toLowerCase().replace(/[?!.,;:]/g,"");
+  var dist=levenshtein(exp,hrd);var len=exp.length||1;var score=Math.max(0,Math.min(100,Math.round(100-(dist/len*100))));
+  if(dist<=Math.max(1,Math.ceil(len*0.10)))return{level:"good",score:score};
+  if(dist<=Math.ceil(len*0.30))return{level:"close",score:score};
+  return{level:"retry",score:score};
+}
+function PronFeedback({result,heard}){
+  var cfg={good:{icon:"\ud83c\udf1f",label:"Perfect!",color:"#059669",tip:""},close:{icon:"\ud83d\udc4d",label:"Bijna!",color:"#ca8a04",tip:"Probeer het nog eens"},retry:{icon:"\ud83d\udd04",label:"Nog een keer!",color:"#dc2626",tip:"Luister goed en probeer opnieuw"}}[result.level];
+  var meterColor=result.level==="good"?"#10b981":result.level==="close"?"#eab308":"#ef4444";
+  return ce("div",{className:"pron-result pron-"+result.level},
+    ce("div",{className:"pron-icon"},cfg.icon),
+    ce("div",{className:"pron-label",style:{color:cfg.color}},cfg.label+" "+result.score+"%"),
+    ce("div",{className:"pron-meter"},ce("div",{className:"pron-meter-fill",style:{width:result.score+"%",background:meterColor}})),
+    heard&&ce("div",{style:{fontSize:12,color:"#64748b",marginTop:4}},"Ik hoorde: \""+heard+"\""),
+    cfg.tip&&ce("div",{className:"pron-hint"},cfg.tip));
 }
 
 // === APP ===
@@ -3109,13 +3414,9 @@ function SpeakingPractice({go,st,sS}){
       ce("div",{style:{fontSize:13,color:"#64748b",marginTop:4}},w.n)),
     // Mic button area
     ce("div",{style:{textAlign:"center",marginTop:16}},
-      ce("div",{style:{fontSize:12,color:"#64748b",marginBottom:8}},lastResult?lastResult.match?"\u2705 Perfect uitgesproken!":"\u274c Probeer nog eens":"\ud83c\udf99\ufe0f Tik op de microfoon en spreek"),
+      !lastResult&&ce("div",{style:{fontSize:12,color:"#64748b",marginBottom:8}},"\ud83c\udf99\ufe0f Tik op de microfoon en spreek"),
       ce("div",{style:{display:"inline-block"}},ce(MicButton,{expected:w.b,onResult:handleResult,size:"lg"})),
-      lastResult&&!lastResult.match&&lastResult.heard&&ce("div",{style:{marginTop:8,background:"#fef2f2",borderRadius:12,padding:10,border:"1px solid #fca5a5"}},
-        ce("div",{style:{fontSize:12,color:"#dc2626",fontWeight:600}},"Ik hoorde: \""+lastResult.heard+"\""),
-        ce("div",{style:{fontSize:11,color:"#991b1b",marginTop:2}},"Verwacht: \""+w.b+"\"")),
-      lastResult&&lastResult.match&&ce("div",{style:{marginTop:8,background:"#ecfdf5",borderRadius:12,padding:10,border:"1px solid #6ee7b7"}},
-        ce("div",{style:{fontSize:13,color:"#047857",fontWeight:600}},"\ud83c\udf1f Geweldig! Je zei: \""+lastResult.heard+"\"")),
+      lastResult&&!lastResult.error&&(function(){var pr=getPronResult(w.b,lastResult.heard||"");return ce(PronFeedback,{result:pr,heard:lastResult.heard});})(),
       lastResult&&lastResult.error&&ce("div",{style:{marginTop:8,background:"#fef3c7",borderRadius:12,padding:10,border:"1px solid #fde68a"}},
         ce("div",{style:{fontSize:12,color:"#92400e"}},"Fout: "+(lastResult.error==="not-allowed"?"Geef microfoon-toestemming":lastResult.error==="no-speech"?"Geen spraak gehoord":"Probeer opnieuw"))),
       showAnswer&&ce("div",{style:{marginTop:8,color:"#64748b",fontSize:12}},"Sla over als het niet lukt \u2192")),
@@ -3549,6 +3850,11 @@ function App(){
     scr==="checkpoint:B1"&&ce(CheckpointTest,{go,st,sS,level:"B1"}),
     scr==="checkpoint:B2"&&ce(CheckpointTest,{go,st,sS,level:"B2"}),
     scr==="speaking"&&ce(SpeakingPractice,{go,st,sS}),
+    scr==="missions"&&ce(DailyMissions,{go,st,sS}),
+    scr==="weeklygoals"&&ce(WeeklyGoals,{go,st,sS}),
+    scr==="leaderboard"&&ce(Leaderboard,{profiles,activeId,go}),
+    scr==="fairytales"&&ce(FairyTales,{go,st,sS}),
+    scr==="culturequiz"&&ce(CultureQuiz,{go,st,sS}),
     scr==="speed"&&ce(SpeedRound,{go,st,sS}),
     scr.startsWith("speed:")&&ce(SpeedRound,{go,st,sS,modId:scr.slice(6)}));
 }
