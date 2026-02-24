@@ -59,4 +59,8 @@ var BADGES =[
 {id:"strk30",nm:"Maandstreak",ic:"🔥",ds:"30 dagen op rij geoefend",rq:s=>(s.strk||0)>=30},
 {id:"strk100",nm:"100-Dagenstreak",ic:"💎",ds:"100 dagen op rij geoefend",rq:s=>(s.strk||0)>=100},
 {id:"ls25",nm:"Les Expert",ic:"🎓",ds:"25 lessen afgerond",rq:s=>(s.lsn||0)>=25},
-{id:"ls50",nm:"Les Legende",ic:"👑",ds:"50 lessen afgerond",rq:s=>(s.lsn||0)>=50}];
+{id:"ls50",nm:"Les Legende",ic:"👑",ds:"50 lessen afgerond",rq:s=>(s.lsn||0)>=50},
+{id:"bed1",nm:"Dromenland",ic:"🌙",ds:"Eerste bedtijdverhaal geluisterd",rq:s=>(s.bedRead||0)>=1},
+{id:"bed5",nm:"Slaap Koning",ic:"😴",ds:"5 bedtijdverhalen geluisterd",rq:s=>(s.bedRead||0)>=5},
+{id:"fq1",nm:"Familie Quizzer",ic:"🏁",ds:"Eerste familie quiz gespeeld",rq:s=>(s.fqPlayed||0)>=1},
+{id:"fq5",nm:"Quiz Kampioen",ic:"🏆",ds:"5 familie quizzen gespeeld",rq:s=>(s.fqPlayed||0)>=5}];

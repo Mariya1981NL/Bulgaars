@@ -1,7 +1,7 @@
 // Service Worker — Български за деца
 // Caches all app files for offline use
 
-var CACHE_NAME = 'bg-leren-v20';
+var CACHE_NAME = 'bg-leren-v21';
 var ASSETS = [
   './',
   './index.html',

@@ -757,6 +757,96 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .dark .prn-result{border-color:#475569}
 .dark .prn-score-bar{background:#1e293b;color:#94a3b8}
 .dark .prn-done-title{color:#f1f5f9}
+
+/* Bedtime Mode */
+.bed-bg{min-height:100vh;background:linear-gradient(180deg,#0f172a 0%,#1e1b4b 40%,#312e81 100%);padding:24px 16px;color:#e0e7ff;position:relative;overflow:hidden}
+.bed-stars{position:absolute;top:0;left:0;width:100%;height:300px;pointer-events:none;overflow:hidden}
+.bed-star{position:absolute;width:3px;height:3px;background:#fde68a;border-radius:50%;animation:bed-twinkle 3s ease-in-out infinite}
+@keyframes bed-twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+.bed-moon{position:absolute;top:20px;right:20px;width:60px;height:60px;background:radial-gradient(circle at 35% 35%,#fef3c7,#fbbf24);border-radius:50%;box-shadow:0 0 30px rgba(251,191,36,.4);pointer-events:none}
+.bed-story-card{background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border-radius:20px;padding:24px;border:1px solid rgba(255,255,255,.1);margin-top:16px;transition:all .5s}
+.bed-text-bg{font-size:18px;line-height:1.7;color:#e0e7ff;font-weight:500;transition:opacity .6s}
+.bed-text-nl{font-size:14px;color:#a5b4fc;margin-top:10px;font-style:italic;line-height:1.5;transition:opacity .6s}
+.bed-choice{width:100%;padding:14px 18px;border-radius:14px;border:1px solid rgba(165,180,252,.3);background:rgba(99,102,241,.15);text-align:left;font-size:14px;cursor:pointer;transition:all .2s;color:#c7d2fe;margin-top:8px}
+.bed-choice:hover{background:rgba(99,102,241,.3);border-color:rgba(165,180,252,.5);transform:translateY(-1px)}
+.bed-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:20px}
+.bed-ctrl-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(165,180,252,.3);background:rgba(99,102,241,.2);color:#c7d2fe;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.bed-ctrl-btn:hover{background:rgba(99,102,241,.4)}
+.bed-ctrl-btn.bed-playing{background:rgba(251,191,36,.3);border-color:rgba(251,191,36,.5);color:#fde68a;animation:bed-pulse 2s ease-in-out infinite}
+@keyframes bed-pulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.3)}50%{box-shadow:0 0 0 12px rgba(251,191,36,0)}}
+.bed-timer{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(99,102,241,.15);border:1px solid rgba(165,180,252,.2);font-size:12px;color:#a5b4fc}
+.bed-timer-btn{padding:4px 10px;border-radius:8px;border:1px solid rgba(165,180,252,.2);background:rgba(99,102,241,.1);color:#c7d2fe;font-size:11px;cursor:pointer;transition:all .15s}
+.bed-timer-btn:hover{background:rgba(99,102,241,.25)}
+.bed-timer-btn.bed-timer-active{background:rgba(251,191,36,.2);border-color:rgba(251,191,36,.4);color:#fde68a}
+.bed-progress{display:flex;gap:6px;justify-content:center;margin-top:16px}
+.bed-dot{width:10px;height:10px;border-radius:50%;transition:all .3s}
+.bed-dot-done{background:#818cf8}
+.bed-dot-now{background:#fbbf24;box-shadow:0 0 8px rgba(251,191,36,.5)}
+.bed-dot-todo{background:rgba(255,255,255,.15)}
+.bed-end{text-align:center;padding:32px 0}
+.bed-end-em{font-size:56px;margin-bottom:12px}
+.bed-end-title{font-size:20px;font-weight:700;color:#e0e7ff}
+.bed-end-sub{font-size:13px;color:#a5b4fc;margin-top:4px}
+.bed-picker{display:grid;gap:12px;margin-top:16px}
+.bed-picker-card{padding:16px;border-radius:16px;border:1px solid rgba(165,180,252,.2);background:rgba(99,102,241,.1);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+.bed-picker-card:hover{background:rgba(99,102,241,.2);transform:translateY(-2px);box-shadow:0 4px 16px rgba(99,102,241,.2)}
+.bed-header{display:flex;align-items:center;justify-content:space-between}
+.bed-back{background:none;border:none;color:#a5b4fc;font-size:16px;cursor:pointer;padding:4px 8px;border-radius:8px;transition:background .15s}
+.bed-back:hover{background:rgba(165,180,252,.15)}
+.bed-zzz{position:absolute;pointer-events:none;animation:bed-zzz 4s ease-out infinite}
+@keyframes bed-zzz{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.5)}}
+
+/* Family Quiz */
+.fq-bg{padding:24px 16px;min-height:100vh}
+.fq-setup{text-align:center}
+.fq-cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fq-cat{padding:14px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;transition:all .2s;text-align:center}
+.fq-cat:hover{border-color:#a78bfa;transform:translateY(-2px)}
+.fq-cat-on{border-color:#8b5cf6;background:#f5f3ff;box-shadow:0 0 0 3px rgba(139,92,246,.2)}
+.fq-cat-em{font-size:28px;margin-bottom:4px}
+.fq-cat-name{font-size:13px;font-weight:600;color:#1e293b}
+.fq-arena{position:relative}
+.fq-scoreboard{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.fq-player-box{text-align:center;padding:12px;border-radius:14px;flex:1;transition:all .3s}
+.fq-p1-bg{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:2px solid #6ee7b7}
+.fq-p2-bg{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd}
+.fq-player-ava{font-size:32px}
+.fq-player-name{font-size:13px;font-weight:700;color:#1e293b;margin-top:2px}
+.fq-player-score{font-size:28px;font-weight:800;margin-top:4px}
+.fq-p1-score{color:#059669}
+.fq-p2-score{color:#7c3aed}
+.fq-vs{font-size:16px;font-weight:800;color:#94a3b8;padding:0 8px;flex-shrink:0}
+.fq-question{background:#fff;border-radius:20px;padding:20px;border:2px solid #e2e8f0;text-align:center;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.fq-q-cat{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.fq-q-prompt{font-size:24px;font-weight:700;color:#1e293b}
+.fq-q-sub{font-size:12px;color:#94a3b8;margin-top:4px}
+.fq-buzzer-area{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.fq-buzzer{padding:20px;border-radius:16px;font-size:18px;font-weight:700;cursor:pointer;transition:all .15s;border:3px solid;text-align:center;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fq-buzzer:hover{transform:scale(1.03)}
+.fq-buzzer:active{transform:scale(0.97)}
+.fq-b1{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-color:#34d399;color:#065f46}
+.fq-b2{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#a78bfa;color:#4c1d95}
+.fq-b-disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+.fq-answer-zone{margin-top:12px}
+.fq-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fq-opt{padding:14px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;color:#1e293b}
+.fq-opt:hover:not(:disabled){border-color:#a78bfa;background:#f5f3ff}
+.fq-opt-ok{background:#ecfdf5!important;border-color:#34d399!important;color:#065f46!important}
+.fq-opt-no{background:#fef2f2!important;border-color:#f87171!important;color:#991b1b!important}
+.fq-opt-x{background:#f8fafc!important;border-color:#e2e8f0!important;color:#94a3b8!important}
+.fq-turn-banner{padding:10px;border-radius:12px;text-align:center;font-size:14px;font-weight:700;margin-bottom:12px;animation:fqFlash 1s ease-in-out}
+@keyframes fqFlash{0%{transform:scale(0.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.fq-result{text-align:center;padding:24px 0}
+.fq-result-crown{font-size:64px;margin-bottom:8px}
+.fq-result-msg{font-size:22px;font-weight:800;color:#1e293b;margin-bottom:4px}
+.fq-result-sub{font-size:16px;color:#64748b}
+.fq-round-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;background:#f1f5f9;color:#64748b;margin-bottom:8px}
+.dark .fq-question{background:#334155;border-color:#475569}
+.dark .fq-q-prompt{color:#f1f5f9}
+.dark .fq-cat{background:#334155;border-color:#475569}
+.dark .fq-cat-name{color:#f1f5f9}
+.dark .fq-opt{background:#334155;border-color:#475569;color:#e2e8f0}
+.dark .fq-result-msg{color:#f1f5f9}
 </style>
 </head>
 <body>
@@ -1402,6 +1492,14 @@ function Home({go,st,sS,profiles,activeId}){
       ce("div",null,
         ce("div",{style:{fontWeight:700,fontSize:16,color:"#c2410c"}},(st.strk||0)+" dagen streak!"),
         ce("div",{style:{fontSize:11,color:"#ea580c"}},"Ga zo door! Oefen elke dag."))),
+    // Bedtime mode banner
+    ce("button",{onClick:()=>go("bedtime"),style:{width:"100%",background:"linear-gradient(135deg,#1e1b4b,#312e81)",border:"2px solid #6366f1",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4}},
+      ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:10}},
+        ce("span",{style:{fontSize:24}},"\u{1f319}"),
+        ce("div",null,
+          ce("div",{style:{fontWeight:700,fontSize:14,color:"#e0e7ff"}},"Verhaaltje voor het slapen"),
+          ce("div",{style:{fontSize:11,color:"#a5b4fc"}},"Luister naar een sprookje in het donker")),
+        ce("span",{style:{fontSize:11,background:"#6366f1",color:"#fff",padding:"2px 8px",borderRadius:99,fontWeight:700}},(st.bedRead||0)+" gelezen"))),
     // Woord van de Dag
     (function(){var wvd=getWoordVanDeDag();if(!wvd)return null;return ce("button",{onClick:function(){var txt=wvd.b;if(typeof speak==="function")speak(txt);},style:{width:"100%",background:"linear-gradient(135deg,#f0f9ff,#e0f2fe)",border:"2px solid #7dd3fc",borderRadius:16,padding:14,textAlign:"center",cursor:"pointer",marginTop:4}},
       ce("div",{style:{fontSize:11,fontWeight:600,color:"#0369a1",marginBottom:4,textTransform:"uppercase",letterSpacing:1}},"Woord van de dag"),
@@ -1581,7 +1679,10 @@ function Home({go,st,sS,profiles,activeId}){
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#0369a1"}},"Offline Audio")),
       ce("button",{className:"card",onClick:()=>go("stickerwall"),style:{textAlign:"center",padding:12,border:"1px solid #f9a8d4"}},
         ce("div",{style:{fontSize:24}},"🗺️"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#be185d"}},"Stickers"))),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#be185d"}},"Stickers")),
+      ce("button",{className:"card",onClick:()=>go("familyquiz"),style:{textAlign:"center",padding:12,border:"1px solid #c4b5fd"}},
+        ce("div",{style:{fontSize:24}},"\u{1f3c1}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Familie Quiz"))),
     // Dark mode & Parent dashboard
     ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
@@ -5743,6 +5844,382 @@ function OfflineAudio({go,st,sS}){
         "Dit werkt het beste met een Bulgaarse stem geïnstalleerd op je toestel.")));
 }
 
+// === SESSION 21: BEDTIME MODE ===
+function BedtimeMode({go,st,sS}){
+  var[storyIdx,sStoryIdx]=uS(null);
+  var[sceneId,sSceneId]=uS("start");
+  var[trail,sTrail]=uS([]);
+  var[isReading,sIsReading]=uS(false);
+  var[autoPlay,sAutoPlay]=uS(false);
+  var[timer,sTimer]=uS(0); // 0=off, 10/15/20 min
+  var[timerLeft,sTimerLeft]=uS(0);
+  var[showNl,sShowNl]=uS(true);
+  var timerRef=React.useRef(null);
+  var autoRef=React.useRef(null);
+
+  // Generate twinkling stars
+  var starsArr=React.useMemo(function(){
+    var s=[];for(var i=0;i<30;i++){
+      s.push({left:Math.random()*100+"%",top:Math.random()*250+"px",delay:Math.random()*5+"s",size:Math.random()*2+2+"px"});
+    }return s;
+  },[]);
+
+  // Sleep timer countdown
+  uE(function(){
+    if(timer>0&&timerLeft<=0){sTimerLeft(timer*60);}
+    if(timerLeft>0){
+      timerRef.current=setInterval(function(){
+        sTimerLeft(function(p){
+          if(p<=1){
+            clearInterval(timerRef.current);
+            speechSynthesis.cancel();sIsReading(false);sAutoPlay(false);
+            return 0;
+          }return p-1;
+        });
+      },1000);
+      return function(){clearInterval(timerRef.current);};
+    }
+  },[timer]);
+
+  // Read current scene aloud
+  function readScene(scene){
+    if(!scene||typeof speechSynthesis==="undefined")return;
+    speechSynthesis.cancel();sIsReading(true);
+    var u=new SpeechSynthesisUtterance(scene.text.bg);
+    u.lang="bg-BG";u.rate=0.7;u.pitch=0.9;
+    if(bgVoice)u.voice=bgVoice;
+    u.onend=function(){
+      sIsReading(false);
+      // If auto-play and scene has choices with single option, auto-advance
+      if(autoPlay&&scene.choices&&scene.choices.length===1){
+        setTimeout(function(){handleChoice(scene.choices[0].next);},2000);
+      }
+      if(autoPlay&&scene.end){
+        // Auto finish after pause
+        setTimeout(function(){handleFinish();},3000);
+      }
+    };
+    speechSynthesis.speak(u);
+  }
+
+  function stopReading(){speechSynthesis.cancel();sIsReading(false);}
+
+  function toggleAutoPlay(){
+    var next=!autoPlay;sAutoPlay(next);
+    if(next&&storyIdx!==null){
+      var ft=FAIRYTALES[storyIdx];
+      var scene=ft.scenes.find(function(s){return s.id===sceneId;});
+      if(scene&&!isReading)readScene(scene);
+    }
+  }
+
+  var handleChoice=function(next){
+    sTrail(function(p){return p.concat([sceneId]);});sSceneId(next);
+    // Auto-read new scene
+    if(autoPlay||isReading){
+      var ft=FAIRYTALES[storyIdx];
+      var ns=ft.scenes.find(function(s){return s.id===next;});
+      if(ns)setTimeout(function(){readScene(ns);},500);
+    }
+  };
+
+  var handleFinish=function(){
+    speechSynthesis.cancel();sIsReading(false);
+    sS(function(p){return Object.assign({},p,{xp:p.xp+15,bedRead:(p.bedRead||0)+1});});
+    playSound("correct");sStoryIdx(null);
+  };
+
+  // Timer format
+  var formatTime=function(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");};
+
+  // Story picker
+  if(storyIdx===null){
+    return ce("div",{className:"bed-bg"},
+      ce("div",{className:"bed-stars"},starsArr.map(function(s,i){
+        return ce("div",{key:i,className:"bed-star",style:{left:s.left,top:s.top,animationDelay:s.delay,width:s.size,height:s.size}});
+      })),
+      ce("div",{className:"bed-moon"}),
+      ce("div",{style:{position:"relative",zIndex:1}},
+        ce("div",{className:"bed-header"},
+          ce("button",{className:"bed-back",onClick:function(){go("home");}},"\u2190 Terug"),
+          ce("div",{className:"bed-timer"},
+            ce("span",null,"\u{1f319} Slaaptimer"),
+            [10,15,20].map(function(m){return ce("button",{key:m,className:"bed-timer-btn"+(timer===m?" bed-timer-active":""),onClick:function(){sTimer(timer===m?0:m);sTimerLeft(timer===m?0:m*60);}},m+"m");}))),
+        ce("div",{style:{textAlign:"center",marginTop:24}},
+          ce("div",{style:{fontSize:48}},"\u{1f319}"),
+          ce("h2",{style:{fontSize:22,fontWeight:700,color:"#e0e7ff",marginTop:8}},"Verhaaltje voor het slapen"),
+          ce("p",{style:{fontSize:13,color:"#a5b4fc",marginTop:4}},"Kies een sprookje en luister terwijl je in slaap valt")),
+        timerLeft>0&&ce("div",{style:{textAlign:"center",marginTop:12}},
+          ce("span",{style:{fontSize:13,color:"#fde68a"}},"\u23f0 Timer: "+formatTime(timerLeft))),
+        ce("div",{className:"bed-picker"},FAIRYTALES.map(function(ft,i){
+          return ce("button",{key:ft.id,className:"bed-picker-card",onClick:function(){
+            sStoryIdx(i);sSceneId("start");sTrail([]);
+            var scene=ft.scenes.find(function(s){return s.id==="start";});
+            setTimeout(function(){readScene(scene);sAutoPlay(true);},300);
+          }},
+            ce("div",{style:{fontSize:32}},ft.em),
+            ce("div",{style:{flex:1}},
+              ce("div",{style:{fontSize:15,fontWeight:700,color:"#e0e7ff"}},ft.title),
+              ce("div",{style:{fontSize:12,color:"#a5b4fc",marginTop:2}},ft.titleNl)),
+            ce("span",{style:{color:"#818cf8",fontSize:18}},"\u203a"));
+        }))));
+  }
+
+  // Story reading
+  var ft=FAIRYTALES[storyIdx];
+  var scene=ft.scenes.find(function(s){return s.id===sceneId;});
+  if(!scene)return null;
+
+  var allSceneIds=ft.scenes.map(function(s){return s.id;});
+
+  return ce("div",{className:"bed-bg"},
+    ce("div",{className:"bed-stars"},starsArr.map(function(s,i){
+      return ce("div",{key:i,className:"bed-star",style:{left:s.left,top:s.top,animationDelay:s.delay,width:s.size,height:s.size}});
+    })),
+    ce("div",{className:"bed-moon"}),
+    ce("div",{style:{position:"relative",zIndex:1}},
+      ce("div",{className:"bed-header"},
+        ce("button",{className:"bed-back",onClick:function(){stopReading();sStoryIdx(null);}},"\u2190 Terug"),
+        ce("div",{style:{display:"flex",alignItems:"center",gap:8}},
+          ce("span",{style:{fontSize:14,fontWeight:700,color:"#c7d2fe"}},ft.em+" "+ft.title),
+          timerLeft>0&&ce("span",{style:{fontSize:11,color:"#fde68a"}},"\u23f0 "+formatTime(timerLeft)))),
+      // Scene progress dots
+      ce("div",{className:"bed-progress"},
+        trail.concat([sceneId]).map(function(id,i){
+          var isCur=id===sceneId;
+          return ce("div",{key:i,className:"bed-dot "+(isCur?"bed-dot-now":"bed-dot-done")});
+        }),
+        !scene.end&&ce("div",{className:"bed-dot bed-dot-todo"})),
+      // Story card
+      ce("div",{className:"bed-story-card"},
+        ce("div",{className:"bed-text-bg"},scene.text.bg),
+        showNl&&ce("div",{className:"bed-text-nl"},scene.text.nl)),
+      // Controls
+      ce("div",{className:"bed-controls"},
+        ce("button",{className:"bed-ctrl-btn",onClick:function(){sShowNl(!showNl);},title:"Vertaling"},showNl?"NL":"🇳🇱"),
+        isReading?
+          ce("button",{className:"bed-ctrl-btn bed-playing",onClick:stopReading,title:"Stop"},"\u23f8"):
+          ce("button",{className:"bed-ctrl-btn",onClick:function(){readScene(scene);},title:"Voorlezen"},"\u25b6"),
+        ce("button",{className:"bed-ctrl-btn"+(autoPlay?" bed-playing":""),onClick:toggleAutoPlay,title:"Auto-voorlezen"},autoPlay?"🔄":"▶▶")),
+      // Choices or ending
+      scene.end?
+        ce("div",{className:"bed-end"},
+          ce("div",{className:"bed-end-em"},"\u{1f31f}\u{1f319}"),
+          ce("div",{className:"bed-end-title"},"Slaap lekker..."),
+          ce("div",{className:"bed-end-sub"},"+15 XP verdiend"),
+          ce("div",{style:{display:"flex",gap:12,justifyContent:"center",marginTop:16}},
+            ce("button",{className:"bed-ctrl-btn",style:{width:"auto",padding:"8px 20px",borderRadius:12,fontSize:13},onClick:handleFinish},"Nog een"),
+            ce("button",{className:"bed-ctrl-btn",style:{width:"auto",padding:"8px 20px",borderRadius:12,fontSize:13},onClick:function(){handleFinish();go("home");}},"Sluiten"))):
+        ce("div",{style:{marginTop:12}},(scene.choices||[]).map(function(ch,i){
+          return ce("button",{key:i,className:"bed-choice",onClick:function(){handleChoice(ch.next);}},
+            ce("div",{style:{color:"#e0e7ff",fontWeight:600}},ch.text.bg),
+            showNl&&ce("div",{style:{fontSize:12,color:"#a5b4fc",marginTop:2}},ch.text.nl));
+        }))));
+}
+
+// === SESSION 21: FAMILY QUIZ ===
+function FamilyQuiz({go,st,sS,profiles,activeId}){
+  var[phase,sPhase]=uS("setup"); // setup, playing, answer, result
+  var[p1,sP1]=uS(null);
+  var[p2,sP2]=uS(null);
+  var[round,sRound]=uS(0);
+  var[scores,sScores]=uS([0,0]);
+  var[questions,sQuestions]=uS([]);
+  var[buzzed,sBuzzed]=uS(-1); // -1=nobody, 0=p1, 1=p2
+  var[sel,sSel]=uS(null);
+  var[shown,sShown]=uS(false);
+  var[cat,sCat]=uS("mix"); // mix, words, grammar, culture
+  var ROUNDS=10;
+  var pList=profiles&&profiles.list?profiles.list:[];
+
+  var CATS=[
+    {id:"mix",name:"Mix",em:"\u{1f3b2}",desc:"Alles door elkaar"},
+    {id:"words",name:"Woorden",em:"\u{1f4da}",desc:"Vertaal het woord"},
+    {id:"culture",name:"Cultuur",em:"\u{1f30d}",desc:"Bulgaarse cultuurvragen"},
+    {id:"numbers",name:"Getallen",em:"\u{1f522}",desc:"Ken je de getallen?"}
+  ];
+
+  function generateQuestions(){
+    var qs=[];
+    var aw=allWords(MODS,"all");
+    if(cat==="words"||cat==="mix"){
+      var pool=sh(aw);
+      for(var i=0;i<(cat==="mix"?5:ROUNDS)&&i<pool.length;i++){
+        var w=pool[i];var others=sh(aw.filter(function(x){return x.b!==w.b;})).slice(0,3);
+        var dir=Math.random()<0.5?"bg-nl":"nl-bg";
+        if(dir==="bg-nl"){
+          qs.push({prompt:w.b,answer:w.n,opts:sh([w.n].concat(others.map(function(o){return o.n;}))),em:w.m,cat:"Woorden",sub:"["+w.p+"]"});
+        } else {
+          qs.push({prompt:w.n,answer:w.b,opts:sh([w.b].concat(others.map(function(o){return o.b;}))),em:w.m,cat:"Woorden",sub:""});
+        }
+      }
+    }
+    if(cat==="culture"||cat==="mix"){
+      var cPool=[];
+      if(typeof CULTURE_PAGES!=="undefined")CULTURE_PAGES.forEach(function(p){p.items.forEach(function(it){cPool.push({q:it.d,a:it.t,page:p.title});});});
+      var cShuf=sh(cPool);
+      for(var j=0;j<(cat==="mix"?3:ROUNDS)&&j<cShuf.length;j++){
+        var c=cShuf[j];var wrongs=sh(cPool.filter(function(x){return x.a!==c.a;})).slice(0,3);
+        qs.push({prompt:c.q,answer:c.a,opts:sh([c.a].concat(wrongs.map(function(w){return w.a;}))),em:"\u{1f30d}",cat:"Cultuur",sub:""});
+      }
+    }
+    if(cat==="numbers"||cat==="mix"){
+      var nums=typeof NUMBERS!=="undefined"?NUMBERS:[];
+      var nShuf=sh(nums.filter(function(n){return n.bg&&n.nl;}));
+      for(var k=0;k<(cat==="mix"?2:ROUNDS)&&k<nShuf.length;k++){
+        var n=nShuf[k];var nWrongs=sh(nums.filter(function(x){return x.bg!==n.bg;})).slice(0,3);
+        var nDir=Math.random()<0.5;
+        if(nDir){
+          qs.push({prompt:n.bg,answer:n.nl,opts:sh([n.nl].concat(nWrongs.map(function(w){return w.nl;}))),em:"\u{1f522}",cat:"Getallen",sub:String(n.num||"")});
+        } else {
+          qs.push({prompt:String(n.num||n.nl),answer:n.bg,opts:sh([n.bg].concat(nWrongs.map(function(w){return w.bg;}))),em:"\u{1f522}",cat:"Getallen",sub:""});
+        }
+      }
+    }
+    return sh(qs).slice(0,ROUNDS);
+  }
+
+  function startGame(){
+    if(!p1||!p2||p1.id===p2.id)return;
+    var qs=generateQuestions();
+    if(qs.length===0)return;
+    sQuestions(qs);sRound(0);sScores([0,0]);sBuzzed(-1);sSel(null);sShown(false);
+    sPhase("playing");
+  }
+
+  function handleBuzz(player){
+    if(buzzed>=0)return;
+    sBuzzed(player);sPhase("answer");
+    playSound("correct");
+  }
+
+  function handleAnswer(o){
+    if(shown)return;
+    sSel(o);sShown(true);
+    var correct=o===questions[round].answer;
+    if(correct){
+      playSound("correct");
+      var ns=[...scores];ns[buzzed]+=10;sScores(ns);
+    } else {
+      playSound("wrong");
+      // Other player gets points for wrong answer
+      var ns2=[...scores];ns2[1-buzzed]+=5;sScores(ns2);
+    }
+    setTimeout(function(){
+      if(round+1>=questions.length){
+        sS(function(s){return Object.assign({},s,{xp:s.xp+25,fqPlayed:(s.fqPlayed||0)+1});});
+        sPhase("result");
+      } else {
+        sRound(round+1);sBuzzed(-1);sSel(null);sShown(false);sPhase("playing");
+      }
+    },1500);
+  }
+
+  // Setup screen
+  if(phase==="setup"){
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home")),
+      ce("div",{className:"fq-setup"},
+        ce("div",{style:{fontSize:48}},"\u{1f3c1}"),
+        ce("h2",{className:"h1",style:{marginTop:8}},"Familie Quiz"),
+        ce("p",{className:"sub"},"Wie is de snelste? Buz in en geef antwoord!")),
+      // Category picker
+      ce("div",{style:{marginTop:16}},
+        ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:8}},"\u{1f3af} Kies een categorie"),
+        ce("div",{className:"fq-cat-grid"},CATS.map(function(c){
+          return ce("button",{key:c.id,className:"fq-cat"+(cat===c.id?" fq-cat-on":""),onClick:function(){sCat(c.id);}},
+            ce("div",{className:"fq-cat-em"},c.em),
+            ce("div",{className:"fq-cat-name"},c.name),
+            ce("div",{style:{fontSize:10,color:"#94a3b8",marginTop:2}},c.desc));
+        }))),
+      // Player picker
+      ce("div",{style:{marginTop:16}},
+        ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:8}},"\u{1f465} Kies twee spelers"),
+        ce("div",{style:{display:"flex",gap:8,flexWrap:"wrap",justifyContent:"center"}},
+          pList.map(function(pr){
+            var isP1=p1&&p1.id===pr.id;var isP2=p2&&p2.id===pr.id;
+            return ce("button",{key:pr.id,onClick:function(){
+              if(!p1||isP1){sP1(isP1?null:pr);}
+              else if(!p2||isP2){sP2(isP2?null:pr);}
+              else{sP1(pr);sP2(null);}
+            },style:{padding:"8px 14px",borderRadius:12,border:"2px solid "+(isP1?"#10b981":isP2?"#8b5cf6":"#e2e8f0"),background:isP1?"#ecfdf5":isP2?"#f5f3ff":"#fff",fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6}},
+              ce("span",{style:{fontSize:20}},pr.avatar),pr.name);
+          })),
+        pList.length<2&&ce("div",{style:{fontSize:12,color:"#94a3b8",marginTop:8}},"Je hebt minimaal 2 profielen nodig.")),
+      p1&&p2&&p1.id!==p2.id&&ce("div",{style:{textAlign:"center",marginTop:20}},
+        ce("button",{className:"btn btn-t",style:{fontSize:16,padding:"12px 32px"},onClick:startGame},"\u{1f3c1} Start Quiz!")));
+  }
+
+  // Result screen
+  if(phase==="result"){
+    var winner=scores[0]>scores[1]?p1:scores[1]>scores[0]?p2:null;
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"fq-result"},
+        ce("div",{className:"fq-result-crown"},winner?"\u{1f451}":"\u{1f91d}"),
+        ce("div",{className:"fq-result-msg"},winner?winner.name+" wint!":"Gelijkspel!"),
+        ce("div",{className:"fq-result-sub"},scores[0]+" \u2014 "+scores[1]),
+        ce("div",{style:{marginTop:20}},
+          ce("div",{className:"fq-scoreboard"},
+            ce("div",{className:"fq-player-box fq-p1-bg"},
+              ce("div",{className:"fq-player-ava"},p1.avatar),
+              ce("div",{className:"fq-player-name"},p1.name),
+              ce("div",{className:"fq-player-score fq-p1-score"},scores[0])),
+            ce("div",{className:"fq-vs"},"VS"),
+            ce("div",{className:"fq-player-box fq-p2-bg"},
+              ce("div",{className:"fq-player-ava"},p2.avatar),
+              ce("div",{className:"fq-player-name"},p2.name),
+              ce("div",{className:"fq-player-score fq-p2-score"},scores[1]))))),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",marginTop:16}},
+        ce("button",{className:"btn btn-t",onClick:function(){sPhase("setup");sScores([0,0]);sBuzzed(-1);}},"🔄 Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"🏠 Home")));
+  }
+
+  // Playing / answer phase
+  var q=questions[round];
+  if(!q)return ce("div",{className:"scr sy ctr"},ce("p",null,"Laden..."));
+
+  return ce("div",{className:"scr sy fq-arena"},
+    // Scoreboard
+    ce("div",{className:"fq-scoreboard"},
+      ce("div",{className:"fq-player-box fq-p1-bg",style:{opacity:buzzed===1?.5:1}},
+        ce("div",{className:"fq-player-ava"},p1.avatar),
+        ce("div",{className:"fq-player-name"},p1.name),
+        ce("div",{className:"fq-player-score fq-p1-score"},scores[0])),
+      ce("div",{style:{textAlign:"center"}},
+        ce("div",{className:"fq-round-badge"},(round+1)+"/"+questions.length),
+        ce("div",{className:"fq-vs"},"VS")),
+      ce("div",{className:"fq-player-box fq-p2-bg",style:{opacity:buzzed===0?.5:1}},
+        ce("div",{className:"fq-player-ava"},p2.avatar),
+        ce("div",{className:"fq-player-name"},p2.name),
+        ce("div",{className:"fq-player-score fq-p2-score"},scores[1]))),
+    // Progress bar
+    ce("div",{className:"pb",style:{marginBottom:12}},ce("div",{style:{height:"100%",borderRadius:999,background:"linear-gradient(90deg,#10b981,#8b5cf6)",width:((round+1)/questions.length*100)+"%",transition:"width .3s"}})),
+    // Question
+    ce("div",{className:"fq-question"},
+      ce("div",{className:"fq-q-cat"},q.em+" "+q.cat),
+      ce("div",{className:"fq-q-prompt"},q.prompt),
+      q.sub&&ce("div",{className:"fq-q-sub"},q.sub)),
+    // Buzzer phase
+    phase==="playing"&&ce("div",null,
+      ce("div",{style:{textAlign:"center",fontSize:14,fontWeight:600,color:"#64748b",marginBottom:8}},"\u{1f514} Druk op je buzzer!"),
+      ce("div",{className:"fq-buzzer-area"},
+        ce("button",{className:"fq-buzzer fq-b1",onClick:function(){handleBuzz(0);}},
+          ce("div",{style:{fontSize:28}},p1.avatar),
+          ce("div",{style:{fontSize:12,marginTop:4}},p1.name)),
+        ce("button",{className:"fq-buzzer fq-b2",onClick:function(){handleBuzz(1);}},
+          ce("div",{style:{fontSize:28}},p2.avatar),
+          ce("div",{style:{fontSize:12,marginTop:4}},p2.name)))),
+    // Answer phase
+    phase==="answer"&&ce("div",null,
+      ce("div",{className:"fq-turn-banner",style:{background:buzzed===0?"#ecfdf5":"#f5f3ff",color:buzzed===0?"#059669":"#7c3aed"}},
+        (buzzed===0?p1:p2).avatar+" "+(buzzed===0?p1:p2).name+" geeft antwoord!"),
+      ce("div",{className:"fq-opts"},q.opts.map(function(o,idx){
+        var cls="fq-opt";
+        if(shown){if(o===q.answer)cls+=" fq-opt-ok";else if(o===sel&&o!==q.answer)cls+=" fq-opt-no";else cls+=" fq-opt-x";}
+        return ce("button",{key:idx,className:cls,disabled:shown,onClick:function(){handleAnswer(o);}},o);
+      }))));
+}
+
 function App(){
   const[scr,sScr]=uS("home");
   const[profiles,sProfiles]=uS(function(){return loadProfiles();});
@@ -5892,7 +6369,9 @@ function App(){
     scr==="report"&&ce(ProgressReport,{go,st,sS,profiles,activeId}),
     scr==="offlineaudio"&&ce(OfflineAudio,{go,st,sS}),
     scr==="stickerwall"&&ce(StickerWall,{go,st}),
-    scr==="prongame"&&ce(PronGame,{go,st,sS}));
+    scr==="prongame"&&ce(PronGame,{go,st,sS}),
+    scr==="bedtime"&&ce(BedtimeMode,{go,st,sS}),
+    scr==="familyquiz"&&ce(FamilyQuiz,{go,st,sS,profiles,activeId}));
 }
 
 try{
