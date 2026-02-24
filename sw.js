@@ -20,7 +20,10 @@ var ASSETS = [
   './data-holidays.js',
   './data-lyrics.js',
   './data-minpairs.js',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './apple-touch-icon.png'
 ];
 
 // Install: cache all assets
