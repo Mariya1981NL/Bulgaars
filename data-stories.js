@@ -1,81 +1,137 @@
 // Bulgaars Leren — data-stories.js
 
 var STORIES=[
-  {id:"s1",title:"\u041a\u043e\u0442\u043a\u0430\u0442\u0430 \u041c\u0438\u043c\u0438",titleNl:"Poes Mimi",em:"\u{1f431}",level:"Beginner",
-   lines:[
-    {bg:"\u041c\u0438\u043c\u0438 \u0435 \u043a\u043e\u0442\u043a\u0430.",nl:"Mimi is een poes."},
-    {bg:"\u0422\u044f \u0435 \u043c\u0430\u043b\u043a\u0430 \u0438 \u0431\u044f\u043b\u0430.",nl:"Ze is klein en wit."},
-    {bg:"\u041c\u0438\u043c\u0438 \u043e\u0431\u0438\u0447\u0430 \u043c\u043b\u044f\u043a\u043e.",nl:"Mimi houdt van melk."},
-    {bg:"\u0422\u044f \u0441\u043f\u0438 \u043d\u0430 \u0434\u0438\u0432\u0430\u043d\u0430.",nl:"Ze slaapt op de bank."},
-    {bg:"\u041c\u0438\u043c\u0438 \u0435 \u0449\u0430\u0441\u0442\u043b\u0438\u0432\u0430.",nl:"Mimi is gelukkig."}
+  // === INTERACTIEF: Poes Mimi ===
+  {id:"s1",title:"Котката Мими",titleNl:"Poes Mimi",em:"🐱",level:"Beginner",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Мими е котка. Тя е малка и бяла.",nl:"Mimi is een poes. Ze is klein en wit."},choices:[
+      {text:{bg:"Мими отива навън.",nl:"Mimi gaat naar buiten."},next:"outside"},
+      {text:{bg:"Мими остава вкъщи.",nl:"Mimi blijft thuis."},next:"inside"}
+    ]},
+    {id:"outside",text:{bg:"Мими вижда пеперуда! 🦋",nl:"Mimi ziet een vlinder!"},choices:[
+      {text:{bg:"Мими гони пеперудата.",nl:"Mimi rent achter de vlinder aan."},next:"chase"},
+      {text:{bg:"Мими лежи на слънце.",nl:"Mimi gaat in de zon liggen."},next:"sun"}
+    ]},
+    {id:"inside",text:{bg:"Мими намира топка! 🧶",nl:"Mimi vindt een bolletje wol!"},choices:[
+      {text:{bg:"Мими играе с топката.",nl:"Mimi speelt met het bolletje."},next:"play"},
+      {text:{bg:"Мими спи на дивана.",nl:"Mimi slaapt op de bank."},next:"sleep"}
+    ]},
+    {id:"chase",text:{bg:"Мими хваща пеперудата! Тя е щастлива! 🎉",nl:"Mimi vangt de vlinder! Ze is gelukkig!"},end:true},
+    {id:"sun",text:{bg:"Мими спи на слънце. Мррр... 😊",nl:"Mimi slaapt in de zon. Purr..."},end:true},
+    {id:"play",text:{bg:"Мими играе цял ден! Тя е уморена. 😴",nl:"Mimi speelt de hele dag! Ze is moe."},end:true},
+    {id:"sleep",text:{bg:"Мими сънува риба. Мняу! 🐟",nl:"Mimi droomt over vis. Miauw!"},end:true}
   ]},
-  {id:"s2",title:"\u0412 \u043f\u0430\u0440\u043a\u0430",titleNl:"In het park",em:"\u{1f333}",level:"Beginner",
-   lines:[
-    {bg:"\u0414\u043d\u0435\u0441 \u0435 \u0441\u043b\u044a\u043d\u0447\u0435\u0432 \u0434\u0435\u043d.",nl:"Vandaag is het een zonnige dag."},
-    {bg:"\u0414\u0435\u0446\u0430\u0442\u0430 \u0438\u0433\u0440\u0430\u044f\u0442 \u0432 \u043f\u0430\u0440\u043a\u0430.",nl:"De kinderen spelen in het park."},
-    {bg:"\u0415\u0434\u043d\u043e \u043c\u043e\u043c\u0447\u0435 \u0438\u043c\u0430 \u0442\u043e\u043f\u043a\u0430.",nl:"Een jongen heeft een bal."},
-    {bg:"\u0415\u0434\u043d\u043e \u043c\u043e\u043c\u0438\u0447\u0435 \u044f\u0434\u0435 \u0441\u043b\u0430\u0434\u043e\u043b\u0435\u0434.",nl:"Een meisje eet ijs."},
-    {bg:"\u0412\u0441\u0438\u0447\u043a\u0438 \u0441\u0430 \u0449\u0430\u0441\u0442\u043b\u0438\u0432\u0438!",nl:"Iedereen is gelukkig!"}
-  ]},
-  {id:"s3",title:"\u041f\u0440\u0438 \u0431\u0430\u0431\u0430",titleNl:"Bij oma",em:"\u{1f475}",level:"Beginner",
-   lines:[
-    {bg:"\u0410\u0437 \u043e\u0442\u0438\u0432\u0430\u043c \u043f\u0440\u0438 \u0431\u0430\u0431\u0430.",nl:"Ik ga naar oma."},
-    {bg:"\u0411\u0430\u0431\u0430 \u0436\u0438\u0432\u0435\u0435 \u0432 \u0421\u043e\u0444\u0438\u044f.",nl:"Oma woont in Sofia."},
-    {bg:"\u0422\u044f \u043f\u0440\u0430\u0432\u0438 \u0431\u0430\u043d\u0438\u0446\u0430.",nl:"Ze maakt banitsa."},
-    {bg:"\u0411\u0430\u043d\u0438\u0446\u0430\u0442\u0430 \u0435 \u043c\u043d\u043e\u0433\u043e \u0432\u043a\u0443\u0441\u043d\u0430!",nl:"De banitsa is heel lekker!"},
-    {bg:"\u0410\u0437 \u043e\u0431\u0438\u0447\u0430\u043c \u0431\u0430\u0431\u0430.",nl:"Ik hou van oma."}
-  ]},
-  {id:"s4",title:"\u041d\u0430 \u043f\u0430\u0437\u0430\u0440\u0430",titleNl:"Op de markt",em:"\u{1f34e}",level:"Gemiddeld",
-   lines:[
-    {bg:"\u041c\u0430\u043c\u0430 \u0438 \u0430\u0437 \u043e\u0442\u0438\u0432\u0430\u043c\u0435 \u043d\u0430 \u043f\u0430\u0437\u0430\u0440\u0430.",nl:"Mama en ik gaan naar de markt."},
-    {bg:"\u041d\u0430 \u043f\u0430\u0437\u0430\u0440\u0430 \u0438\u043c\u0430 \u043c\u043d\u043e\u0433\u043e \u043f\u043b\u043e\u0434\u043e\u0432\u0435.",nl:"Op de markt zijn veel vruchten."},
-    {bg:"\u041c\u0430\u043c\u0430 \u043a\u0443\u043f\u0443\u0432\u0430 \u044f\u0431\u044a\u043b\u043a\u0438 \u0438 \u043a\u0440\u0443\u0448\u0438.",nl:"Mama koopt appels en peren."},
-    {bg:"\u0410\u0437 \u0438\u0441\u043a\u0430\u043c \u0434\u0438\u043d\u044f.",nl:"Ik wil een watermeloen."},
-    {bg:"\u041c\u0430\u043c\u0430 \u043a\u0430\u0437\u0432\u0430: \u0414\u043e\u0431\u0440\u0435!",nl:"Mama zegt: Oké!"},
-    {bg:"\u041d\u0438\u0435 \u0441\u043c\u0435 \u0449\u0430\u0441\u0442\u043b\u0438\u0432\u0438.",nl:"Wij zijn gelukkig."}
-  ]},
-  {id:"s5",title:"\u0423\u0447\u0438\u043b\u0438\u0449\u0435",titleNl:"School",em:"\u{1f3eb}",level:"Gemiddeld",
-   lines:[
-    {bg:"\u0410\u0437 \u0445\u043e\u0434\u044f \u043d\u0430 \u0443\u0447\u0438\u043b\u0438\u0449\u0435.",nl:"Ik ga naar school."},
-    {bg:"\u041c\u043e\u044f\u0442\u0430 \u0443\u0447\u0438\u0442\u0435\u043b\u043a\u0430 \u0441\u0435 \u043a\u0430\u0437\u0432\u0430 \u0418\u0432\u0430\u043d\u043a\u0430.",nl:"Mijn lerares heet Ivanka."},
-    {bg:"\u0414\u043d\u0435\u0441 \u0438\u043c\u0430\u043c\u0435 \u043c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0430.",nl:"Vandaag hebben we wiskunde."},
-    {bg:"\u0410\u0437 \u043e\u0431\u0438\u0447\u0430\u043c \u0434\u0430 \u0447\u0435\u0442\u0430 \u043a\u043d\u0438\u0433\u0438.",nl:"Ik hou ervan om boeken te lezen."},
-    {bg:"\u0421\u043b\u0435\u0434 \u0443\u0447\u0438\u043b\u0438\u0449\u0435 \u0438\u0433\u0440\u0430\u044f \u0441 \u043f\u0440\u0438\u044f\u0442\u0435\u043b\u0438.",nl:"Na school speel ik met vrienden."}
-  ]}
 
-,{id:"s6",title:"\u0420\u043e\u0436\u0434\u0435\u043d \u0434\u0435\u043d",titleNl:"Verjaardagsfeest",em:"\u{1f382}",level:"Gemiddeld",lines:[
-{bg:"\u0414\u043d\u0435\u0441 \u0435 \u043c\u043e\u044f\u0442 \u0440\u043e\u0436\u0434\u0435\u043d \u0434\u0435\u043d!",nl:"Vandaag is mijn verjaardag!"},
-{bg:"\u0418\u043c\u0430\u043c \u0433\u043e\u043b\u044f\u043c\u0430 \u0442\u043e\u0440\u0442\u0430.",nl:"Ik heb een grote taart."},
-{bg:"\u041f\u0440\u0438\u044f\u0442\u0435\u043b\u0438\u0442\u0435 \u043c\u0438 \u0438\u0434\u0432\u0430\u0442.",nl:"Mijn vrienden komen."},
-{bg:"\u0418\u0433\u0440\u0430\u0435\u043c \u0438 \u0441\u0435 \u0441\u043c\u0435\u0435\u043c.",nl:"We spelen en lachen."},
-{bg:"\u041f\u043e\u043b\u0443\u0447\u0430\u0432\u0430\u043c \u043f\u043e\u0434\u0430\u0440\u044a\u0446\u0438!",nl:"Ik krijg cadeautjes!"},
-{bg:"\u041c\u0435\u0440\u0441\u0438 \u043d\u0430 \u0432\u0441\u0438\u0447\u043a\u0438!",nl:"Dankjewel aan iedereen!"}
-]},
-{id:"s7",title:"\u041d\u0430 \u043f\u043b\u0430\u0436\u0430",titleNl:"Op het strand",em:"\u{1f3d6}\ufe0f",level:"Beginner",lines:[
-{bg:"\u041e\u0442\u0438\u0432\u0430\u043c\u0435 \u043d\u0430 \u043c\u043e\u0440\u0435\u0442\u043e.",nl:"We gaan naar de zee."},
-{bg:"\u0412\u043e\u0434\u0430\u0442\u0430 \u0435 \u0442\u043e\u043f\u043b\u0430.",nl:"Het water is warm."},
-{bg:"\u041f\u0440\u0430\u0432\u044f \u0437\u0430\u043c\u044a\u043a \u043e\u0442 \u043f\u044f\u0441\u044a\u043a.",nl:"Ik maak een zandkasteel."},
-{bg:"\u0421\u043b\u044a\u043d\u0446\u0435\u0442\u043e \u0433\u0440\u0435\u0435.",nl:"De zon schijnt."},
-{bg:"\u042f\u043c \u0441\u043b\u0430\u0434\u043e\u043b\u0435\u0434.",nl:"Ik eet een ijsje."}
-]},
-{id:"s8",title:"\u0421\u043d\u0435\u0436\u0435\u043d \u0434\u0435\u043d",titleNl:"Een sneeuwdag",em:"\u2744\ufe0f",level:"Beginner",lines:[
-{bg:"\u0412\u0430\u043b\u0438 \u0441\u043d\u044f\u0433!",nl:"Het sneeuwt!"},
-{bg:"\u0412\u0441\u0438\u0447\u043a\u043e \u0435 \u0431\u044f\u043b\u043e.",nl:"Alles is wit."},
-{bg:"\u041f\u0440\u0430\u0432\u0438\u043c \u0441\u043d\u0435\u0436\u0435\u043d \u0447\u043e\u0432\u0435\u043a.",nl:"We maken een sneeuwpop."},
-{bg:"\u0420\u044a\u0446\u0435\u0442\u0435 \u043c\u0438 \u0441\u0430 \u0441\u0442\u0443\u0434\u0435\u043d\u0438.",nl:"Mijn handen zijn koud."},
-{bg:"\u041f\u0438\u0435\u043c \u0433\u043e\u0440\u0435\u0449 \u0448\u043e\u043a\u043e\u043b\u0430\u0434.",nl:"We drinken warme chocolademelk."}
-]},
-{id:"s9",title:"\u0423\u0447\u0438\u043b\u0438\u0449\u0435\u043d \u0434\u0435\u043d",titleNl:"Een schooldag",em:"\u{1f3eb}",level:"Gemiddeld",lines:[
-{bg:"\u0417\u0432\u044a\u043d\u0435\u0446\u044a\u0442 \u0437\u0432\u044a\u043d\u0438!",nl:"De bel gaat!"},
-{bg:"\u0412\u043b\u0438\u0437\u0430\u043c \u0432 \u043a\u043b\u0430\u0441\u043d\u0430\u0442\u0430 \u0441\u0442\u0430\u044f.",nl:"Ik ga het klaslokaal in."},
-{bg:"\u0423\u0447\u0438\u0442\u0435\u043b\u043a\u0430\u0442\u0430 \u0435 \u0434\u043e\u0431\u0440\u0430.",nl:"De juf is aardig."},
-{bg:"\u041f\u0438\u0448\u0435\u043c \u0432 \u0442\u0435\u0442\u0440\u0430\u0434\u043a\u0438\u0442\u0435.",nl:"We schrijven in onze schriften."},
-{bg:"\u041e\u0431\u0438\u0447\u0430\u043c \u0443\u0447\u0438\u043b\u0438\u0449\u0435!",nl:"Ik hou van school!"}
-]},
-{id:"s10",title:"\u0418\u0433\u0440\u0430 \u0441 \u043f\u0440\u0438\u044f\u0442\u0435\u043b\u0438",titleNl:"Spelen met vrienden",em:"\u{1f46b}",level:"Beginner",lines:[
-{bg:"\u041e\u0442\u0438\u0432\u0430\u043c \u0432 \u043f\u0430\u0440\u043a\u0430.",nl:"Ik ga naar het park."},
-{bg:"\u0421\u0440\u0435\u0449\u0430\u043c \u043f\u0440\u0438\u044f\u0442\u0435\u043b\u0438\u0442\u0435 \u0441\u0438.",nl:"Ik ontmoet mijn vrienden."},
-{bg:"\u0418\u0433\u0440\u0430\u0435\u043c \u043d\u0430 \u0444\u0443\u0442\u0431\u043e\u043b.",nl:"We spelen voetbal."},
-{bg:"\u041c\u043d\u043e\u0433\u043e \u0435 \u0437\u0430\u0431\u0430\u0432\u043d\u043e!",nl:"Het is heel leuk!"},
-{bg:"\u0429\u0435 \u0434\u043e\u0439\u0434\u0430 \u043f\u0430\u043a \u0443\u0442\u0440\u0435!",nl:"Ik kom morgen weer!"}
-]}];
+  // === LINEAIR: In het park ===
+  {id:"s2",title:"В парка",titleNl:"In het park",em:"🌳",level:"Beginner",
+   lines:[
+    {bg:"Днес е слънчев ден.",nl:"Vandaag is het een zonnige dag."},
+    {bg:"Децата играят в парка.",nl:"De kinderen spelen in het park."},
+    {bg:"Едно момче има топка.",nl:"Een jongen heeft een bal."},
+    {bg:"Едно момиче яде сладолед.",nl:"Een meisje eet ijs."},
+    {bg:"Всички са щастливи!",nl:"Iedereen is gelukkig!"}
+  ]},
+
+  // === LINEAIR: Bij oma ===
+  {id:"s3",title:"При баба",titleNl:"Bij oma",em:"👵",level:"Beginner",
+   lines:[
+    {bg:"Аз отивам при баба.",nl:"Ik ga naar oma."},
+    {bg:"Баба живее в София.",nl:"Oma woont in Sofia."},
+    {bg:"Тя прави баница.",nl:"Ze maakt banitsa."},
+    {bg:"Баницата е много вкусна!",nl:"De banitsa is heel lekker!"},
+    {bg:"Аз обичам баба.",nl:"Ik hou van oma."}
+  ]},
+
+  // === INTERACTIEF: Op de markt ===
+  {id:"s4",title:"На пазара",titleNl:"Op de markt",em:"🍎",level:"Gemiddeld",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Мама и аз отиваме на пазара.",nl:"Mama en ik gaan naar de markt."},choices:[
+      {text:{bg:"Отиваме за плодове.",nl:"We gaan fruit kopen."},next:"fruit"},
+      {text:{bg:"Отиваме за зеленчуци.",nl:"We gaan groenten kopen."},next:"veggies"}
+    ]},
+    {id:"fruit",text:{bg:"Виждаме ябълки, круши и дини.",nl:"We zien appels, peren en watermeloenen."},choices:[
+      {text:{bg:"Искам диня!",nl:"Ik wil een watermeloen!"},next:"watermelon"},
+      {text:{bg:"Искам ябълки.",nl:"Ik wil appels."},next:"apples"}
+    ]},
+    {id:"veggies",text:{bg:"Има домати, краставици и моркови.",nl:"Er zijn tomaten, komkommers en wortels."},choices:[
+      {text:{bg:"Купуваме домати.",nl:"We kopen tomaten."},next:"tomatoes"},
+      {text:{bg:"Купуваме краставици.",nl:"We kopen komkommers."},next:"cucumbers"}
+    ]},
+    {id:"watermelon",text:{bg:"Динята е голяма и сладка! Много вкусно! 🍉",nl:"De watermeloen is groot en zoet! Lekker!"},end:true},
+    {id:"apples",text:{bg:"Ябълките са червени и хрупкави! Мммм! 🍎",nl:"De appels zijn rood en knapperig! Mmm!"},end:true},
+    {id:"tomatoes",text:{bg:"Мама прави шопска салата! 🥗",nl:"Mama maakt shopska salata!"},end:true},
+    {id:"cucumbers",text:{bg:"Краставиците са свежи и вкусни! 🥒",nl:"De komkommers zijn vers en lekker!"},end:true}
+  ]},
+
+  // === LINEAIR: School ===
+  {id:"s5",title:"Училище",titleNl:"School",em:"🏫",level:"Gemiddeld",
+   lines:[
+    {bg:"Аз ходя на училище.",nl:"Ik ga naar school."},
+    {bg:"Моята учителка се казва Иванка.",nl:"Mijn lerares heet Ivanka."},
+    {bg:"Днес имаме математика.",nl:"Vandaag hebben we wiskunde."},
+    {bg:"Аз обичам да чета книги.",nl:"Ik hou ervan om boeken te lezen."},
+    {bg:"След училище играя с приятели.",nl:"Na school speel ik met vrienden."}
+  ]},
+
+  // === LINEAIR: Verjaardagsfeest ===
+  {id:"s6",title:"Рожден ден",titleNl:"Verjaardagsfeest",em:"🎂",level:"Gemiddeld",
+   lines:[
+    {bg:"Днес е моят рожден ден!",nl:"Vandaag is mijn verjaardag!"},
+    {bg:"Имам голяма торта.",nl:"Ik heb een grote taart."},
+    {bg:"Приятелите ми идват.",nl:"Mijn vrienden komen."},
+    {bg:"Играем и се смеем.",nl:"We spelen en lachen."},
+    {bg:"Получавам подаръци!",nl:"Ik krijg cadeautjes!"},
+    {bg:"Мерси на всички!",nl:"Dankjewel aan iedereen!"}
+  ]},
+
+  // === INTERACTIEF: Op het strand ===
+  {id:"s7",title:"На плажа",titleNl:"Op het strand",em:"🏖️",level:"Beginner",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Отиваме на морето. Водата е топла!",nl:"We gaan naar de zee. Het water is warm!"},choices:[
+      {text:{bg:"Искам да плувам!",nl:"Ik wil zwemmen!"},next:"swim"},
+      {text:{bg:"Правя замък от пясък.",nl:"Ik maak een zandkasteel."},next:"castle"}
+    ]},
+    {id:"swim",text:{bg:"Водата е чудесна! Виждам риба! 🐠",nl:"Het water is heerlijk! Ik zie een vis!"},choices:[
+      {text:{bg:"Гмуркам се под водата.",nl:"Ik duik onder water."},next:"dive"},
+      {text:{bg:"Играя с вълните.",nl:"Ik speel met de golven."},next:"waves"}
+    ]},
+    {id:"castle",text:{bg:"Замъкът е голям! 🏰",nl:"Het kasteel is groot!"},choices:[
+      {text:{bg:"Правя кула.",nl:"Ik maak een toren."},next:"tower"},
+      {text:{bg:"Копая канал.",nl:"Ik graaf een gracht."},next:"moat"}
+    ]},
+    {id:"dive",text:{bg:"Виждам красиви миди! Морето е невероятно! 🐚",nl:"Ik zie mooie schelpen! De zee is geweldig!"},end:true},
+    {id:"waves",text:{bg:"Скачам във вълните! Много е забавно! 🌊",nl:"Ik spring in de golven! Erg leuk!"},end:true},
+    {id:"tower",text:{bg:"Замъкът ми е най-красивият на плажа! 👑",nl:"Mijn kasteel is het mooiste op het strand!"},end:true},
+    {id:"moat",text:{bg:"Водата идва в канала! Замъкът е готов! 🌟",nl:"Het water komt in de gracht! Het kasteel is klaar!"},end:true}
+  ]},
+
+  // === LINEAIR: Een sneeuwdag ===
+  {id:"s8",title:"Снежен ден",titleNl:"Een sneeuwdag",em:"❄️",level:"Beginner",
+   lines:[
+    {bg:"Вали сняг!",nl:"Het sneeuwt!"},
+    {bg:"Всичко е бяло.",nl:"Alles is wit."},
+    {bg:"Правим снежен човек.",nl:"We maken een sneeuwpop."},
+    {bg:"Ръцете ми са студени.",nl:"Mijn handen zijn koud."},
+    {bg:"Пием горещ шоколад.",nl:"We drinken warme chocolademelk."}
+  ]},
+
+  // === LINEAIR: Een schooldag ===
+  {id:"s9",title:"Училищен ден",titleNl:"Een schooldag",em:"🏫",level:"Gemiddeld",
+   lines:[
+    {bg:"Звънецът звъни!",nl:"De bel gaat!"},
+    {bg:"Влизам в класната стая.",nl:"Ik ga het klaslokaal in."},
+    {bg:"Учителката е добра.",nl:"De juf is aardig."},
+    {bg:"Пишем в тетрадките.",nl:"We schrijven in onze schriften."},
+    {bg:"Обичам училище!",nl:"Ik hou van school!"}
+  ]},
+
+  // === LINEAIR: Spelen met vrienden ===
+  {id:"s10",title:"Игра с приятели",titleNl:"Spelen met vrienden",em:"👫",level:"Beginner",
+   lines:[
+    {bg:"Отивам в парка.",nl:"Ik ga naar het park."},
+    {bg:"Срещам приятелите си.",nl:"Ik ontmoet mijn vrienden."},
+    {bg:"Играем на футбол.",nl:"We spelen voetbal."},
+    {bg:"Много е забавно!",nl:"Het is heel leuk!"},
+    {bg:"Ще дойда пак утре!",nl:"Ik kom morgen weer!"}
+  ]}
+];

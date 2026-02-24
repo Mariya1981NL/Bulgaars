@@ -239,6 +239,24 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .story-bg{font-size:15px;font-weight:600;color:#1e293b;cursor:pointer}
 .story-bg:hover{color:#0d9488}
 .story-nl{font-size:13px;color:#94a3b8;margin-top:2px;font-style:italic}
+.story-choice-box{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.story-choice{width:100%;padding:12px 16px;border-radius:12px;border:2px solid #a7f3d0;background:#ecfdf5;text-align:left;font-size:14px;font-weight:500;transition:all .2s;cursor:pointer}
+.story-choice:hover{border-color:#14b8a6;background:#f0fdfa;transform:translateY(-1px);box-shadow:0 2px 8px rgba(20,184,166,.15)}
+.story-choice-bg{font-weight:600;color:#134e4a}
+.story-choice-nl{font-size:12px;color:#64748b;margin-top:2px}
+.story-end{text-align:center;padding:20px;margin-top:12px}
+.story-end-emoji{font-size:48px;margin-bottom:8px}
+.story-trail{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.story-trail-dot{padding:3px 8px;border-radius:999px;font-size:10px;font-weight:600}
+.story-trail-past{background:#e2e8f0;color:#64748b}
+.story-trail-now{background:#14b8a6;color:#fff}
+.story-interactive-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600;background:#fef3c7;color:#92400e;margin-left:6px}
+.bg-map{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;background:linear-gradient(135deg,#f0f9ff,#f0fdf4);border-radius:16px;border:1px solid #ccfbf1;margin-top:8px}
+.bg-map svg{width:100%;max-width:360px;height:auto}
+.bg-region{transition:all .3s;stroke-width:1.5;cursor:pointer}
+.bg-region:not(.bg-region-locked):hover{filter:brightness(1.1);stroke-width:2.5}
+.bg-region-locked{cursor:not-allowed;opacity:.5}
+.bg-info-panel{width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;text-align:center;min-height:50px;display:flex;flex-direction:column;justify-content:center}
 
 /* Cultuur */
 .culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -931,6 +949,7 @@ function Home({go,st,sS,profiles,activeId}){
             ce("div",{className:"card-b"},ce("div",{className:"card-t"},m.t),ce("div",{className:"card-d"},m.desc),
               (function(){var p=modProgress(m,st);return p.total>0?ce("div",{className:"mod-prog"},ce("div",{className:"mod-prog-bar"},ce("div",{className:"mod-prog-fill",style:{width:p.pct+"%",background:p.pct>=100?"#10b981":p.pct>0?"#a78bfa":"transparent"}})),ce("div",{className:"mod-prog-txt"},p.learned+"/"+p.total)):null;})()),
             ce("span",{style:{color:"#94a3b8",fontSize:18}},u5.open?"\u203a":"\u{1f512}")))))):null;})(),
+    ce(BulgariaMap,{st:st,go:go}),
     // Streak banner
     (st.strk||0)>0&&ce("div",{style:{background:"linear-gradient(135deg,#fff7ed,#fffbeb)",border:"2px solid #fed7aa",borderRadius:16,padding:14,textAlign:"center",marginTop:4,display:"flex",alignItems:"center",justifyContent:"center",gap:10}},
       ce("span",{className:"streak-flame",style:{fontSize:28}},"\ud83d\udd25"),
@@ -2131,16 +2150,66 @@ function DailyChallenge({go,st,sS}){
 function Stories({go,st}){
   var[sel,sSel]=uS(null);
   var[showNl,sShowNl]=uS({});
+  var[scene,sScene]=uS("start");
+  var[trail,sTrail]=uS([]);
 
   var toggleLine=function(i){
     sShowNl(function(p){var n=Object.assign({},p);n[i]=!n[i];return n;});
   };
 
-  if(sel){
+  // Reset interactive state when selecting a new story
+  var selectStory=function(i){sSel(i);sScene("start");sTrail([]);sShowNl({});};
+  var backToList=function(){sSel(null);sScene("start");sTrail([]);sShowNl({});};
+
+  if(sel!==null){
     var s=STORIES[sel];
+
+    // === INTERACTIVE STORY ===
+    if(s.interactive&&s.scenes){
+      var sc=s.scenes.find(function(x){return x.id===scene;});
+      if(!sc)sc=s.scenes[0];
+      return ce("div",{className:"scr sy"},
+        ce("div",{className:"nr"},
+          ce("button",{className:"btn btn-g",onClick:backToList},"← Terug")),
+        ce("div",{className:"story-card"},
+          ce("div",{className:"story-header"},
+            ce("div",{style:{fontSize:32,marginBottom:4}},s.em),
+            ce("div",{className:"story-title"},s.title),
+            ce("div",{style:{fontSize:13,color:"#64748b"}},s.titleNl),
+            ce("div",{className:"story-level"},s.level+" • Interactief")),
+          // Trail breadcrumbs
+          trail.length>0&&ce("div",{style:{padding:"8px 16px 0"}},
+            ce("div",{className:"story-trail"},
+              trail.map(function(t,i){return ce("span",{key:i,className:"story-trail-dot story-trail-past"},t);}),
+              ce("span",{className:"story-trail-dot story-trail-now"},"●"))),
+          ce("div",{className:"story-body"},
+            ce("div",{className:"story-line",style:{borderBottom:"none"}},
+              ce("div",{className:"story-bg",onClick:function(){speak(sc.text.bg);}},sc.text.bg),
+              ce("div",{className:"story-nl"},sc.text.nl)),
+            // Choices
+            sc.choices&&ce("div",{className:"story-choice-box"},
+              sc.choices.map(function(ch,i){
+                return ce("button",{key:i,className:"story-choice",onClick:function(){
+                  speak(ch.text.bg);
+                  sTrail(function(prev){return prev.concat([sc.id]);});
+                  sScene(ch.next);
+                }},
+                  ce("div",{className:"story-choice-bg"},ch.text.bg),
+                  ce("div",{className:"story-choice-nl"},ch.text.nl));
+              })),
+            // End screen
+            sc.end&&ce("div",{className:"story-end"},
+              ce("div",{className:"story-end-emoji"},"🎉"),
+              ce("div",{style:{fontWeight:700,fontSize:16,color:"#134e4a"}},"Einde!"),
+              ce("div",{style:{fontSize:13,color:"#64748b",marginTop:4}},"Je hebt het verhaal uitgelezen!"),
+              ce("button",{className:"btn btn-t",style:{marginTop:12},onClick:function(){sScene("start");sTrail([]);}},"🔄 Opnieuw spelen"),
+              ce("button",{className:"btn btn-g",style:{marginTop:8},onClick:backToList},"← Ander verhaal")))));
+    }
+
+    // === LINEAR STORY ===
     return ce("div",{className:"scr sy"},
       ce("div",{className:"nr"},
-        ce("button",{className:"btn btn-g",onClick:function(){sSel(null);sShowNl({});}},"\u2190 Terug")),
+        ce("button",{className:"btn btn-g",onClick:backToList},"← Terug")),
       ce("div",{className:"story-card"},
         ce("div",{className:"story-header"},
           ce("div",{style:{fontSize:32,marginBottom:4}},s.em),
@@ -2157,23 +2226,77 @@ function Stories({go,st}){
         ce("p",{style:{fontSize:12,color:"#94a3b8"}},"Tik op een zin om de vertaling te zien en de uitspraak te horen")));
   }
 
+  // === STORY LIST ===
   return ce("div",{className:"scr sy"},
     ce("div",{className:"nr"},
-      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home")),
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"← Home")),
     ce("div",{className:"ctr"},
-      ce("div",{style:{fontSize:36}},"\u{1f4d6}"),
+      ce("div",{style:{fontSize:36}},"📖"),
       ce("h2",{className:"h1"},"Verhaaltjes"),
       ce("p",{className:"sub"},"Lees korte verhalen in het Bulgaars")),
     ce("div",{className:"sy3"},
       STORIES.map(function(s,i){
-        return ce("button",{key:s.id,className:"card",onClick:function(){sSel(i);},style:{width:"100%",textAlign:"left"}},
+        return ce("button",{key:s.id,className:"card",onClick:function(){selectStory(i);},style:{width:"100%",textAlign:"left"}},
           ce("div",{className:"card-r"},
             ce("div",{style:{fontSize:28,marginRight:12}},s.em),
             ce("div",{className:"card-b"},
-              ce("div",{className:"card-t"},s.title),
-              ce("div",{className:"card-d"},s.titleNl+" \u2014 "+s.level)),
-            ce("span",{style:{color:"#94a3b8",fontSize:18}},"\u203a")));
+              ce("div",{className:"card-t"},s.title,
+                s.interactive&&ce("span",{className:"story-interactive-badge"},"🔀 Interactief")),
+              ce("div",{className:"card-d"},s.titleNl+" — "+s.level)),
+            ce("span",{style:{color:"#94a3b8",fontSize:18}},"›")));
       })));
+}
+
+// === REIS NAAR BULGARIJE - VOORTGANGSKAART ===
+
+var MAP_REGIONS=[
+  {id:"sofia",bg:"София",nl:"Sofia",phase:1,color:"#14b8a6",
+   d:"M80,95 L95,82 L115,78 L130,82 L140,92 L135,108 L120,115 L100,118 L82,110 Z",cx:110,cy:97},
+  {id:"plovdiv",bg:"Пловдив",nl:"Plovdiv",phase:2,color:"#8b5cf6",
+   d:"M140,92 L165,85 L185,92 L190,108 L180,125 L160,130 L135,125 L135,108 Z",cx:162,cy:107},
+  {id:"varna",bg:"Варна",nl:"Varna",phase:3,color:"#f59e0b",
+   d:"M225,42 L248,38 L260,45 L262,62 L255,78 L240,82 L225,75 L220,58 Z",cx:242,cy:60},
+  {id:"burgas",bg:"Бургас",nl:"Burgas",phase:3,color:"#ef4444",
+   d:"M225,75 L240,82 L255,78 L260,95 L258,115 L248,128 L230,130 L220,120 L218,100 L220,82 Z",cx:238,cy:103},
+  {id:"tarnovo",bg:"В. Търново",nl:"Veliko Tarnovo",phase:4,color:"#10b981",
+   d:"M130,42 L155,35 L180,38 L200,42 L210,52 L205,68 L185,75 L165,78 L140,75 L130,65 L125,52 Z",cx:168,cy:56},
+  {id:"bansko",bg:"Банско",nl:"Bansko/Rhodopes",phase:5,color:"#ec4899",
+   d:"M82,110 L100,118 L120,115 L135,125 L160,130 L155,148 L135,158 L110,160 L85,152 L72,138 L75,120 Z",cx:118,cy:138}
+];
+
+function BulgariaMap({st,go}){
+  var[sel,sSel]=uS(null);
+  var selR=sel!==null?MAP_REGIONS.find(function(r){return r.id===sel;}):null;
+
+  return ce("div",{className:"bg-map"},
+    ce("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+      ce("span",{style:{fontSize:20}},"🗺️"),
+      ce("div",{style:{fontWeight:700,fontSize:15,color:"#134e4a"}},"Reis naar Bulgarije"),
+      ce("div",{style:{fontSize:11,color:"#64748b"}},"Ontdek alle regio’s!")),
+    ce("svg",{viewBox:"0 0 300 185",style:{background:"linear-gradient(to bottom,#e0f2fe,#dbeafe)",borderRadius:12,border:"1px solid #bae6fd"}},
+      // Zwarte Zee label
+      ce("text",{x:275,y:90,textAnchor:"middle",fontSize:9,fill:"#60a5fa",fontStyle:"italic",opacity:.6,transform:"rotate(-90,275,90)"},"Черно море"),
+      // Donau label
+      ce("text",{x:150,y:25,textAnchor:"middle",fontSize:9,fill:"#60a5fa",fontStyle:"italic",opacity:.6},"Дунав"),
+      // Regions
+      MAP_REGIONS.map(function(r){
+        var u=isPhaseUnlocked(r.phase,st);
+        var isOpen=u.open;
+        var isSel=sel===r.id;
+        return ce("g",{key:r.id,onClick:function(){if(isOpen)sSel(isSel?null:r.id);}},
+          ce("path",{d:r.d,fill:isOpen?r.color:"#e2e8f0",stroke:isOpen?r.color:"#cbd5e1",strokeWidth:isSel?2.5:1.5,
+            opacity:isOpen?(isSel?1:.75):.4,className:"bg-region"+(isOpen?"":" bg-region-locked"),
+            style:{filter:isSel?"brightness(1.1)":"none"}}),
+          !isOpen&&ce("text",{x:r.cx,y:r.cy+1,textAnchor:"middle",dominantBaseline:"middle",fontSize:14,style:{pointerEvents:"none"}},"🔒"),
+          isOpen&&ce("text",{x:r.cx,y:r.cy+1,textAnchor:"middle",dominantBaseline:"middle",fontSize:9,fontWeight:600,fill:"#fff",style:{pointerEvents:"none",textShadow:"0 1px 2px rgba(0,0,0,.3)"}},r.bg));
+      })),
+    // Info panel
+    selR?ce("div",{className:"bg-info-panel"},
+      ce("div",{style:{fontWeight:700,fontSize:16,color:"#1e293b"}},selR.bg),
+      ce("div",{style:{fontSize:13,color:"#64748b"}},selR.nl),
+      ce("div",{style:{fontSize:11,color:"#16a34a",fontWeight:600,marginTop:4}},"✓ Ontgrendeld")):
+    ce("div",{className:"bg-info-panel"},
+      ce("div",{style:{fontSize:12,color:"#94a3b8",fontStyle:"italic"}},"Tik op een regio om meer te zien")));
 }
 
 // === CULTUUR & KINDERLIEDJES ===
