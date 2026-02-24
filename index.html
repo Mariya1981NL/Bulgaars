@@ -256,7 +256,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .bg-region{transition:all .3s;stroke-width:1.5;cursor:pointer}
 .bg-region:not(.bg-region-locked):hover{filter:brightness(1.1);stroke-width:2.5}
 .bg-region-locked{cursor:not-allowed;opacity:.5}
-.bg-info-panel{width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;text-align:center;min-height:50px;display:flex;flex-direction:column;justify-content:center}
+.bg-info-panel{width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;text-align:center;min-height:50px;display:flex;flex-direction:column;justify-content:center}.pd-section{margin-top:16px}.pd-section-title{font-size:13px;font-weight:600;color:#64748b;margin-bottom:8px;display:flex;align-items:center;gap:6px}.pd-week-chart{display:flex;align-items:flex-end;gap:4px;height:100px;padding:12px;background:#fff;border-radius:12px;border:1px solid #e2e8f0}.pd-week-bar{flex:1;border-radius:6px 6px 0 0;min-height:4px;transition:height .3s;position:relative}.pd-week-bar-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:#94a3b8;white-space:nowrap}.pd-week-bar-val{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:600;color:#1e293b}.pd-level-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:6px}.pd-level-badge{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;color:#fff;min-width:32px;text-align:center}.pd-level-info{flex:1}.pd-level-name{font-size:12px;font-weight:600;color:#1e293b}.pd-level-count{font-size:11px;color:#64748b}.pd-hard-word{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#fff;border-radius:10px;border:1px solid #fecaca;margin-bottom:4px}.pd-hard-word-emoji{font-size:18px;margin-right:8px}.pd-hard-word-bg{font-weight:600;font-size:13px;color:#1e293b}.pd-hard-word-nl{font-size:11px;color:#64748b}.pd-hard-word-err{font-size:11px;color:#ef4444;font-weight:600}.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.theme-card{padding:12px;border-radius:12px;text-align:center;border:2px solid #e2e8f0;transition:all .2s;cursor:pointer}.theme-card:hover{transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,.1)}.theme-card-active{border-color:#14b8a6;box-shadow:0 0 0 2px rgba(20,184,166,.2)}.theme-card-locked{opacity:.5;cursor:not-allowed}.avatar-grid-unlock{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}.avatar-unlock-card{padding:8px;border-radius:10px;text-align:center;border:2px solid #e2e8f0;font-size:24px;transition:all .2s;cursor:pointer}.avatar-unlock-card-active{border-color:#14b8a6;background:#ecfdf5}.avatar-unlock-card-locked{opacity:.4;cursor:not-allowed;filter:grayscale(1)}
 
 /* Cultuur */
 .culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -587,7 +587,51 @@ function MicButton(props){
 
 // === PROFILE MANAGEMENT ===
 var PROFILE_AVATARS=["🐱","🦁","🐻","🦊","🐰","🐼","🦄","🐸","🦋","🐙","🐳","🦜"];
-var DEFAULT_STATE={xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:"",sr:0};
+var BONUS_AVATARS=[
+  {emoji:"🐉",name:"Draak",req:{xp:500},desc:"500 XP"},
+  {emoji:"🦅",name:"Adelaar",req:{xp:1000},desc:"1000 XP"},
+  {emoji:"🐺",name:"Wolf",req:{xp:2000},desc:"2000 XP"},
+  {emoji:"🦊",name:"Feniks",req:{badges:10},desc:"10 badges"},
+  {emoji:"🎭",name:"Masker",req:{badges:20},desc:"20 badges"},
+  {emoji:"👑",name:"Kroon",req:{xp:5000},desc:"5000 XP"},
+  {emoji:"🌟",name:"Ster",req:{streak:7},desc:"7 dagen streak"},
+  {emoji:"💎",name:"Diamant",req:{xp:10000},desc:"10000 XP"},
+  {emoji:"🔥",name:"Vuur",req:{streak:14},desc:"14 dagen streak"},
+  {emoji:"🏆",name:"Trofee",req:{badges:30},desc:"30 badges"},
+  {emoji:"🎪",name:"Circus",req:{words:500},desc:"500 woorden"},
+  {emoji:"🚀",name:"Raket",req:{words:1000},desc:"1000 woorden"}
+];
+var APP_THEMES=[
+  {id:"default",name:"Standaard",colors:{bg:"#f8fafc",accent:"#14b8a6",card:"#fff"},req:null},
+  {id:"ocean",name:"Oceaan",colors:{bg:"#f0f9ff",accent:"#0ea5e9",card:"#f0f9ff"},req:{xp:300},desc:"300 XP"},
+  {id:"forest",name:"Bos",colors:{bg:"#f0fdf4",accent:"#16a34a",card:"#f0fdf4"},req:{xp:800},desc:"800 XP"},
+  {id:"sunset",name:"Zonsondergang",colors:{bg:"#fff7ed",accent:"#ea580c",card:"#fff7ed"},req:{xp:1500},desc:"1500 XP"},
+  {id:"royal",name:"Koninklijk",colors:{bg:"#faf5ff",accent:"#7c3aed",card:"#faf5ff"},req:{xp:3000},desc:"3000 XP"},
+  {id:"rose",name:"Rozentuin",colors:{bg:"#fff1f2",accent:"#e11d48",card:"#fff1f2"},req:{badges:15},desc:"15 badges"}
+];
+function isAvatarUnlocked(av,st){
+  if(!av.req)return true;
+  var r=av.req;var eb=typeof BADGES!=="undefined"?BADGES.filter(function(b){return b.rq(st);}).length:0;
+  if(r.xp&&st.xp<r.xp)return false;
+  if(r.badges&&eb<r.badges)return false;
+  if(r.streak&&(st.strk||0)<r.streak)return false;
+  if(r.words&&(st.wl||0)<r.words)return false;
+  return true;
+}
+function isThemeUnlocked(th,st){
+  if(!th.req)return true;
+  var r=th.req;var eb=typeof BADGES!=="undefined"?BADGES.filter(function(b){return b.rq(st);}).length:0;
+  if(r.xp&&st.xp<r.xp)return false;
+  if(r.badges&&eb<r.badges)return false;
+  return true;
+}
+function logXP(st,amount){
+  var today=new Date().toISOString().slice(0,10);
+  var log=Object.assign({},st.xpLog||{});
+  log[today]=(log[today]||0)+amount;
+  return log;
+}
+var DEFAULT_STATE={xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:"",sr:0,xpLog:{},theme:"default",uAvatars:[]};
 
 function loadProfiles(){
   try{
@@ -2744,10 +2788,11 @@ function LetterTrace({go,st,sS}){
 function ParentDash({go,st,sS}){
   var [pin,sPin]=uS("");
   var [unlocked,sUn]=uS(false);
+  var [tab,sTab]=uS("overview");
   var realPin=st.pp||"1234";
   if(!unlocked){
     return ce("div",{className:"scr sy ctr"},
-      ce("div",{style:{fontSize:48}},"\u{1f512}"),
+      ce("div",{style:{fontSize:48}},"🔒"),
       ce("h2",{className:"h2"},"Ouder-dashboard"),
       ce("p",{className:"sub"},"Voer de PIN in (standaard: 1234)"),
       ce("input",{type:"password",maxLength:4,value:pin,onChange:function(e){sPin(e.target.value);},
@@ -2761,33 +2806,139 @@ function ParentDash({go,st,sS}){
   var tw=allWords(MODS).length;
   var tl=ALPHA.reduce(function(s,g){return s+g.ls.length;},0);
   var eb=BADGES.filter(function(b){return b.rq(st);}).length;
+  var aw=allWords(MODS);
+  // Week chart data
+  var weekData=(function(){
+    var days=[];var d=new Date();
+    for(var i=6;i>=0;i--){var dd=new Date(d);dd.setDate(dd.getDate()-i);var key=dd.toISOString().slice(0,10);
+      var dayNames=["zo","ma","di","wo","do","vr","za"];
+      days.push({key:key,label:dayNames[dd.getDay()],xp:(st.xpLog||{})[key]||0});}
+    var maxXP=Math.max.apply(null,days.map(function(d){return d.xp;}))||1;
+    return{days:days,maxXP:maxXP};
+  })();
+  // Level breakdown
+  var levels=[
+    {id:"A1",color:"#14b8a6",total:aw.filter(function(w){return w.lv==="A1";}).length},
+    {id:"A2",color:"#f59e0b",total:aw.filter(function(w){return w.lv==="A2";}).length},
+    {id:"B1",color:"#8b5cf6",total:aw.filter(function(w){return w.lv==="B1";}).length},
+    {id:"B2",color:"#ec4899",total:aw.filter(function(w){return w.lv==="B2";}).length}
+  ];
+  levels.forEach(function(l){l.learned=aw.filter(function(w){return w.lv===l.id&&(st.wi||[]).indexOf(w.b)!==-1;}).length;});
+  // Hard words
+  var hardWords=getHardWords(st.errs||{},aw).slice(0,10);
+
   return ce("div",{className:"scr sy"},
     ce("div",{className:"nr"},
-      ce("button",{className:"back-btn",onClick:function(){go("home");}},"\u2190"),
-      ce("div",{className:"h2"},"\u{1f4ca} Ouder-dashboard")),
-    ce("div",{className:"pd-grid"},
-      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.xp),ce("div",{className:"pd-lbl"},"XP totaal")),
-      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.sk),ce("div",{className:"pd-lbl"},"Huidige streak")),
-      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.wl+"/"+tw),ce("div",{className:"pd-lbl"},"Woorden geleerd"),
-        ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.wl/tw*100)+"%",background:"#10b981"}}))),
-      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.ll+"/"+tl),ce("div",{className:"pd-lbl"},"Letters geleerd"),
-        ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.ll/tl*100)+"%",background:"#14b8a6"}}))),
-      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},eb+"/"+BADGES.length),ce("div",{className:"pd-lbl"},"Badges behaald"),
-        ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(eb/BADGES.length*100)+"%",background:"#f59e0b"}}))),
-      ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},(st.dw||0)),ce("div",{className:"pd-lbl"},"Dagen dagelijks"))),
-    ce("h3",{className:"h3",style:{marginTop:16}},"Activiteiten"),
-    ce("div",{className:"sy3"},
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Quiz vragen goed"),ce("span",{style:{fontWeight:700}},st.qo))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Memory games"),ce("span",{style:{fontWeight:700}},st.mc))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Galgje gewonnen"),ce("span",{style:{fontWeight:700}},st.hw))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Woordzoekers"),ce("span",{style:{fontWeight:700}},st.wsg||0))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Flashcard sessies"),ce("span",{style:{fontWeight:700}},st.fc||0))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Grammatica goed"),ce("span",{style:{fontWeight:700}},st.gf||0))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Gesprekken gevoerd"),ce("span",{style:{fontWeight:700}},st.ic||0))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Berichten aan oma"),ce("span",{style:{fontWeight:700}},st.om||0))),
-      ce("div",{className:"card",style:{padding:12}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},ce("span",null,"Letters getekend"),ce("span",{style:{fontWeight:700}},st.lt||0)))));
-}
-function Review({go,st,sS}){
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"←"),
+      ce("div",{className:"h2"},"📊 Ouder-dashboard")),
+    // Tab row
+    ce("div",{className:"tab-row"},
+      ce("button",{className:"tab"+(tab==="overview"?" tab-on":""),onClick:function(){sTab("overview");}},"Overzicht"),
+      ce("button",{className:"tab"+(tab==="week"?" tab-on":""),onClick:function(){sTab("week");}},"Week"),
+      ce("button",{className:"tab"+(tab==="words"?" tab-on":""),onClick:function(){sTab("words");}},"Woorden"),
+      ce("button",{className:"tab"+(tab==="rewards"?" tab-on":""),onClick:function(){sTab("rewards");}},"Beloningen")),
+    // === OVERVIEW TAB ===
+    tab==="overview"&&ce("div",null,
+      ce("div",{className:"pd-grid"},
+        ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.xp),ce("div",{className:"pd-lbl"},"XP totaal")),
+        ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},(st.strk||0)),ce("div",{className:"pd-lbl"},"Huidige streak"),
+          (st.strk||0)>0&&ce("div",{style:{fontSize:10,color:"#f59e0b",marginTop:2}},"🔥 Beste: "+(st.strk||0)+" dagen")),
+        ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.wl+"/"+tw),ce("div",{className:"pd-lbl"},"Woorden geleerd"),
+          ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.wl/tw*100)+"%",background:"#10b981"}}))),
+        ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.ll+"/"+tl),ce("div",{className:"pd-lbl"},"Letters geleerd"),
+          ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.ll/tl*100)+"%",background:"#14b8a6"}}))),
+        ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},eb+"/"+BADGES.length),ce("div",{className:"pd-lbl"},"Badges behaald"),
+          ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(eb/BADGES.length*100)+"%",background:"#f59e0b"}}))),
+        ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},(st.lsn||0)),ce("div",{className:"pd-lbl"},"Lessen afgerond"))),
+      // Checkpoints
+      ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"🏆 Checkpoint Tests"),
+        ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}},
+          ["A1","A2","B1","B2"].map(function(lv){return ce("div",{key:lv,style:{padding:8,borderRadius:10,background:(st.cp||{})[lv]?"#ecfdf5":"#f8fafc",border:"1px solid "+((st.cp||{})[lv]?"#a7f3d0":"#e2e8f0"),textAlign:"center"}},
+            ce("span",{style:{fontSize:14}},((st.cp||{})[lv]?"✅":"📝")),
+            ce("span",{style:{fontSize:12,fontWeight:600,marginLeft:4}},lv));}))),
+      // Activities
+      ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"🎮 Activiteiten"),
+        ce("div",{className:"sy3"},
+          [["Quiz goed",st.qo],["Memory",st.mc],["Galgje",st.hw],["Woordzoekers",st.wsg||0],["Flashcards",st.fc||0],["Grammatica",st.gf||0],["Gesprekken",st.ic||0],["Brieven oma",st.om||0],["Letters getekend",st.lt||0],["Speed Rounds",st.sr||0]].map(function(r){
+            return ce("div",{key:r[0],className:"card",style:{padding:10}},ce("div",{style:{display:"flex",justifyContent:"space-between"}},
+              ce("span",{style:{fontSize:12}},r[0]),ce("span",{style:{fontWeight:700,fontSize:12}},r[1])));
+          })))),
+    // === WEEK TAB ===
+    tab==="week"&&ce("div",null,
+      ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"📅 XP deze week"),
+        ce("div",{className:"pd-week-chart"},
+          weekData.days.map(function(d){
+            var h=Math.max(4,Math.round(d.xp/weekData.maxXP*80));
+            var isToday=d.key===new Date().toISOString().slice(0,10);
+            return ce("div",{key:d.key,className:"pd-week-bar",style:{height:h+"px",background:isToday?"linear-gradient(to top,#14b8a6,#2dd4bf)":"linear-gradient(to top,#e2e8f0,#cbd5e1)"}},
+              d.xp>0&&ce("div",{className:"pd-week-bar-val"},d.xp),
+              ce("div",{className:"pd-week-bar-label",style:{fontWeight:isToday?700:400,color:isToday?"#14b8a6":"#94a3b8"}},d.label));
+          })),
+        ce("div",{style:{textAlign:"center",fontSize:11,color:"#94a3b8",marginTop:20}},"XP per dag de afgelopen 7 dagen")),
+      ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"🔥 Streak"),
+        ce("div",{className:"card",style:{padding:14,textAlign:"center"}},
+          ce("div",{style:{fontSize:36}},"🔥"),
+          ce("div",{style:{fontSize:24,fontWeight:700,color:"#ea580c"}},(st.strk||0)+" dagen"),
+          ce("div",{style:{fontSize:12,color:"#64748b",marginTop:4}},"Huidige streak"),
+          ce("div",{style:{fontSize:11,color:"#94a3b8",marginTop:8}},"Laatste activiteit: "+(st.lastDay||"nog niet gestart"))))),
+    // === WORDS TAB ===
+    tab==="words"&&ce("div",null,
+      ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"📚 Niveau-breakdown"),
+        levels.map(function(l){
+          var pct=l.total>0?Math.round(l.learned/l.total*100):0;
+          return ce("div",{key:l.id,className:"pd-level-row"},
+            ce("div",{className:"pd-level-badge",style:{background:l.color}},l.id),
+            ce("div",{className:"pd-level-info"},
+              ce("div",{className:"pd-level-name"},l.learned+"/"+l.total+" woorden"),
+              ce("div",{className:"pd-bar-wrap",style:{marginTop:4}},ce("div",{className:"pd-bar",style:{width:pct+"%",background:l.color}}))),
+            ce("div",{style:{fontSize:12,fontWeight:700,color:l.color}},pct+"%"));
+        })),
+      hardWords.length>0&&ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"🔥 Moeilijkste woorden ("+hardWords.length+")"),
+        hardWords.map(function(h){
+          return ce("div",{key:h.word.b,className:"pd-hard-word"},
+            ce("div",{style:{display:"flex",alignItems:"center"}},
+              ce("span",{className:"pd-hard-word-emoji"},h.word.m||"📖"),
+              ce("div",null,
+                ce("div",{className:"pd-hard-word-bg"},h.word.b),
+                ce("div",{className:"pd-hard-word-nl"},h.word.n))),
+            ce("div",{className:"pd-hard-word-err"},"❌ "+h.errors));
+        })),
+      hardWords.length===0&&ce("div",{style:{textAlign:"center",padding:20,color:"#94a3b8"}},
+        ce("div",{style:{fontSize:32}},"🎉"),
+        ce("div",{style:{marginTop:8}},"Nog geen moeilijke woorden! Ga oefenen."))),
+    // === REWARDS TAB ===
+    tab==="rewards"&&ce("div",null,
+      ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"🎨 Thema’s"),
+        ce("div",{className:"theme-grid"},
+          APP_THEMES.map(function(th){
+            var open=isThemeUnlocked(th,st);
+            var active=(st.theme||"default")===th.id;
+            return ce("button",{key:th.id,className:"theme-card"+(active?" theme-card-active":"")+(open?"":" theme-card-locked"),
+              onClick:open?function(){sS(function(p){return Object.assign({},p,{theme:th.id});});}:undefined},
+              ce("div",{style:{width:40,height:40,borderRadius:"50%",background:th.colors.accent,margin:"0 auto 6px",border:active?"3px solid #1e293b":"2px solid #e2e8f0"}}),
+              ce("div",{style:{fontSize:12,fontWeight:600,color:open?"#1e293b":"#94a3b8"}},th.name),
+              !open&&ce("div",{style:{fontSize:10,color:"#94a3b8"}},"🔒 "+th.desc),
+              active&&ce("div",{style:{fontSize:10,color:"#14b8a6",fontWeight:600}},"✓ Actief"));
+          }))),
+      ce("div",{className:"pd-section"},
+        ce("div",{className:"pd-section-title"},"🧸 Bonus Avatars"),
+        ce("p",{style:{fontSize:11,color:"#94a3b8",marginBottom:8}},"Verdien nieuwe avatars door XP te sparen, badges te halen en streaks vol te houden!"),
+        ce("div",{className:"avatar-grid-unlock"},
+          BONUS_AVATARS.map(function(av){
+            var open=isAvatarUnlocked(av,st);
+            return ce("div",{key:av.emoji,className:"avatar-unlock-card"+(open?"":" avatar-unlock-card-locked"),
+              title:open?av.name:"🔒 "+av.desc},
+              ce("div",{style:{fontSize:28}},open?av.emoji:"🔒"),
+              ce("div",{style:{fontSize:9,color:open?"#1e293b":"#94a3b8",marginTop:2}},open?av.name:av.desc));
+          })))));
+}function Review({go,st,sS}){
   var aw=allWords(MODS,st.lv);
   var due=srsGetDue(st.srs||{},aw);
   var[cards,sCards]=uS(function(){return sh(due).slice(0,15);});
