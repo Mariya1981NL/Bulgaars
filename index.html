@@ -795,7 +795,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .bed-back:hover{background:rgba(165,180,252,.15)}
 .bed-zzz{position:absolute;pointer-events:none;animation:bed-zzz 4s ease-out infinite}
 @keyframes bed-zzz{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.5)}}
-.bed-dim-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;pointer-events:none;z-index:50;transition:opacity 2s ease}
+.bed-dim-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;pointer-events:none;z-index:50;transition:opacity .5s ease}
 
 /* Family Quiz */
 .fq-bg{padding:24px 16px;min-height:100vh}
@@ -3983,6 +3983,7 @@ function Lesson({go,st,sS,modId}){
   var[mmFlipped,sMmFlipped]=uS([]);
   var[mmMatched,sMmMatched]=uS([]);
   var[mmMoves,sMmMoves]=uS(0);
+  var mmDoneRef=React.useRef(false);
   // Scramble state
   var[scrWord,sScrWord]=uS(null);
   var[scrLetters,sScrLetters]=uS([]);
@@ -3996,7 +3997,7 @@ function Lesson({go,st,sS,modId}){
     if(lessonWords.length<4){sDone(true);return;} // too few words, skip
     var types=["quickfire","minimemory","scramble"];
     var chosen=types[Math.floor(Math.random()*types.length)];
-    sPracticePhase(chosen);sPrDone(false);sPrScore(0);sPrQi(0);sPrSel(null);sPrShown(false);
+    sPracticePhase(chosen);sPrDone(false);sPrScore(0);sPrQi(0);sPrSel(null);sPrShown(false);mmDoneRef.current=false;
     if(chosen==="quickfire"){
       // 5 rapid-fire questions from lesson words
       var qfQs=[];var sw2=sh(lessonWords).slice(0,5);
@@ -4019,7 +4020,7 @@ function Lesson({go,st,sS,modId}){
       var scw=sh(lessonWords).slice(0,4);
       sScrWords(scw);sScrQi2(0);
       var first=scw[0];
-      sScrWord(first);sScrLetters(sh(first.b.split("")));sScrAnswer([]);
+      sScrWord(first);sScrLetters(sh(first.b.split("").map(function(ch,i){return{id:i,ch:ch};})));sScrAnswer([]);
     }
   };
 
@@ -4102,7 +4103,7 @@ function Lesson({go,st,sS,modId}){
     // Mini memory mini-game
     if(practicePhase==="minimemory"){
       var allMatched=mmMatched.length===mmCards.length&&mmCards.length>0;
-      if(allMatched&&!prDone){setTimeout(function(){sPrDone(true);sPrScore(Math.max(0,8-mmMoves));},800);}
+      if(allMatched&&!prDone&&!mmDoneRef.current){mmDoneRef.current=true;setTimeout(function(){sPrDone(true);sPrScore(Math.max(0,8-mmMoves));},800);}
       var handleMmFlip=function(idx){
         if(mmFlipped.length>=2||mmMatched.indexOf(idx)>=0||mmFlipped.indexOf(idx)>=0)return;
         var nf=mmFlipped.concat([idx]);sMmFlipped(nf);
@@ -4136,17 +4137,17 @@ function Lesson({go,st,sS,modId}){
     // Word scramble mini-game
     if(practicePhase==="scramble"){
       if(!scrWord&&scrWords.length>0){
-        var sw3=scrWords[0];sScrWord(sw3);sScrLetters(sh(sw3.b.split("")));sScrAnswer([]);
+        var sw3=scrWords[0];sScrWord(sw3);sScrLetters(sh(sw3.b.split("").map(function(ch,i){return{id:i,ch:ch};})));sScrAnswer([]);
       }
       if(!scrWord)return null;
-      var scrCorrect=scrAnswer.join("")===scrWord.b;
+      var scrCorrect=scrAnswer.map(function(x){return x.ch;}).join("")===scrWord.b;
       if(scrCorrect&&!prShown){
         sPrShown(true);sPrScore(prScore+1);playSound("correct");
         setTimeout(function(){
           if(scrQi2+1>=scrWords.length){sPrDone(true);}
           else{
             var next=scrWords[scrQi2+1];
-            sScrQi2(scrQi2+1);sScrWord(next);sScrLetters(sh(next.b.split("")));sScrAnswer([]);sPrShown(false);
+            sScrQi2(scrQi2+1);sScrWord(next);sScrLetters(sh(next.b.split("").map(function(ch,i){return{id:i,ch:ch};})));sScrAnswer([]);sPrShown(false);
           }
         },800);
       }
@@ -4164,12 +4165,12 @@ function Lesson({go,st,sS,modId}){
         // Answer slots
         ce("div",{style:{display:"flex",gap:4,justifyContent:"center",flexWrap:"wrap",minHeight:44,marginTop:16,padding:"8px 12px",background:"#f8fafc",borderRadius:12,border:"2px dashed "+(scrCorrect?"#34d399":"#e2e8f0")}},
           scrAnswer.length===0&&ce("span",{style:{color:"#94a3b8",fontSize:13,alignSelf:"center"}},"Tik op letters..."),
-          scrAnswer.map(function(l,i){return ce("button",{key:"a"+i,onClick:function(){if(prShown)return;sScrAnswer(function(p){var n=p.slice();n.splice(i,1);return n;});sScrLetters(function(p){return p.concat([l]);});},
-            style:{width:36,height:42,borderRadius:8,border:"2px solid "+(scrCorrect?"#34d399":"#a78bfa"),background:scrCorrect?"#ecfdf5":"#f5f3ff",fontSize:18,fontWeight:700,color:"#1e293b",cursor:"pointer",transition:"all .2s"}},l);})),
+          scrAnswer.map(function(l,i){return ce("button",{key:"a"+l.id,onClick:function(){if(prShown)return;sScrAnswer(function(p){var n=p.slice();n.splice(i,1);return n;});sScrLetters(function(p){return p.concat([l]);});},
+            style:{width:36,height:42,borderRadius:8,border:"2px solid "+(scrCorrect?"#34d399":"#a78bfa"),background:scrCorrect?"#ecfdf5":"#f5f3ff",fontSize:18,fontWeight:700,color:"#1e293b",cursor:"pointer",transition:"all .2s"}},l.ch);})),
         // Available letters
         ce("div",{style:{display:"flex",gap:4,justifyContent:"center",flexWrap:"wrap",marginTop:12}},
-          scrLetters.map(function(l,i){return ce("button",{key:"l"+i,onClick:function(){if(prShown)return;sScrLetters(function(p){var n=p.slice();n.splice(i,1);return n;});sScrAnswer(function(p){return p.concat([l]);});},
-            style:{width:36,height:42,borderRadius:8,border:"2px solid #e2e8f0",background:"#fff",fontSize:18,fontWeight:700,color:"#1e293b",cursor:"pointer",transition:"all .2s"}},l);})));
+          scrLetters.map(function(l,i){return ce("button",{key:"l"+l.id,onClick:function(){if(prShown)return;sScrLetters(function(p){var n=p.slice();n.splice(i,1);return n;});sScrAnswer(function(p){return p.concat([l]);});},
+            style:{width:36,height:42,borderRadius:8,border:"2px solid #e2e8f0",background:"#fff",fontSize:18,fontWeight:700,color:"#1e293b",cursor:"pointer",transition:"all .2s"}},l.ch);})));
     }
   }
   // Practice done — show mini results then proceed to main results
@@ -6236,6 +6237,7 @@ function FamilyQuiz({go,st,sS,profiles,activeId}){
   var[sel,sSel]=uS(null);
   var[shown,sShown]=uS(false);
   var[cat,sCat]=uS("mix"); // mix, words, grammar, culture
+  var finalScoresRef=React.useRef([0,0]);
   var[isTournament,sIsTournament]=uS(false); // tournament mode toggle
   var[tRound,sTRound]=uS(0); // current tournament round (0-based)
   var[tWins,sTWins]=uS([0,0]); // tournament wins [p1, p2]
@@ -6354,20 +6356,19 @@ function FamilyQuiz({go,st,sS,profiles,activeId}){
     var correct=o===questions[round].answer;
     if(correct){
       playSound("correct");
-      var ns=[...scores];ns[buzzed]+=10;sScores(ns);
+      sScores(function(prev){var ns=[prev[0],prev[1]];ns[buzzed]+=10;finalScoresRef.current=ns;return ns;});
     } else {
       playSound("wrong");
       // Other player gets points for wrong answer
-      var ns2=[...scores];ns2[1-buzzed]+=5;sScores(ns2);
+      sScores(function(prev){var ns=[prev[0],prev[1]];ns[1-buzzed]+=5;finalScoresRef.current=ns;return ns;});
     }
     setTimeout(function(){
       if(round+1>=questions.length){
         sS(function(s){return Object.assign({},s,{xp:s.xp+25,fqPlayed:(s.fqPlayed||0)+1});});
         if(isTournament){
-          // Determine round winner from final scores (recalculate from stale closure)
+          // Determine round winner from final scores via ref (avoids stale closure)
           var newTWins=[...tWins];
-          var fS=[scores[0],scores[1]];
-          if(correct){fS[buzzed]+=10;}else{fS[1-buzzed]+=5;}
+          var fS=finalScoresRef.current;
           if(fS[0]>fS[1])newTWins[0]++;
           else if(fS[1]>fS[0])newTWins[1]++;
           // Tie round: no increment
