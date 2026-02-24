@@ -22,24 +22,46 @@ var STORIES=[
     {id:"sleep",text:{bg:"Мими сънува риба. Мняу! 🐟",nl:"Mimi droomt over vis. Miauw!"},end:true}
   ]},
 
-  // === LINEAIR: In het park ===
-  {id:"s2",title:"В парка",titleNl:"In het park",em:"🌳",level:"Beginner",
-   lines:[
-    {bg:"Днес е слънчев ден.",nl:"Vandaag is het een zonnige dag."},
-    {bg:"Децата играят в парка.",nl:"De kinderen spelen in het park."},
-    {bg:"Едно момче има топка.",nl:"Een jongen heeft een bal."},
-    {bg:"Едно момиче яде сладолед.",nl:"Een meisje eet ijs."},
-    {bg:"Всички са щастливи!",nl:"Iedereen is gelukkig!"}
+  // === INTERACTIEF: In het park ===
+  {id:"s2",title:"В парка",titleNl:"In het park",em:"🌳",level:"Beginner",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Днес е слънчев ден. Децата отиват в парка.",nl:"Vandaag is het een zonnige dag. De kinderen gaan naar het park."},choices:[
+      {text:{bg:"Момчето взема топката.",nl:"De jongen pakt de bal."},next:"ball"},
+      {text:{bg:"Момичето иска сладолед.",nl:"Het meisje wil ijs."},next:"icecream"}
+    ]},
+    {id:"ball",text:{bg:"Момчето играе футбол с приятели. ⚽",nl:"De jongen speelt voetbal met vrienden."},choices:[
+      {text:{bg:"Той вкарва гол!",nl:"Hij scoort een doelpunt!"},next:"goal"},
+      {text:{bg:"Топката отива в езерото!",nl:"De bal valt in het meer!"},next:"lake"}
+    ]},
+    {id:"icecream",text:{bg:"Има много видове сладолед! 🍦",nl:"Er zijn veel soorten ijs!"},choices:[
+      {text:{bg:"Искам шоколадов сладолед.",nl:"Ik wil chocolade-ijs."},next:"chocolate"},
+      {text:{bg:"Искам ягодов сладолед.",nl:"Ik wil aardbeiijs."},next:"strawberry"}
+    ]},
+    {id:"goal",text:{bg:"Гол! Всички се радват! Момчето е герой! 🏆",nl:"Goal! Iedereen juicht! De jongen is een held!"},end:true},
+    {id:"lake",text:{bg:"Една патка взема топката! Децата се смеят! 🦆😂",nl:"Een eend pakt de bal! De kinderen lachen!"},end:true},
+    {id:"chocolate",text:{bg:"Шоколадовият сладолед е много вкусен! Мммм! 🍫",nl:"Het chocolade-ijs is heel lekker! Mmm!"},end:true},
+    {id:"strawberry",text:{bg:"Ягодовият сладолед е розов и сладък! 🍓",nl:"Het aardbeiijs is roze en zoet!"},end:true}
   ]},
 
-  // === LINEAIR: Bij oma ===
-  {id:"s3",title:"При баба",titleNl:"Bij oma",em:"👵",level:"Beginner",
-   lines:[
-    {bg:"Аз отивам при баба.",nl:"Ik ga naar oma."},
-    {bg:"Баба живее в София.",nl:"Oma woont in Sofia."},
-    {bg:"Тя прави баница.",nl:"Ze maakt banitsa."},
-    {bg:"Баницата е много вкусна!",nl:"De banitsa is heel lekker!"},
-    {bg:"Аз обичам баба.",nl:"Ik hou van oma."}
+  // === INTERACTIEF: Bij oma ===
+  {id:"s3",title:"При баба",titleNl:"Bij oma",em:"👵",level:"Beginner",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Аз отивам при баба в София. Тя ме чака!",nl:"Ik ga naar oma in Sofia. Ze wacht op mij!"},choices:[
+      {text:{bg:"Баба прави баница.",nl:"Oma maakt banitsa."},next:"banitsa"},
+      {text:{bg:"Баба има градина.",nl:"Oma heeft een tuin."},next:"garden"}
+    ]},
+    {id:"banitsa",text:{bg:"Баницата мирише чудесно! 🥧",nl:"De banitsa ruikt heerlijk!"},choices:[
+      {text:{bg:"Помагам на баба да готви.",nl:"Ik help oma met koken."},next:"cook"},
+      {text:{bg:"Чакам и ям първи!",nl:"Ik wacht en eet als eerste!"},next:"eat"}
+    ]},
+    {id:"garden",text:{bg:"В градината има домати и рози. 🌹",nl:"In de tuin zijn tomaten en rozen."},choices:[
+      {text:{bg:"Берем домати заедно.",nl:"We plukken samen tomaten."},next:"tomatoes"},
+      {text:{bg:"Мирисвам розите.",nl:"Ik ruik aan de rozen."},next:"roses"}
+    ]},
+    {id:"cook",text:{bg:"Баба казва: \"Браво, готвач!\" Баницата е перфектна! 👩‍🍳",nl:"Oma zegt: \"Bravo, chef!\" De banitsa is perfect!"},end:true},
+    {id:"eat",text:{bg:"Баницата е много вкусна! Аз обичам баба! ❤️",nl:"De banitsa is heel lekker! Ik hou van oma!"},end:true},
+    {id:"tomatoes",text:{bg:"Доматите са червени и сочни! Баба прави салата! 🥗",nl:"De tomaten zijn rood en sappig! Oma maakt salade!"},end:true},
+    {id:"roses",text:{bg:"Розите са красиви! Давам една на баба. Тя се усмихва! 🌹😊",nl:"De rozen zijn mooi! Ik geef er een aan oma. Ze lacht!"},end:true}
   ]},
 
   // === INTERACTIEF: Op de markt ===
@@ -63,25 +85,46 @@ var STORIES=[
     {id:"cucumbers",text:{bg:"Краставиците са свежи и вкусни! 🥒",nl:"De komkommers zijn vers en lekker!"},end:true}
   ]},
 
-  // === LINEAIR: School ===
-  {id:"s5",title:"Училище",titleNl:"School",em:"🏫",level:"Gemiddeld",
-   lines:[
-    {bg:"Аз ходя на училище.",nl:"Ik ga naar school."},
-    {bg:"Моята учителка се казва Иванка.",nl:"Mijn lerares heet Ivanka."},
-    {bg:"Днес имаме математика.",nl:"Vandaag hebben we wiskunde."},
-    {bg:"Аз обичам да чета книги.",nl:"Ik hou ervan om boeken te lezen."},
-    {bg:"След училище играя с приятели.",nl:"Na school speel ik met vrienden."}
+  // === INTERACTIEF: School ===
+  {id:"s5",title:"Училище",titleNl:"School",em:"🏫",level:"Gemiddeld",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Аз ходя на училище. Моята учителка се казва Иванка.",nl:"Ik ga naar school. Mijn lerares heet Ivanka."},choices:[
+      {text:{bg:"Днес имаме математика.",nl:"Vandaag hebben we wiskunde."},next:"math"},
+      {text:{bg:"Днес четем книги.",nl:"Vandaag lezen we boeken."},next:"reading"}
+    ]},
+    {id:"math",text:{bg:"Учителката пише числа на дъската. 📐",nl:"De juf schrijft getallen op het bord."},choices:[
+      {text:{bg:"Аз решавам задачата правилно!",nl:"Ik los de som goed op!"},next:"mathwin"},
+      {text:{bg:"Задачата е трудна. Приятелят ми помага.",nl:"De som is moeilijk. Mijn vriend helpt me."},next:"mathhelp"}
+    ]},
+    {id:"reading",text:{bg:"Има нова книга за животни! 📚",nl:"Er is een nieuw boek over dieren!"},choices:[
+      {text:{bg:"Чета за лъвове.",nl:"Ik lees over leeuwen."},next:"lions"},
+      {text:{bg:"Чета за делфини.",nl:"Ik lees over dolfijnen."},next:"dolphins"}
+    ]},
+    {id:"mathwin",text:{bg:"\"Браво!\" казва учителката. Получавам звезда! ⭐",nl:"\"Bravo!\" zegt de juf. Ik krijg een ster!"},end:true},
+    {id:"mathhelp",text:{bg:"Заедно решаваме задачата! Приятелите са важни! 🤝",nl:"Samen lossen we de som op! Vrienden zijn belangrijk!"},end:true},
+    {id:"lions",text:{bg:"Лъвовете са силни и смели! Аз също искам да съм смел! 🦁",nl:"Leeuwen zijn sterk en dapper! Ik wil ook dapper zijn!"},end:true},
+    {id:"dolphins",text:{bg:"Делфините плуват в морето! Искам да ги видя! 🐬",nl:"Dolfijnen zwemmen in de zee! Ik wil ze zien!"},end:true}
   ]},
 
-  // === LINEAIR: Verjaardagsfeest ===
-  {id:"s6",title:"Рожден ден",titleNl:"Verjaardagsfeest",em:"🎂",level:"Gemiddeld",
-   lines:[
-    {bg:"Днес е моят рожден ден!",nl:"Vandaag is mijn verjaardag!"},
-    {bg:"Имам голяма торта.",nl:"Ik heb een grote taart."},
-    {bg:"Приятелите ми идват.",nl:"Mijn vrienden komen."},
-    {bg:"Играем и се смеем.",nl:"We spelen en lachen."},
-    {bg:"Получавам подаръци!",nl:"Ik krijg cadeautjes!"},
-    {bg:"Мерси на всички!",nl:"Dankjewel aan iedereen!"}
+  // === INTERACTIEF: Verjaardagsfeest ===
+  {id:"s6",title:"Рожден ден",titleNl:"Verjaardagsfeest",em:"🎂",level:"Gemiddeld",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Днес е моят рожден ден! Имам голяма торта!",nl:"Vandaag is mijn verjaardag! Ik heb een grote taart!"},choices:[
+      {text:{bg:"Приятелите ми идват!",nl:"Mijn vrienden komen!"},next:"friends"},
+      {text:{bg:"Първо отварям подаръците!",nl:"Eerst maak ik de cadeautjes open!"},next:"gifts"}
+    ]},
+    {id:"friends",text:{bg:"Приятелите донасят подаръци и балони! 🎈",nl:"De vrienden brengen cadeaus en ballonnen!"},choices:[
+      {text:{bg:"Играем на криеница.",nl:"We spelen verstoppertje."},next:"hideseek"},
+      {text:{bg:"Танцуваме на музика!",nl:"We dansen op muziek!"},next:"dance"}
+    ]},
+    {id:"gifts",text:{bg:"Има много подаръци! Кой да отворя първо? 🎁",nl:"Er zijn veel cadeautjes! Welke maak ik eerst open?"},choices:[
+      {text:{bg:"Отварям голямата кутия.",nl:"Ik open de grote doos."},next:"bigbox"},
+      {text:{bg:"Отварям малкия пакет.",nl:"Ik open het kleine pakje."},next:"smallbox"}
+    ]},
+    {id:"hideseek",text:{bg:"Намирам всички! Аз печеля! Играем и се смеем! 😄",nl:"Ik vind iedereen! Ik win! We spelen en lachen!"},end:true},
+    {id:"dance",text:{bg:"Всички танцуват! Мерси на всички за най-добрия ден! 💃🕺",nl:"Iedereen danst! Dankjewel aan iedereen voor de beste dag!"},end:true},
+    {id:"bigbox",text:{bg:"Вътре има велосипед! Ура! Най-добрият подарък! 🚲",nl:"Er zit een fiets in! Hoera! Het beste cadeau!"},end:true},
+    {id:"smallbox",text:{bg:"Вътре има красива книга за Булгария! Обичам я! 📖🇧🇬",nl:"Er zit een mooi boek over Bulgarije in! Ik vind het geweldig!"},end:true}
   ]},
 
   // === INTERACTIEF: Op het strand ===
@@ -105,33 +148,66 @@ var STORIES=[
     {id:"moat",text:{bg:"Водата идва в канала! Замъкът е готов! 🌟",nl:"Het water komt in de gracht! Het kasteel is klaar!"},end:true}
   ]},
 
-  // === LINEAIR: Een sneeuwdag ===
-  {id:"s8",title:"Снежен ден",titleNl:"Een sneeuwdag",em:"❄️",level:"Beginner",
-   lines:[
-    {bg:"Вали сняг!",nl:"Het sneeuwt!"},
-    {bg:"Всичко е бяло.",nl:"Alles is wit."},
-    {bg:"Правим снежен човек.",nl:"We maken een sneeuwpop."},
-    {bg:"Ръцете ми са студени.",nl:"Mijn handen zijn koud."},
-    {bg:"Пием горещ шоколад.",nl:"We drinken warme chocolademelk."}
+  // === INTERACTIEF: Een sneeuwdag ===
+  {id:"s8",title:"Снежен ден",titleNl:"Een sneeuwdag",em:"❄️",level:"Beginner",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Вали сняг! Всичко е бяло навън!",nl:"Het sneeuwt! Alles is wit buiten!"},choices:[
+      {text:{bg:"Правим снежен човек!",nl:"We maken een sneeuwpop!"},next:"snowman"},
+      {text:{bg:"Хвърляме снежни топки!",nl:"We gooien sneeuwballen!"},next:"snowball"}
+    ]},
+    {id:"snowman",text:{bg:"Снежният човек е голям! Трябва му нос. ⛄",nl:"De sneeuwpop is groot! Hij heeft een neus nodig."},choices:[
+      {text:{bg:"Слагаме морков за нос.",nl:"We zetten een wortel als neus."},next:"carrot"},
+      {text:{bg:"Слагаме шапка и шал.",nl:"We zetten een muts en sjaal op."},next:"hat"}
+    ]},
+    {id:"snowball",text:{bg:"Снежните топки летят навсякъде! 🎯",nl:"De sneeuwballen vliegen overal!"},choices:[
+      {text:{bg:"Аз уцелвам татко!",nl:"Ik raak papa!"},next:"hitdad"},
+      {text:{bg:"Правим отбори!",nl:"We maken teams!"},next:"teams"}
+    ]},
+    {id:"carrot",text:{bg:"Снежният човек е готов! Той се усмихва! Красив е! ⛄😊",nl:"De sneeuwpop is klaar! Hij lacht! Hij is mooi!"},end:true},
+    {id:"hat",text:{bg:"Снежният човек прилича на дядо! Всички се смеят! 😂🎩",nl:"De sneeuwpop lijkt op opa! Iedereen lacht!"},end:true},
+    {id:"hitdad",text:{bg:"Татко се смее и ме гони! Бягам! После пием горещ шоколад! ☕",nl:"Papa lacht en rent achter me aan! Ik ren! Daarna drinken we warme chocolademelk!"},end:true},
+    {id:"teams",text:{bg:"Нашият отбор печели! Ура! Ръцете ми са студени но аз съм щастлив! 🏆❄️",nl:"Ons team wint! Hoera! Mijn handen zijn koud maar ik ben blij!"},end:true}
   ]},
 
-  // === LINEAIR: Een schooldag ===
-  {id:"s9",title:"Училищен ден",titleNl:"Een schooldag",em:"🏫",level:"Gemiddeld",
-   lines:[
-    {bg:"Звънецът звъни!",nl:"De bel gaat!"},
-    {bg:"Влизам в класната стая.",nl:"Ik ga het klaslokaal in."},
-    {bg:"Учителката е добра.",nl:"De juf is aardig."},
-    {bg:"Пишем в тетрадките.",nl:"We schrijven in onze schriften."},
-    {bg:"Обичам училище!",nl:"Ik hou van school!"}
+  // === INTERACTIEF: Een schooldag ===
+  {id:"s9",title:"Училищен ден",titleNl:"Een schooldag",em:"📝",level:"Gemiddeld",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Звънецът звъни! Влизам в класната стая.",nl:"De bel gaat! Ik ga het klaslokaal in."},choices:[
+      {text:{bg:"Учителката дава нова задача.",nl:"De juf geeft een nieuwe opdracht."},next:"task"},
+      {text:{bg:"Днес рисуваме!",nl:"Vandaag gaan we tekenen!"},next:"draw"}
+    ]},
+    {id:"task",text:{bg:"Трябва да напишем история! 📝",nl:"We moeten een verhaal schrijven!"},choices:[
+      {text:{bg:"Пиша за моето куче.",nl:"Ik schrijf over mijn hond."},next:"dog"},
+      {text:{bg:"Пиша за пътуване до морето.",nl:"Ik schrijf over een reis naar de zee."},next:"sea"}
+    ]},
+    {id:"draw",text:{bg:"Учителката казва: \"Рисувайте вашия любим сезон!\" 🎨",nl:"De juf zegt: \"Teken jullie favoriete seizoen!\""},choices:[
+      {text:{bg:"Рисувам лятото и морето.",nl:"Ik teken de zomer en de zee."},next:"summer"},
+      {text:{bg:"Рисувам зимата и снега.",nl:"Ik teken de winter en de sneeuw."},next:"winter"}
+    ]},
+    {id:"dog",text:{bg:"Учителката казва: \"Прекрасна история!\" Получавам шестица! 🐕⭐",nl:"De juf zegt: \"Een prachtig verhaal!\" Ik krijg een tien!"},end:true},
+    {id:"sea",text:{bg:"Всички харесват моята история за морето! Обичам училище! 🌊📖",nl:"Iedereen vindt mijn verhaal over de zee leuk! Ik hou van school!"},end:true},
+    {id:"summer",text:{bg:"Рисунката ми е с плаж и слънце! Учителката я слага на стената! ☀️🖼️",nl:"Mijn tekening heeft een strand en zon! De juf hangt hem aan de muur!"},end:true},
+    {id:"winter",text:{bg:"Рисувам снежен човек и планини! Учителката казва: \"Много красиво!\" 🏔️⛄",nl:"Ik teken een sneeuwpop en bergen! De juf zegt: \"Heel mooi!\""},end:true}
   ]},
 
-  // === LINEAIR: Spelen met vrienden ===
-  {id:"s10",title:"Игра с приятели",titleNl:"Spelen met vrienden",em:"👫",level:"Beginner",
-   lines:[
-    {bg:"Отивам в парка.",nl:"Ik ga naar het park."},
-    {bg:"Срещам приятелите си.",nl:"Ik ontmoet mijn vrienden."},
-    {bg:"Играем на футбол.",nl:"We spelen voetbal."},
-    {bg:"Много е забавно!",nl:"Het is heel leuk!"},
-    {bg:"Ще дойда пак утре!",nl:"Ik kom morgen weer!"}
+  // === INTERACTIEF: Spelen met vrienden ===
+  {id:"s10",title:"Игра с приятели",titleNl:"Spelen met vrienden",em:"👫",level:"Beginner",interactive:true,
+   scenes:[
+    {id:"start",text:{bg:"Отивам в парка. Срещам приятелите си!",nl:"Ik ga naar het park. Ik ontmoet mijn vrienden!"},choices:[
+      {text:{bg:"Играем на футбол!",nl:"We spelen voetbal!"},next:"football"},
+      {text:{bg:"Играем на люлката!",nl:"We spelen op de schommel!"},next:"swing"}
+    ]},
+    {id:"football",text:{bg:"Играем два срещу два! ⚽",nl:"We spelen twee tegen twee!"},choices:[
+      {text:{bg:"Аз вкарвам гол!",nl:"Ik scoor een doelpunt!"},next:"score"},
+      {text:{bg:"Пасвам на приятеля ми.",nl:"Ik pas naar mijn vriend."},next:"pass"}
+    ]},
+    {id:"swing",text:{bg:"Люлката е висока! 🎡",nl:"De schommel gaat hoog!"},choices:[
+      {text:{bg:"Люлея се по-високо!",nl:"Ik schommel hoger!"},next:"higher"},
+      {text:{bg:"Скачам от люлката!",nl:"Ik spring van de schommel!"},next:"jump"}
+    ]},
+    {id:"score",text:{bg:"Гооол! Приятелите ме поздравяват! Много е забавно! ⚽🎉",nl:"Doelpunt! De vrienden feliciteren me! Heel leuk!"},end:true},
+    {id:"pass",text:{bg:"Приятелят ми вкарва гол! Празнуваме заедно! Ще дойда пак утре! 🤝⚽",nl:"Mijn vriend scoort! We vieren het samen! Ik kom morgen weer!"},end:true},
+    {id:"higher",text:{bg:"Виждам целия парк от горе! Чувствам се като птица! 🦅",nl:"Ik zie het hele park van boven! Ik voel me als een vogel!"},end:true},
+    {id:"jump",text:{bg:"Скачам далеч! Приятелите казват: \"Уау!\" Много е забавно! 🌟",nl:"Ik spring ver! De vrienden zeggen: \"Wauw!\" Heel leuk!"},end:true}
   ]}
 ];
