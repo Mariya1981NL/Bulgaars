@@ -727,6 +727,36 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .dark .stk-pbar-wrap{background:#475569}
 .dark .stk-earned{border-color:#059669;background:linear-gradient(135deg,#064e3b,#1e293b)}
 .dark .stk-name-on{color:#34d399}
+/* Pronunciation Game */
+.prn-pbar-wrap{height:4px;background:#e2e8f0;border-radius:4px;margin-bottom:16px;overflow:hidden}
+.prn-pbar{height:100%;background:linear-gradient(90deg,#14b8a6,#06b6d4);border-radius:4px;transition:width .4s}
+.prn-card{background:#fff;border-radius:20px;padding:24px;text-align:center;border:1px solid #e2e8f0;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.prn-word{font-size:28px;font-weight:700;color:#1e293b;margin:8px 0 2px}
+.prn-trans{font-size:14px;color:#64748b;margin-bottom:16px}
+.prn-listen-btn{background:linear-gradient(135deg,#f0fdfa,#ecfdf5);border:1px solid #99f6e4;border-radius:99px;padding:8px 20px;font-size:14px;cursor:pointer;color:#0d9488;font-weight:600;transition:all .15s}
+.prn-listen-btn:hover{background:#ccfbf1}
+.prn-mic-area{margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9}
+.prn-result{margin-top:16px;padding-top:16px;border-top:1px solid #f1f5f9}
+.prn-stars{font-size:28px;letter-spacing:4px;margin-bottom:8px}
+.prn-star{transition:all .3s}.prn-star-on{animation:stkPop .4s ease}
+.prn-feedback{font-size:16px;font-weight:700;margin:4px 0}
+.prn-perfect{color:#059669}.prn-good{color:#0d9488}.prn-ok{color:#f59e0b}.prn-miss{color:#ef4444}
+.prn-heard{font-size:12px;color:#94a3b8;margin-top:4px;font-style:italic}
+.prn-score-bar{display:flex;justify-content:space-between;margin-top:16px;font-size:13px;color:#64748b;padding:8px 12px;background:#f8fafc;border-radius:12px}
+.prn-done{text-align:center;padding:32px 16px}
+.prn-done-title{font-size:22px;font-weight:700;color:#1e293b;margin-bottom:4px}
+.prn-done-score{font-size:16px;color:#0d9488;margin-bottom:12px}
+.prn-done-stars{margin-bottom:8px}
+/* Dark pronunciation game */
+.dark .prn-pbar-wrap{background:#475569}
+.dark .prn-card{background:#334155;border-color:#475569;box-shadow:none}
+.dark .prn-word{color:#f1f5f9}
+.dark .prn-trans{color:#94a3b8}
+.dark .prn-listen-btn{background:linear-gradient(135deg,#1e293b,#0f172a);border-color:#475569;color:#5eead4}
+.dark .prn-mic-area{border-color:#475569}
+.dark .prn-result{border-color:#475569}
+.dark .prn-score-bar{background:#1e293b;color:#94a3b8}
+.dark .prn-done-title{color:#f1f5f9}
 </style>
 </head>
 <body>
@@ -1537,6 +1567,9 @@ function Home({go,st,sS,profiles,activeId}){
       ce("button",{className:"card",onClick:()=>go("rhythm"),style:{textAlign:"center",padding:12,border:"1px solid #fde68a"}},
         ce("div",{style:{fontSize:24}},"🥁"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#92400e"}},"Ritme")),
+      ce("button",{className:"card",onClick:()=>go("prongame"),style:{textAlign:"center",padding:12,border:"1px solid #c4b5fd"}},
+        ce("div",{style:{fontSize:24}},"\u{1f3a4}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Uitspraak")),
       ce("button",{className:"card",onClick:()=>go("wotd"),style:{textAlign:"center",padding:12,border:"1px solid #86efac"}},
         ce("div",{style:{fontSize:24}},"🔔"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#059669"}},"Dagelijks")),
@@ -5377,6 +5410,124 @@ function StickerWall({go,st}){
       })));
 }
 
+// === PRONUNCIATION MINI-GAME ===
+function PronGame({go,st,sS}){
+  var aw=allWords(MODS).filter(function(w){return w.b&&w.b.length>0;});
+  // Pick 10 random words for a round
+  var[words]=uS(function(){
+    var pool=aw.slice();var picked=[];
+    for(var i=0;i<Math.min(10,pool.length);i++){
+      var ri=Math.floor(Math.random()*pool.length);
+      picked.push(pool.splice(ri,1)[0]);
+    }return picked;
+  });
+  var[idx,sIdx]=uS(0);
+  var[phase,sPhase]=uS("listen"); // listen, speak, result, done
+  var[score,sScore]=uS(0);
+  var[stars,sStars]=uS(0);
+  var[heard,sHeard]=uS("");
+  var[roundStars,sRoundStars]=uS([]);
+  var w=words[idx]||{b:"",n:"",ic:""};
+  var total=words.length;
+
+  function playWord(){speak(w.b);}
+  function onMicResult(res){
+    var s=0;
+    if(res.error){sHeard("(niet verstaan)");s=0;}
+    else if(res.match){
+      // Calculate stars based on how close
+      var exp=w.b.toLowerCase().replace(/[?!.,;:]/g,"");
+      var h=(res.heard||"").toLowerCase().replace(/[?!.,;:]/g,"");
+      if(h===exp){s=3;}
+      else{var dist=levenshtein(exp,h);s=dist<=1?2:1;}
+      sHeard(res.heard||w.b);
+      playSound("correct");
+    }else{
+      s=0;sHeard(res.heard||"...");
+      playSound("wrong");
+    }
+    sStars(s);sScore(function(p){return p+s;});
+    sRoundStars(function(p){return p.concat([s]);});
+    // Award XP and sp count
+    if(s>0){sS(function(p){return Object.assign({},p,{xp:p.xp+(s*5),sp:(p.sp||0)+1});});}
+    sPhase("result");
+  }
+  function next(){
+    if(idx+1>=total){sPhase("done");return;}
+    sIdx(idx+1);sPhase("listen");sStars(0);sHeard("");
+  }
+
+  // Done screen
+  if(phase==="done"){
+    var maxScore=total*3;
+    var pct=Math.round(score/maxScore*100);
+    var msg=pct>=80?"Geweldig! 🌟":pct>=50?"Goed bezig! 👍":"Blijf oefenen! 💪";
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"prn-done"},
+        ce("div",{style:{fontSize:48,marginBottom:8}},pct>=80?"🏆":pct>=50?"⭐":"🎯"),
+        ce("div",{className:"prn-done-title"},msg),
+        ce("div",{className:"prn-done-score"},score+"/"+maxScore+" sterren"),
+        ce("div",{className:"prn-done-stars"},roundStars.map(function(s,i){
+          return ce("span",{key:i,style:{fontSize:18}},s>=3?"⭐":s>=1?"✨":"·");
+        })),
+        ce("div",{style:{display:"flex",gap:10,marginTop:16}},
+          ce("button",{className:"btn btn-t",onClick:function(){go("home");}},"\u2190 Terug"),
+          ce("button",{className:"btn btn-g",onClick:function(){
+            // New round
+            var pool=aw.slice();var picked=[];
+            for(var i=0;i<Math.min(10,pool.length);i++){var ri=Math.floor(Math.random()*pool.length);picked.push(pool.splice(ri,1)[0]);}
+            words.splice(0,words.length,...picked);sIdx(0);sPhase("listen");sScore(0);sStars(0);sHeard("");sRoundStars([]);
+          }},"\u{1f504} Opnieuw"))));
+  }
+
+  // Not supported
+  if(!speechRecSupported){
+    return ce("div",{className:"scr sy"},
+      ce("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8}},
+        ce("button",{className:"back",onClick:function(){go("home");}},"\u2190"),
+        ce("h2",{className:"h2"},"Uitspraakspel")),
+      ce("div",{className:"prn-card"},
+        ce("div",{style:{fontSize:36,marginBottom:8}},"\u{1f3a4}"),
+        ce("p",null,"Spraakherkenning is niet beschikbaar in deze browser."),
+        ce("p",{style:{fontSize:12,color:"#94a3b8"}},"Probeer Chrome op je telefoon of computer.")));
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8}},
+      ce("button",{className:"back",onClick:function(){go("home");}},"\u2190"),
+      ce("h2",{className:"h2",style:{flex:1}},"Uitspraakspel"),
+      ce("div",{style:{fontSize:12,color:"#64748b"}},(idx+1)+"/"+total)),
+    // Progress bar
+    ce("div",{className:"prn-pbar-wrap"},
+      ce("div",{className:"prn-pbar",style:{width:Math.round((idx+1)/total*100)+"%"}})),
+    // Word card
+    ce("div",{className:"prn-card"},
+      ce("div",{style:{fontSize:36,marginBottom:4}},w.ic||"\u{1f4ac}"),
+      ce("div",{className:"prn-word"},w.b),
+      ce("div",{className:"prn-trans"},w.n),
+      // Listen button
+      ce("button",{className:"prn-listen-btn",onClick:playWord},"\u{1f50a} Luister"),
+      // Phase: speak
+      (phase==="listen"||phase==="speak")&&ce("div",{className:"prn-mic-area"},
+        ce("div",{style:{fontSize:12,color:"#64748b",marginBottom:8}},"Zeg het woord na:"),
+        ce(MicButton,{expected:w.b,size:"lg",onResult:onMicResult})),
+      // Phase: result
+      phase==="result"&&ce("div",{className:"prn-result"},
+        ce("div",{className:"prn-stars"},
+          [1,2,3].map(function(n){return ce("span",{key:n,className:"prn-star"+(n<=stars?" prn-star-on":"")},n<=stars?"⭐":"☆");})),
+        stars>=3&&ce("div",{className:"prn-feedback prn-perfect"},"Perfect! 🎉"),
+        stars===2&&ce("div",{className:"prn-feedback prn-good"},"Bijna! 👏"),
+        stars===1&&ce("div",{className:"prn-feedback prn-ok"},"Begrepen! 👍"),
+        stars===0&&ce("div",{className:"prn-feedback prn-miss"},"Probeer nog eens!"),
+        heard&&ce("div",{className:"prn-heard"},"Gehoord: \""+heard+"\""),
+        ce("button",{className:"btn btn-t",style:{marginTop:12},onClick:next},
+          idx+1>=total?"Bekijk score \u203a":"Volgende \u203a"))),
+    // Score
+    ce("div",{className:"prn-score-bar"},
+      ce("span",null,"Score: "+score+" ⭐"),
+      ce("span",null,"XP: +"+score*5)));
+}
+
 // === OFFLINE AUDIO CACHE ===
 function OfflineAudio({go,st,sS}){
   var DB_NAME="bg-leren-audio";
@@ -5740,7 +5891,8 @@ function App(){
     scr==="wotd"&&ce(WotdNotify,{go,st,sS}),
     scr==="report"&&ce(ProgressReport,{go,st,sS,profiles,activeId}),
     scr==="offlineaudio"&&ce(OfflineAudio,{go,st,sS}),
-    scr==="stickerwall"&&ce(StickerWall,{go,st}));
+    scr==="stickerwall"&&ce(StickerWall,{go,st}),
+    scr==="prongame"&&ce(PronGame,{go,st,sS}));
 }
 
 try{
