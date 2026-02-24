@@ -795,11 +795,12 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .bed-back:hover{background:rgba(165,180,252,.15)}
 .bed-zzz{position:absolute;pointer-events:none;animation:bed-zzz 4s ease-out infinite}
 @keyframes bed-zzz{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.5)}}
+.bed-dim-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;pointer-events:none;z-index:50;transition:opacity 2s ease}
 
 /* Family Quiz */
 .fq-bg{padding:24px 16px;min-height:100vh}
 .fq-setup{text-align:center}
-.fq-cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fq-cat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
 .fq-cat{padding:14px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;transition:all .2s;text-align:center}
 .fq-cat:hover{border-color:#a78bfa;transform:translateY(-2px)}
 .fq-cat-on{border-color:#8b5cf6;background:#f5f3ff;box-shadow:0 0 0 3px rgba(139,92,246,.2)}
@@ -1388,12 +1389,37 @@ function checkStreak(st,sS){
   sS(function(p){return Object.assign({},p,{strk:newStrk,lastDay:today});});
 }
 
+// === GAME UNLOCK TARGETS (soft gate) ===
+var GAME_TARGETS={
+  quiz:{wl:0,lsn:0,label:null}, // always open
+  memory:{wl:10,lsn:0,label:"Leer 10 woorden"},
+  hangman:{wl:15,lsn:0,label:"Leer 15 woorden"},
+  wordsearch:{wl:20,lsn:0,label:"Leer 20 woorden"},
+  sentences:{wl:10,lsn:1,label:"Voltooi 1 les"},
+  numbers:{wl:0,lsn:0,label:null}, // always open
+  speed:{wl:30,lsn:2,label:"Leer 30 woorden & 2 lessen"}
+};
+function isGameUnlocked(gameId,st2){
+  var t=GAME_TARGETS[gameId];
+  if(!t||!t.label)return{open:true};
+  if((st2.wl||0)>=t.wl&&(st2.lsn||0)>=t.lsn)return{open:true};
+  return{open:false,label:t.label};
+}
+
 function Home({go,st,sS,profiles,activeId}){
   const tl=ALPHA.reduce((s,g)=>s+g.ls.length,0);
   const tw=allWords(MODS).length;
   const lp=Math.round(st.ll/tl*100);
   const wp=Math.round(st.wl/tw*100);
   const eb=BADGES.filter(b=>b.rq(st)).length;
+  // Soft gate nudge toast
+  const[nudge,sNudge]=uS(null);
+  uE(function(){if(nudge){var t=setTimeout(function(){sNudge(null);},3000);return function(){clearTimeout(t);};}},[nudge]);
+  var tryGo=function(gameId,route){
+    var u=isGameUnlocked(gameId,st);
+    if(!u.open){sNudge(u.label);}
+    go(route);
+  };
   // PWA install button state
   const isStandalone=window.matchMedia('(display-mode:standalone)').matches||window.navigator.standalone===true;
   const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent)&&!window._pwaInstallReady;
@@ -1410,6 +1436,10 @@ function Home({go,st,sS,profiles,activeId}){
   },[]);
 
   return ce("div",{className:"scr sy"},
+    // Soft gate nudge toast
+    nudge&&ce("div",{style:{position:"fixed",bottom:80,left:"50%",transform:"translateX(-50%)",background:"#1e293b",color:"#fff",padding:"10px 20px",borderRadius:12,fontSize:13,fontWeight:500,zIndex:100,boxShadow:"0 4px 20px rgba(0,0,0,.2)",animation:"fqFlash .5s",maxWidth:320,textAlign:"center"}},
+      ce("span",{style:{marginRight:6}},"\u{1f4a1}"),
+      "Tip: "+nudge+" om dit spel te ontgrendelen!"),
     ce("div",{className:"ctr"},ce("h1",{className:"h1"},"\u0414\u043e\u0431\u0440\u0435 \u0434\u043e\u0448\u043b\u0438! \u{1f1e7}\u{1f1ec}"),ce("p",{className:"sub",style:{marginTop:4}},"Bulgaars leren \u2014 kies een module")),
     ce("div",{style:{background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)",borderRadius:16,padding:16,border:"1px solid #ccfbf1"}},
       ce("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:12}},
@@ -1592,27 +1622,24 @@ function Home({go,st,sS,profiles,activeId}){
     ce("div",{style:{marginTop:12}},
       ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:6}},"\u{1f3ae} Spelletjes")),
     ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}},
-      ce("button",{className:"card",onClick:()=>go("quiz"),style:{textAlign:"center",padding:12}},
-        ce("div",{style:{fontSize:24}},"\u{1f3af}"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Quiz")),
-      ce("button",{className:"card",onClick:()=>go("memory"),style:{textAlign:"center",padding:12}},
-        ce("div",{style:{fontSize:24}},"\u{1f0cf}"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Memory")),
-      ce("button",{className:"card",onClick:()=>go("hangman"),style:{textAlign:"center",padding:12}},
-        ce("div",{style:{fontSize:24}},"\u{1f620}"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Galgje")),
-      ce("button",{className:"card",onClick:()=>go("wordsearch"),style:{textAlign:"center",padding:12}},
-        ce("div",{style:{fontSize:24}},"\u{1f50e}"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Woordzoeker")),
-      ce("button",{className:"card",onClick:()=>go("sentences"),style:{textAlign:"center",padding:12}},
-        ce("div",{style:{fontSize:24}},"\u{1f3d7}\ufe0f"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Zinnen")),
-      ce("button",{className:"card",onClick:()=>go("numbers"),style:{textAlign:"center",padding:12}},
-        ce("div",{style:{fontSize:24}},"\u{1f522}"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Getallen")),
-      ce("button",{className:"card",onClick:()=>go("speed"),style:{textAlign:"center",padding:12,border:"1px solid #c4b5fd"}},
-        ce("div",{style:{fontSize:24}},"\u26a1"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Speed Round"))),
+      (function(){
+        var games=[
+          {id:"quiz",route:"quiz",em:"\u{1f3af}",name:"Quiz"},
+          {id:"memory",route:"memory",em:"\u{1f0cf}",name:"Memory"},
+          {id:"hangman",route:"hangman",em:"\u{1f620}",name:"Galgje"},
+          {id:"wordsearch",route:"wordsearch",em:"\u{1f50e}",name:"Woordzoeker"},
+          {id:"sentences",route:"sentences",em:"\u{1f3d7}\ufe0f",name:"Zinnen"},
+          {id:"numbers",route:"numbers",em:"\u{1f522}",name:"Getallen"},
+          {id:"speed",route:"speed",em:"\u26a1",name:"Speed Round",border:"1px solid #c4b5fd",color:"#6d28d9"}
+        ];
+        return games.map(function(g){
+          var u=isGameUnlocked(g.id,st);
+          return ce("button",{key:g.id,className:"card",onClick:function(){tryGo(g.id,g.route);},style:{textAlign:"center",padding:12,position:"relative",border:g.border||undefined,opacity:u.open?1:0.75}},
+            ce("div",{style:{fontSize:24}},g.em),
+            ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:g.color||undefined}},g.name),
+            !u.open&&ce("div",{style:{position:"absolute",top:4,right:4,fontSize:10,background:"#fef3c7",color:"#92400e",padding:"1px 6px",borderRadius:99,fontWeight:600}},"\u{1f512}"));
+        });
+      })()),
     // Quick links - Ontdek & Oefen
     ce("div",{style:{marginTop:12}},
       ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b",marginBottom:6}},"\u{1f30d} Ontdek & Oefen")),
@@ -3943,6 +3970,58 @@ function Lesson({go,st,sS,modId}){
   var[typedAns,sTypedAns]=uS("");
   var[wrongWords,sWrongWords]=uS([]);
   var[lRetry,sLRetry]=uS(false);
+  // Lesson-end practice mini-game
+  var[practicePhase,sPracticePhase]=uS(null); // null, "quickfire", "minimemory", "scramble"
+  var[prDone,sPrDone]=uS(false);
+  var[prScore,sPrScore]=uS(0);
+  var[prQs,sPrQs]=uS([]);
+  var[prQi,sPrQi]=uS(0);
+  var[prSel,sPrSel]=uS(null);
+  var[prShown,sPrShown]=uS(false);
+  // Mini memory state
+  var[mmCards,sMmCards]=uS([]);
+  var[mmFlipped,sMmFlipped]=uS([]);
+  var[mmMatched,sMmMatched]=uS([]);
+  var[mmMoves,sMmMoves]=uS(0);
+  // Scramble state
+  var[scrWord,sScrWord]=uS(null);
+  var[scrLetters,sScrLetters]=uS([]);
+  var[scrAnswer,sScrAnswer]=uS([]);
+  var[scrQi2,sScrQi2]=uS(0);
+  var[scrWords,sScrWords]=uS([]);
+
+  // Start a random practice mini-game using the lesson's words
+  var startPractice=function(){
+    var lessonWords=qs?qs.map(function(q2){return q2.w;}).filter(function(w,i,a){return a.findIndex(function(x){return x.b===w.b;})===i;}):[];
+    if(lessonWords.length<4){sDone(true);return;} // too few words, skip
+    var types=["quickfire","minimemory","scramble"];
+    var chosen=types[Math.floor(Math.random()*types.length)];
+    sPracticePhase(chosen);sPrDone(false);sPrScore(0);sPrQi(0);sPrSel(null);sPrShown(false);
+    if(chosen==="quickfire"){
+      // 5 rapid-fire questions from lesson words
+      var qfQs=[];var sw2=sh(lessonWords).slice(0,5);
+      for(var qi2=0;qi2<sw2.length;qi2++){
+        var w2=sw2[qi2];var wr=sh(lessonWords.filter(function(x){return x.b!==w2.b;})).slice(0,3);
+        qfQs.push({prompt:w2.b,answer:w2.n,opts:sh([w2.n].concat(wr.map(function(x){return x.n;}))),em:w2.m||"📝"});
+      }
+      sPrQs(qfQs);
+    } else if(chosen==="minimemory"){
+      // 4 pairs memory match
+      var mw=sh(lessonWords).slice(0,4);
+      var cards=[];
+      mw.forEach(function(w2,i){
+        cards.push({id:i*2,pairId:i,text:w2.b,lang:"bg",em:w2.m});
+        cards.push({id:i*2+1,pairId:i,text:w2.n,lang:"nl",em:w2.m});
+      });
+      sMmCards(sh(cards));sMmFlipped([]);sMmMatched([]);sMmMoves(0);
+    } else {
+      // Word scramble — unscramble 4 Bulgarian words
+      var scw=sh(lessonWords).slice(0,4);
+      sScrWords(scw);sScrQi2(0);
+      var first=scw[0];
+      sScrWord(first);sScrLetters(sh(first.b.split("")));sScrAnswer([]);
+    }
+  };
 
   var genQuestions=function(){
     var sw=sh(pool).slice(0,12);
@@ -3988,9 +4067,124 @@ function Lesson({go,st,sS,modId}){
         ce("div",{style:{fontSize:13,fontWeight:600,color:"#dc2626",marginBottom:6}},"Woorden om te oefenen:"),
         wrongWords.map(function(ww,i){return ce("div",{key:i,style:{fontSize:13,color:"#64748b",padding:"2px 0"}},ww.b+" = "+ww.n);})),
       ce("div",{style:{display:"flex",gap:12,justifyContent:"center",marginTop:16}},
-        ce("button",{className:"btn btn-v",onClick:function(){sQs(genQuestions());sQi(0);sScore(0);sSel(null);sShown(false);sDone(false);sStreak(0);sHearts(3);sSbAns([]);sTypedAns("");sWrongWords([]);}},"\ud83d\udd04 Opnieuw"),
+        ce("button",{className:"btn btn-v",onClick:function(){sQs(genQuestions());sQi(0);sScore(0);sSel(null);sShown(false);sDone(false);sStreak(0);sHearts(3);sSbAns([]);sTypedAns("");sWrongWords([]);sPracticePhase(null);sPrDone(false);sLRetry(false);}},"\ud83d\udd04 Opnieuw"),
         ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"Home")));
   }
+  // === PRACTICE MINI-GAME PHASE ===
+  if(practicePhase&&!prDone){
+    // Quick-fire quiz mini-game
+    if(practicePhase==="quickfire"){
+      var pq=prQs[prQi];
+      if(!pq){sPrDone(true);return null;}
+      return ce("div",{className:"scr sy"},
+        ce("div",{style:{background:"linear-gradient(135deg,#fef3c7,#fffbeb)",borderRadius:16,padding:12,textAlign:"center",border:"2px solid #fde68a",marginBottom:8}},
+          ce("div",{style:{fontSize:11,fontWeight:700,color:"#92400e",textTransform:"uppercase",letterSpacing:1}},"\u26a1 Bliksemronde"),
+          ce("div",{style:{fontSize:12,color:"#b45309",marginTop:2}},"Hoe snel ken je de leswoorden?")),
+        ce("div",{className:"nr"},
+          ce("span",{style:{fontSize:13,color:"#64748b"}},(prQi+1)+"/"+prQs.length),
+          ce("span",{style:{fontSize:14,fontWeight:700,color:"#059669"}},prScore+" goed")),
+        ce("div",{className:"pb",style:{marginTop:8}},ce("div",{style:{height:"100%",borderRadius:999,background:"linear-gradient(90deg,#f59e0b,#f97316)",width:((prQi+1)/prQs.length*100)+"%",transition:"width .3s"}})),
+        ce("div",{style:{textAlign:"center",marginTop:16}},
+          pq.em&&ce("div",{style:{fontSize:32}},pq.em),
+          ce("div",{style:{fontSize:28,fontWeight:700,color:"#1e293b",marginTop:4}},pq.prompt)),
+        ce("div",{className:"sy3",style:{marginTop:16}},pq.opts.map(function(o,i){
+          var cls="qo";
+          if(prShown){if(o===pq.answer)cls+=" qo-ok";else if(o===prSel&&o!==pq.answer)cls+=" qo-no";else cls+=" qo-x";}
+          return ce("button",{key:i,className:cls,disabled:prShown,onClick:function(){
+            sPrSel(o);sPrShown(true);
+            var c2=o===pq.answer;if(c2){sPrScore(prScore+1);playSound("correct");}else{playSound("wrong");}
+            setTimeout(function(){
+              if(prQi+1>=prQs.length){sPrDone(true);}
+              else{sPrQi(prQi+1);sPrSel(null);sPrShown(false);}
+            },c2?600:1200);
+          }},ce("span",null,o),prShown&&o===pq.answer&&ce("span",null," \u2713"));})));
+    }
+    // Mini memory mini-game
+    if(practicePhase==="minimemory"){
+      var allMatched=mmMatched.length===mmCards.length&&mmCards.length>0;
+      if(allMatched&&!prDone){setTimeout(function(){sPrDone(true);sPrScore(Math.max(0,8-mmMoves));},800);}
+      var handleMmFlip=function(idx){
+        if(mmFlipped.length>=2||mmMatched.indexOf(idx)>=0||mmFlipped.indexOf(idx)>=0)return;
+        var nf=mmFlipped.concat([idx]);sMmFlipped(nf);
+        if(nf.length===2){
+          sMmMoves(mmMoves+1);
+          var c1=mmCards[nf[0]],c2=mmCards[nf[1]];
+          if(c1.pairId===c2.pairId&&nf[0]!==nf[1]){
+            playSound("correct");
+            setTimeout(function(){sMmMatched(function(p){return p.concat(nf);});sMmFlipped([]);},500);
+          }else{
+            playSound("wrong");
+            setTimeout(function(){sMmFlipped([]);},1000);
+          }
+        }
+      };
+      return ce("div",{className:"scr sy"},
+        ce("div",{style:{background:"linear-gradient(135deg,#ede9fe,#f5f3ff)",borderRadius:16,padding:12,textAlign:"center",border:"2px solid #c4b5fd",marginBottom:8}},
+          ce("div",{style:{fontSize:11,fontWeight:700,color:"#6d28d9",textTransform:"uppercase",letterSpacing:1}},"\u{1f0cf} Mini Memory"),
+          ce("div",{style:{fontSize:12,color:"#7c3aed",marginTop:2}},"Vind de paren uit je les!")),
+        ce("div",{style:{textAlign:"center",fontSize:13,color:"#64748b"}},mmMoves+" zetten"),
+        ce("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginTop:12}},
+          mmCards.map(function(card,idx){
+            var isFlipped=mmFlipped.indexOf(idx)>=0||mmMatched.indexOf(idx)>=0;
+            return ce("button",{key:card.id,onClick:function(){handleMmFlip(idx);},style:{
+              aspectRatio:"3/4",borderRadius:12,border:"2px solid "+(mmMatched.indexOf(idx)>=0?"#86efac":isFlipped?"#a78bfa":"#e2e8f0"),
+              background:mmMatched.indexOf(idx)>=0?"#ecfdf5":isFlipped?(card.lang==="bg"?"#f0fdfa":"#f5f3ff"):"linear-gradient(135deg,#a78bfa,#8b5cf6)",
+              display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:4,cursor:mmMatched.indexOf(idx)>=0?"default":"pointer",transition:"all .3s",fontSize:isFlipped?13:24,fontWeight:isFlipped?700:400,color:isFlipped?"#1e293b":"#fff"}},
+              isFlipped?ce("div",null,card.em&&ce("div",{style:{fontSize:16}},card.em),ce("div",{style:{wordBreak:"break-word",fontSize:12}},card.text)):ce("div",null,"?"));
+          })));
+    }
+    // Word scramble mini-game
+    if(practicePhase==="scramble"){
+      if(!scrWord&&scrWords.length>0){
+        var sw3=scrWords[0];sScrWord(sw3);sScrLetters(sh(sw3.b.split("")));sScrAnswer([]);
+      }
+      if(!scrWord)return null;
+      var scrCorrect=scrAnswer.join("")===scrWord.b;
+      if(scrCorrect&&!prShown){
+        sPrShown(true);sPrScore(prScore+1);playSound("correct");
+        setTimeout(function(){
+          if(scrQi2+1>=scrWords.length){sPrDone(true);}
+          else{
+            var next=scrWords[scrQi2+1];
+            sScrQi2(scrQi2+1);sScrWord(next);sScrLetters(sh(next.b.split("")));sScrAnswer([]);sPrShown(false);
+          }
+        },800);
+      }
+      return ce("div",{className:"scr sy"},
+        ce("div",{style:{background:"linear-gradient(135deg,#ecfdf5,#f0fdfa)",borderRadius:16,padding:12,textAlign:"center",border:"2px solid #a7f3d0",marginBottom:8}},
+          ce("div",{style:{fontSize:11,fontWeight:700,color:"#047857",textTransform:"uppercase",letterSpacing:1}},"\u{1f500} Woordmixer"),
+          ce("div",{style:{fontSize:12,color:"#059669",marginTop:2}},"Zet de letters in de juiste volgorde!")),
+        ce("div",{className:"nr"},
+          ce("span",{style:{fontSize:13,color:"#64748b"}},(scrQi2+1)+"/"+scrWords.length),
+          ce("span",{style:{fontSize:14,fontWeight:700,color:"#059669"}},prScore+" goed")),
+        ce("div",{style:{textAlign:"center",marginTop:16}},
+          scrWord.m&&ce("div",{style:{fontSize:32}},scrWord.m),
+          ce("div",{style:{fontSize:14,color:"#64748b",marginTop:4}},scrWord.n),
+          scrWord.p&&ce("div",{style:{fontSize:12,color:"#a78bfa",fontStyle:"italic"}},"["+scrWord.p+"]")),
+        // Answer slots
+        ce("div",{style:{display:"flex",gap:4,justifyContent:"center",flexWrap:"wrap",minHeight:44,marginTop:16,padding:"8px 12px",background:"#f8fafc",borderRadius:12,border:"2px dashed "+(scrCorrect?"#34d399":"#e2e8f0")}},
+          scrAnswer.length===0&&ce("span",{style:{color:"#94a3b8",fontSize:13,alignSelf:"center"}},"Tik op letters..."),
+          scrAnswer.map(function(l,i){return ce("button",{key:"a"+i,onClick:function(){if(prShown)return;sScrAnswer(function(p){var n=p.slice();n.splice(i,1);return n;});sScrLetters(function(p){return p.concat([l]);});},
+            style:{width:36,height:42,borderRadius:8,border:"2px solid "+(scrCorrect?"#34d399":"#a78bfa"),background:scrCorrect?"#ecfdf5":"#f5f3ff",fontSize:18,fontWeight:700,color:"#1e293b",cursor:"pointer",transition:"all .2s"}},l);})),
+        // Available letters
+        ce("div",{style:{display:"flex",gap:4,justifyContent:"center",flexWrap:"wrap",marginTop:12}},
+          scrLetters.map(function(l,i){return ce("button",{key:"l"+i,onClick:function(){if(prShown)return;sScrLetters(function(p){var n=p.slice();n.splice(i,1);return n;});sScrAnswer(function(p){return p.concat([l]);});},
+            style:{width:36,height:42,borderRadius:8,border:"2px solid #e2e8f0",background:"#fff",fontSize:18,fontWeight:700,color:"#1e293b",cursor:"pointer",transition:"all .2s"}},l);})));
+    }
+  }
+  // Practice done — show mini results then proceed to main results
+  if(practicePhase&&prDone&&!done){
+    var prLabel=practicePhase==="quickfire"?"\u26a1 Bliksemronde":practicePhase==="minimemory"?"\u{1f0cf} Mini Memory":"\u{1f500} Woordmixer";
+    var prMax=practicePhase==="quickfire"?prQs.length:practicePhase==="minimemory"?8:scrWords.length;
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},prScore>=Math.ceil(prMax*0.7)?"\u{1f389}":"\u{1f44f}"),
+      ce("h2",{className:"h2",style:{marginTop:8}},prLabel+" klaar!"),
+      ce("div",{style:{fontSize:28,fontWeight:800,color:"#6d28d9",margin:"8px 0"}},prScore+"/"+(practicePhase==="minimemory"?"8 bonus":prMax)),
+      ce("p",{style:{color:"#64748b",fontSize:13}},prScore>=Math.ceil(prMax*0.7)?"Super! Je kent de woorden goed!":"Blijf oefenen, het komt goed!"),
+      ce("div",{style:{marginTop:16}},
+        ce("button",{className:"btn btn-t",onClick:function(){sDone(true);sPracticePhase(null);}},"\u{1f4ca} Bekijk resultaten")));
+  }
+
   if(done){
     var pct=Math.round(score/qs.length*100);
     sS(function(p){return p;});
@@ -4010,7 +4204,7 @@ function Lesson({go,st,sS,modId}){
         ce("div",{style:{fontSize:13,fontWeight:600,color:"#dc2626",marginBottom:6}},"Nog oefenen:"),
         wrongWords.map(function(ww,i){return ce("div",{key:i,style:{fontSize:13,color:"#991b1b",padding:"2px 0"}},ww.b+" = "+ww.n);})),
       ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:16}},
-        ce("button",{className:"btn btn-v",onClick:function(){sQs(genQuestions());sQi(0);sScore(0);sSel(null);sShown(false);sDone(false);sStreak(0);sHearts(3);sSbAns([]);sTypedAns("");sWrongWords([]);}},"\ud83d\udd04 Nieuwe les"),
+        ce("button",{className:"btn btn-v",onClick:function(){sQs(genQuestions());sQi(0);sScore(0);sSel(null);sShown(false);sDone(false);sStreak(0);sHearts(3);sSbAns([]);sTypedAns("");sWrongWords([]);sPracticePhase(null);sPrDone(false);sLRetry(false);}},"\ud83d\udd04 Nieuwe les"),
         ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"Home")));
   }
   var q=qs[qi];if(!q)return null;
@@ -4030,7 +4224,7 @@ function Lesson({go,st,sS,modId}){
             var rwrongs=sh(pool.filter(function(x){return x.b!==rw.b;})).slice(0,3);
             retryQs.push({tp:"bg-nl",w:rw,prompt:rw.b,answer:rw.n,ops:sh([rw.n].concat(rwrongs.map(function(x){return x.n;})))});}
           sLRetry(true);sQs(retryQs);sQi(0);sSel(null);sShown(false);sSbAns([]);sSbPool2([]);sTypedAns("");sWrongWords([]);
-        }else{sDone(true);}
+        }else{startPractice();}
       }else{sQi(qi+1);sSel(null);sShown(false);sSbAns([]);sSbPool2([]);sTypedAns("");}
     },correct?800:1500);
   };
@@ -5857,6 +6051,17 @@ function BedtimeMode({go,st,sS}){
   var timerRef=React.useRef(null);
   var autoRef=React.useRef(null);
 
+  // Screen dimming — calculate dimming opacity based on timer progress (0→0.6 max)
+  var dimOpacity=0;
+  if(timer>0&&timerLeft>0){
+    var totalSec=timer*60;
+    var elapsed=totalSec-timerLeft;
+    dimOpacity=Math.min(0.6,elapsed/totalSec*0.6);
+  }
+  // When timer ends (timerLeft===0 and timer was set), full dim remains
+  if(timer>0&&timerLeft===0&&storyIdx!==null){dimOpacity=0.6;}
+  var dimOverlay=timer>0?ce("div",{className:"bed-dim-overlay",style:{opacity:dimOpacity}}):null;
+
   // Generate twinkling stars
   var starsArr=React.useMemo(function(){
     var s=[];for(var i=0;i<30;i++){
@@ -5935,6 +6140,7 @@ function BedtimeMode({go,st,sS}){
   // Story picker
   if(storyIdx===null){
     return ce("div",{className:"bed-bg"},
+      dimOverlay,
       ce("div",{className:"bed-stars"},starsArr.map(function(s,i){
         return ce("div",{key:i,className:"bed-star",style:{left:s.left,top:s.top,animationDelay:s.delay,width:s.size,height:s.size}});
       })),
@@ -5973,6 +6179,7 @@ function BedtimeMode({go,st,sS}){
   var allSceneIds=ft.scenes.map(function(s){return s.id;});
 
   return ce("div",{className:"bed-bg"},
+    dimOverlay,
     ce("div",{className:"bed-stars"},starsArr.map(function(s,i){
       return ce("div",{key:i,className:"bed-star",style:{left:s.left,top:s.top,animationDelay:s.delay,width:s.size,height:s.size}});
     })),
@@ -6029,14 +6236,20 @@ function FamilyQuiz({go,st,sS,profiles,activeId}){
   var[sel,sSel]=uS(null);
   var[shown,sShown]=uS(false);
   var[cat,sCat]=uS("mix"); // mix, words, grammar, culture
+  var[isTournament,sIsTournament]=uS(false); // tournament mode toggle
+  var[tRound,sTRound]=uS(0); // current tournament round (0-based)
+  var[tWins,sTWins]=uS([0,0]); // tournament wins [p1, p2]
   var ROUNDS=10;
+  var T_ROUNDS=3; // best of 3
   var pList=profiles&&profiles.list?profiles.list:[];
 
   var CATS=[
     {id:"mix",name:"Mix",em:"\u{1f3b2}",desc:"Alles door elkaar"},
     {id:"words",name:"Woorden",em:"\u{1f4da}",desc:"Vertaal het woord"},
     {id:"culture",name:"Cultuur",em:"\u{1f30d}",desc:"Bulgaarse cultuurvragen"},
-    {id:"numbers",name:"Getallen",em:"\u{1f522}",desc:"Ken je de getallen?"}
+    {id:"numbers",name:"Getallen",em:"\u{1f522}",desc:"Ken je de getallen?"},
+    {id:"fairytales",name:"Sprookjes",em:"\u{1f9d9}",desc:"Ken je de sprookjes?"},
+    {id:"proverbs",name:"Spreekwoorden",em:"\u{1f9d9}\u200d\u2642\ufe0f",desc:"Bulgaarse wijsheden"}
   ];
 
   function generateQuestions(){
@@ -6076,11 +6289,53 @@ function FamilyQuiz({go,st,sS,profiles,activeId}){
         }
       }
     }
+    // Fairytales category — "Which fairy tale is this?" based on scene text
+    if(cat==="fairytales"||cat==="mix"){
+      var ftArr=typeof FAIRYTALES!=="undefined"?FAIRYTALES:[];
+      if(ftArr.length>=2){
+        var ftShuf=sh(ftArr);
+        for(var fi=0;fi<(cat==="mix"?2:ROUNDS)&&fi<ftShuf.length;fi++){
+          var fairy=ftShuf[fi];
+          var firstScene=fairy.scenes&&fairy.scenes[0]?fairy.scenes[0]:null;
+          if(!firstScene)continue;
+          // Question: which story does this scene belong to?
+          var ftWrongs=sh(ftArr.filter(function(x){return x.id!==fairy.id;})).slice(0,3);
+          var snippet=firstScene.text.nl;if(snippet.length>80)snippet=snippet.slice(0,77)+"...";
+          qs.push({prompt:'"'+snippet+'"',answer:fairy.titleNl,opts:sh([fairy.titleNl].concat(ftWrongs.map(function(w){return w.titleNl;}))),em:fairy.em,cat:"Sprookjes",sub:"Uit welk sprookje?"});
+        }
+      }
+    }
+    // Proverbs category — match Bulgarian proverb to Dutch equivalent
+    if(cat==="proverbs"||cat==="mix"){
+      var prvArr=typeof PROVERBS!=="undefined"?PROVERBS:[];
+      if(prvArr.length>=4){
+        var prvShuf=sh(prvArr);
+        for(var pi=0;pi<(cat==="mix"?2:ROUNDS)&&pi<prvShuf.length;pi++){
+          var prv=prvShuf[pi];
+          var prvWrongs=sh(prvArr.filter(function(x){return x.id!==prv.id;})).slice(0,3);
+          var prvDir=Math.random()<0.5;
+          if(prvDir){
+            // BG proverb → NL equivalent
+            qs.push({prompt:prv.bg,answer:prv.nlEquiv,opts:sh([prv.nlEquiv].concat(prvWrongs.map(function(w){return w.nlEquiv;}))),em:prv.em,cat:"Spreekwoorden",sub:"["+prv.pron+"]"});
+          } else {
+            // NL equivalent → BG proverb
+            qs.push({prompt:prv.nlEquiv,answer:prv.bg,opts:sh([prv.bg].concat(prvWrongs.map(function(w){return w.bg;}))),em:prv.em,cat:"Spreekwoorden",sub:""});
+          }
+        }
+      }
+    }
     return sh(qs).slice(0,ROUNDS);
   }
 
   function startGame(){
     if(!p1||!p2||p1.id===p2.id)return;
+    var qs=generateQuestions();
+    if(qs.length===0)return;
+    sQuestions(qs);sRound(0);sScores([0,0]);sBuzzed(-1);sSel(null);sShown(false);
+    if(isTournament&&tRound===0){sTWins([0,0]);}
+    sPhase("playing");
+  }
+  function startNextTournamentRound(){
     var qs=generateQuestions();
     if(qs.length===0)return;
     sQuestions(qs);sRound(0);sScores([0,0]);sBuzzed(-1);sSel(null);sShown(false);
@@ -6108,7 +6363,26 @@ function FamilyQuiz({go,st,sS,profiles,activeId}){
     setTimeout(function(){
       if(round+1>=questions.length){
         sS(function(s){return Object.assign({},s,{xp:s.xp+25,fqPlayed:(s.fqPlayed||0)+1});});
-        sPhase("result");
+        if(isTournament){
+          // Determine round winner from final scores (recalculate from stale closure)
+          var newTWins=[...tWins];
+          var fS=[scores[0],scores[1]];
+          if(correct){fS[buzzed]+=10;}else{fS[1-buzzed]+=5;}
+          if(fS[0]>fS[1])newTWins[0]++;
+          else if(fS[1]>fS[0])newTWins[1]++;
+          // Tie round: no increment
+          sTWins(newTWins);
+          var nextTR=tRound+1;
+          sTRound(nextTR);
+          // Check if tournament is decided (best of 3: first to 2 wins)
+          if(newTWins[0]>=2||newTWins[1]>=2||nextTR>=T_ROUNDS){
+            sPhase("tresult"); // tournament result
+          } else {
+            sPhase("tbreak"); // between-round break
+          }
+        } else {
+          sPhase("result");
+        }
       } else {
         sRound(round+1);sBuzzed(-1);sSel(null);sShown(false);sPhase("playing");
       }
@@ -6146,8 +6420,13 @@ function FamilyQuiz({go,st,sS,profiles,activeId}){
               ce("span",{style:{fontSize:20}},pr.avatar),pr.name);
           })),
         pList.length<2&&ce("div",{style:{fontSize:12,color:"#94a3b8",marginTop:8}},"Je hebt minimaal 2 profielen nodig.")),
+      // Tournament mode toggle
+      ce("div",{style:{marginTop:16,textAlign:"center"}},
+        ce("button",{onClick:function(){sIsTournament(!isTournament);sTRound(0);sTWins([0,0]);},style:{padding:"10px 20px",borderRadius:12,border:"2px solid "+(isTournament?"#f59e0b":"#e2e8f0"),background:isTournament?"linear-gradient(135deg,#fffbeb,#fef3c7)":"#fff",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all .2s",color:isTournament?"#92400e":"#64748b"}},
+          ce("span",{style:{fontSize:18,marginRight:6}},isTournament?"\u{1f3c6}":"\u{1f3c6}"),
+          isTournament?"Toernooi AAN (best of 3)":"Toernooi (best of 3)")),
       p1&&p2&&p1.id!==p2.id&&ce("div",{style:{textAlign:"center",marginTop:20}},
-        ce("button",{className:"btn btn-t",style:{fontSize:16,padding:"12px 32px"},onClick:startGame},"\u{1f3c1} Start Quiz!")));
+        ce("button",{className:"btn btn-t",style:{fontSize:16,padding:"12px 32px"},onClick:function(){sTRound(0);startGame();}},isTournament?"\u{1f3c6} Start Toernooi!":"\u{1f3c1} Start Quiz!")));
   }
 
   // Result screen
@@ -6171,6 +6450,54 @@ function FamilyQuiz({go,st,sS,profiles,activeId}){
               ce("div",{className:"fq-player-score fq-p2-score"},scores[1]))))),
       ce("div",{style:{display:"flex",gap:12,justifyContent:"center",marginTop:16}},
         ce("button",{className:"btn btn-t",onClick:function(){sPhase("setup");sScores([0,0]);sBuzzed(-1);}},"🔄 Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"🏠 Home")));
+  }
+
+  // Tournament break — between rounds
+  if(phase==="tbreak"){
+    var rWinner=scores[0]>scores[1]?p1:scores[1]>scores[0]?p2:null;
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"fq-result"},
+        ce("div",{style:{fontSize:48}},"\u{1f3c1}"),
+        ce("div",{className:"fq-result-msg",style:{fontSize:18}},"Ronde "+(tRound)+" klaar!"),
+        ce("div",{className:"fq-result-sub"},rWinner?rWinner.name+" wint deze ronde ("+scores[0]+" - "+scores[1]+")":"Gelijkspel ("+scores[0]+" - "+scores[1]+")")),
+      // Tournament scoreboard
+      ce("div",{style:{display:"flex",justifyContent:"center",gap:24,marginTop:16}},
+        ce("div",{style:{textAlign:"center"}},
+          ce("div",{style:{fontSize:32}},p1.avatar),
+          ce("div",{style:{fontSize:14,fontWeight:700,marginTop:4}},p1.name),
+          ce("div",{style:{fontSize:28,fontWeight:800,color:"#059669",marginTop:4}},tWins[0]),
+          ce("div",{style:{fontSize:11,color:"#64748b"}},"rondes")),
+        ce("div",{style:{alignSelf:"center",fontSize:20,fontWeight:800,color:"#94a3b8"}},"-"),
+        ce("div",{style:{textAlign:"center"}},
+          ce("div",{style:{fontSize:32}},p2.avatar),
+          ce("div",{style:{fontSize:14,fontWeight:700,marginTop:4}},p2.name),
+          ce("div",{style:{fontSize:28,fontWeight:800,color:"#7c3aed",marginTop:4}},tWins[1]),
+          ce("div",{style:{fontSize:11,color:"#64748b"}},"rondes"))),
+      ce("div",{style:{textAlign:"center",marginTop:20}},
+        ce("button",{className:"btn btn-t",style:{fontSize:16,padding:"12px 32px"},onClick:startNextTournamentRound},"\u{1f3c1} Ronde "+(tRound+1)+" starten!")));
+  }
+
+  // Tournament result — final winner
+  if(phase==="tresult"){
+    var tWinner=tWins[0]>tWins[1]?p1:tWins[1]>tWins[0]?p2:null;
+    return ce("div",{className:"scr sy"},
+      ce("div",{className:"fq-result"},
+        ce("div",{style:{fontSize:64}},tWinner?"\u{1f3c6}":"\u{1f91d}"),
+        ce("div",{className:"fq-result-msg",style:{fontSize:22}},tWinner?tWinner.name+" wint het toernooi!":"Toernooi gelijkspel!"),
+        ce("div",{className:"fq-result-sub"},tWins[0]+" - "+tWins[1]+" (rondes)")),
+      ce("div",{style:{display:"flex",justifyContent:"center",gap:24,marginTop:16}},
+        ce("div",{style:{textAlign:"center"}},
+          ce("div",{style:{fontSize:40}},p1.avatar),
+          ce("div",{style:{fontSize:14,fontWeight:700,marginTop:4}},p1.name),
+          ce("div",{style:{fontSize:32,fontWeight:800,color:tWins[0]>tWins[1]?"#059669":"#94a3b8",marginTop:4}},tWins[0]+" \u{1f3c6}")),
+        ce("div",{style:{alignSelf:"center",fontSize:20,fontWeight:800,color:"#94a3b8"}},"-"),
+        ce("div",{style:{textAlign:"center"}},
+          ce("div",{style:{fontSize:40}},p2.avatar),
+          ce("div",{style:{fontSize:14,fontWeight:700,marginTop:4}},p2.name),
+          ce("div",{style:{fontSize:32,fontWeight:800,color:tWins[1]>tWins[0]?"#7c3aed":"#94a3b8",marginTop:4}},tWins[1]+" \u{1f3c6}"))),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",marginTop:20}},
+        ce("button",{className:"btn btn-t",onClick:function(){sPhase("setup");sScores([0,0]);sBuzzed(-1);sTRound(0);sTWins([0,0]);}},"🔄 Opnieuw"),
         ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"🏠 Home")));
   }
 
@@ -6288,9 +6615,19 @@ function App(){
   // Apply theme colors
   var activeTheme=APP_THEMES.find(function(t){return t.id===(st.theme||"default");})||APP_THEMES[0];
 
+  // Scroll position memory — save when leaving home, restore when returning
+  var homeScrollRef=React.useRef(0);
   const go=function(s){
     if(s==="profiles"){sScr("profiles");return;}
+    // Save scroll position when leaving home
+    if(scr==="home"&&s!=="home"){homeScrollRef.current=window.scrollY;}
     sScr(s);
+    // Restore scroll position when returning to home, else scroll to top
+    if(s==="home"){
+      setTimeout(function(){window.scrollTo(0,homeScrollRef.current);},0);
+    } else {
+      window.scrollTo(0,0);
+    }
   };
 
   // Switch to a profile
