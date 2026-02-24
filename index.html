@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Български за деца — Volledig Programma</title>
+<meta name="description" content="Bulgaars leren voor Nederlandstalige kinderen en families">
+<meta name="theme-color" content="#14b8a6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="BG Leren">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇧🇬</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -12,7 +19,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .app{min-height:100vh;max-width:520px;margin:0 auto;background:#f8fafc}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#fff;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:30}
 .nav-left{display:flex;align-items:center;gap:8px}
-.nav-title{font-size:18px;font-weight:700;background:linear-gradient(to right,#0d9488,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-title{font-size:18px;font-weight:700;background:linear-gradient(to right,var(--accent,#0d9488),#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .nav-sub{font-size:11px;color:#94a3b8;margin-top:2px}
 .nav-right{display:flex;align-items:center;gap:10px}
 .pill{display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:999px;font-size:13px;font-weight:600}
@@ -256,7 +263,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .bg-region{transition:all .3s;stroke-width:1.5;cursor:pointer}
 .bg-region:not(.bg-region-locked):hover{filter:brightness(1.1);stroke-width:2.5}
 .bg-region-locked{cursor:not-allowed;opacity:.5}
-.bg-info-panel{width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;text-align:center;min-height:50px;display:flex;flex-direction:column;justify-content:center}.pd-section{margin-top:16px}.pd-section-title{font-size:13px;font-weight:600;color:#64748b;margin-bottom:8px;display:flex;align-items:center;gap:6px}.pd-week-chart{display:flex;align-items:flex-end;gap:4px;height:100px;padding:12px;background:#fff;border-radius:12px;border:1px solid #e2e8f0}.pd-week-bar{flex:1;border-radius:6px 6px 0 0;min-height:4px;transition:height .3s;position:relative}.pd-week-bar-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:#94a3b8;white-space:nowrap}.pd-week-bar-val{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:600;color:#1e293b}.pd-level-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:6px}.pd-level-badge{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;color:#fff;min-width:32px;text-align:center}.pd-level-info{flex:1}.pd-level-name{font-size:12px;font-weight:600;color:#1e293b}.pd-level-count{font-size:11px;color:#64748b}.pd-hard-word{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#fff;border-radius:10px;border:1px solid #fecaca;margin-bottom:4px}.pd-hard-word-emoji{font-size:18px;margin-right:8px}.pd-hard-word-bg{font-weight:600;font-size:13px;color:#1e293b}.pd-hard-word-nl{font-size:11px;color:#64748b}.pd-hard-word-err{font-size:11px;color:#ef4444;font-weight:600}.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.theme-card{padding:12px;border-radius:12px;text-align:center;border:2px solid #e2e8f0;transition:all .2s;cursor:pointer}.theme-card:hover{transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,.1)}.theme-card-active{border-color:#14b8a6;box-shadow:0 0 0 2px rgba(20,184,166,.2)}.theme-card-locked{opacity:.5;cursor:not-allowed}.avatar-grid-unlock{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}.avatar-unlock-card{padding:8px;border-radius:10px;text-align:center;border:2px solid #e2e8f0;font-size:24px;transition:all .2s;cursor:pointer}.avatar-unlock-card-active{border-color:#14b8a6;background:#ecfdf5}.avatar-unlock-card-locked{opacity:.4;cursor:not-allowed;filter:grayscale(1)}
+.bg-info-panel{width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;text-align:center;min-height:50px;display:flex;flex-direction:column;justify-content:center}.pd-section{margin-top:16px}.pd-section-title{font-size:13px;font-weight:600;color:#64748b;margin-bottom:8px;display:flex;align-items:center;gap:6px}.pd-week-chart{display:flex;align-items:flex-end;gap:4px;height:100px;padding:12px;background:#fff;border-radius:12px;border:1px solid #e2e8f0}.pd-week-bar{flex:1;border-radius:6px 6px 0 0;min-height:4px;transition:height .3s;position:relative}.pd-week-bar-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:#94a3b8;white-space:nowrap}.pd-week-bar-val{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:600;color:#1e293b}.pd-level-row{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:6px}.pd-level-badge{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;color:#fff;min-width:32px;text-align:center}.pd-level-info{flex:1}.pd-level-name{font-size:12px;font-weight:600;color:#1e293b}.pd-level-count{font-size:11px;color:#64748b}.pd-hard-word{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#fff;border-radius:10px;border:1px solid #fecaca;margin-bottom:4px}.pd-hard-word-emoji{font-size:18px;margin-right:8px}.pd-hard-word-bg{font-weight:600;font-size:13px;color:#1e293b}.pd-hard-word-nl{font-size:11px;color:#64748b}.pd-hard-word-err{font-size:11px;color:#ef4444;font-weight:600}.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.theme-card{padding:12px;border-radius:12px;text-align:center;border:2px solid #e2e8f0;transition:all .2s;cursor:pointer}.theme-card:hover{transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,.1)}.theme-card-active{border-color:var(--accent,#14b8a6);box-shadow:0 0 0 2px rgba(20,184,166,.2)}.theme-card-locked{opacity:.5;cursor:not-allowed}.avatar-grid-unlock{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}.avatar-unlock-card{padding:8px;border-radius:10px;text-align:center;border:2px solid #e2e8f0;font-size:24px;transition:all .2s;cursor:pointer}.avatar-unlock-card-active{border-color:var(--accent,#14b8a6);background:#ecfdf5}.avatar-unlock-card-locked{opacity:.4;cursor:not-allowed;filter:grayscale(1)}
 
 /* Cultuur */
 .culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -610,6 +617,8 @@ var APP_THEMES=[
   {id:"rose",name:"Rozentuin",colors:{bg:"#fff1f2",accent:"#e11d48",card:"#fff1f2"},req:{badges:15},desc:"15 badges"}
 ];
 function isAvatarUnlocked(av,st){
+  // Permanently unlocked avatars stay unlocked even if stats drop
+  if(st.uAvatars&&st.uAvatars.indexOf(av.emoji)>=0)return true;
   if(!av.req)return true;
   var r=av.req;var eb=typeof BADGES!=="undefined"?BADGES.filter(function(b){return b.rq(st);}).length:0;
   if(r.xp&&st.xp<r.xp)return false;
@@ -748,7 +757,7 @@ function ProfilePicker({onSelect,profiles,setProfiles,st}){
   return ce("div",{className:"pp-bg"},
     ce("div",{style:{textAlign:"center"}},
       ce("div",{style:{fontSize:48,marginBottom:8}},"\u{1f1e7}\u{1f1ec}"),
-      ce("h1",{style:{fontSize:24,fontWeight:800,color:"var(--accent,#0d9488)",marginBottom:4},"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438 \u0437\u0430 \u0434\u0435\u0446\u0430"),
+      ce("h1",{style:{fontSize:24,fontWeight:800,color:"var(--accent,#0d9488)",marginBottom:4}},"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438 \u0437\u0430 \u0434\u0435\u0446\u0430"),
       ce("p",{style:{fontSize:14,color:"#64748b"}},"Wie ben jij?")),
     ce("div",{className:"pp-grid"},
       list.map(function(p){
@@ -773,7 +782,7 @@ function FamilyScore({profiles,activeId,go}){
   return ce("div",{style:{marginTop:8}},
     ce("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
       ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b"}},"\u{1f3c6} Familie Scorebord"),
-      ce("button",{style:{fontSize:11,color:"#0d9488",background:"none",border:"none",cursor:"pointer",textDecoration:"underline"},onClick:function(){go("profiles");}},"Profiel wisselen")),
+      ce("button",{style:{fontSize:11,color:"var(--accent,#0d9488)",background:"none",border:"none",cursor:"pointer",textDecoration:"underline"},onClick:function(){go("profiles");}},"Profiel wisselen")),
     ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
       stats.map(function(s,i){
         return ce("div",{key:s.id,className:"fs-row"+(s.id===activeId?" fs-me":"")},
@@ -931,12 +940,12 @@ function Home({go,st,sS,profiles,activeId}){
     ce("div",{style:{background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)",borderRadius:16,padding:16,border:"1px solid #ccfbf1"}},
       ce("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:12}},
         ce("span",{style:{fontSize:13,fontWeight:500,color:"#134e4a"}},"Voortgang"),
-        ce("span",{style:{fontSize:12,color:"#0d9488"}},st.xp+" XP")),
+        ce("span",{style:{fontSize:12,color:"var(--accent,#0d9488)"}},st.xp+" XP")),
       ce("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}},
         ce("div",{style:{background:"#fff",borderRadius:12,padding:10,textAlign:"center"}},
-          ce("div",{style:{fontSize:18,fontWeight:700,color:"#0d9488"}},st.ll+"/"+tl),
+          ce("div",{style:{fontSize:18,fontWeight:700,color:"var(--accent,#0d9488)"}},st.ll+"/"+tl),
           ce("div",{style:{fontSize:10,color:"#64748b"}},"Letters"),
-          ce("div",{className:"pb",style:{marginTop:6}},ce("div",{className:"pf",style:{width:lp+"%",background:"#14b8a6"}}))),
+          ce("div",{className:"pb",style:{marginTop:6}},ce("div",{className:"pf",style:{width:lp+"%",background:"var(--accent,#14b8a6)"}}))),
         ce("div",{style:{background:"#fff",borderRadius:12,padding:10,textAlign:"center"}},
           ce("div",{style:{fontSize:18,fontWeight:700,color:"#059669"}},st.wl+"/"+tw),
           ce("div",{style:{fontSize:10,color:"#64748b"}},"Woorden"),
@@ -961,7 +970,7 @@ function Home({go,st,sS,profiles,activeId}){
     // Phase 2
     (function(){var u2=isPhaseUnlocked(2,st);return ce("div",null,
       ce("div",{style:{marginTop:20,display:"flex",alignItems:"center",gap:8}},ce("span",{className:"phase-h ph2"},"Fase 2: Gesprekken (Week 7-16)"),!u2.open&&ce("span",{style:{fontSize:14}},"\u{1f512}")),
-      !u2.open&&ce("div",{className:"lock-msg"},ce("span",{className:"lock-msg-icon"},"\u{1f512}"),ce("span",null,u2.reason),u2.need&&ce("span",{style:{fontWeight:600,color:"#0d9488",marginLeft:4}},u2.pct+"%/"+u2.need+"%")),
+      !u2.open&&ce("div",{className:"lock-msg"},ce("span",{className:"lock-msg-icon"},"\u{1f512}"),ce("span",null,u2.reason),u2.need&&ce("span",{style:{fontWeight:600,color:"var(--accent,#0d9488)",marginLeft:4}},u2.pct+"%/"+u2.need+"%")),
       ce("div",{className:"sy3"+(u2.open?"":" lock-card")},MODS.filter(m=>m.ph===2).map(m=>
         ce("button",{key:m.id,className:"card",onClick:u2.open?()=>go("mod:"+m.id):undefined,style:{width:"100%"}},
           ce("div",{className:"card-r"},
@@ -1217,14 +1226,14 @@ function Vocab({mod,go,st,sS}){
       !fl?ce(R.Fragment,null,
         ce("div",{style:{fontSize:36,marginBottom:10}},w.m),
         ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:6}},
-          ce("div",{style:{fontSize:32,fontWeight:700,color:"#0d9488"}},w.b),
+          ce("div",{style:{fontSize:32,fontWeight:700,color:"var(--accent,#0d9488)"}},w.b),
           ce(SpeakBtn,{text:w.b,size:"lg"})),
         ce("div",{style:{fontSize:15,color:"#5eead4",fontStyle:"italic"}},"["+w.p+"]"),
         ce("div",{className:"fc-hint"},"Tik om te vertalen \u2192")):
       ce("div",{className:"ctr"},
         ce("div",{style:{fontSize:28,marginBottom:6}},w.m),
         ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:10}},
-          ce("div",{style:{fontSize:26,fontWeight:700,color:"#0d9488"}},w.b),
+          ce("div",{style:{fontSize:26,fontWeight:700,color:"var(--accent,#0d9488)"}},w.b),
           ce(SpeakBtn,{text:w.b}),
           ce(MicButton,{expected:w.b,size:"sm",onResult:function(res){if(res.match){playSound("correct");sS(function(p){return Object.assign({},p,{sp:(p.sp||0)+1});});}}})),
         ce("div",{style:{fontSize:12,color:"#5eead4",fontStyle:"italic",marginBottom:10}},"["+w.p+"]"),
@@ -1874,7 +1883,7 @@ function Memory({go,st,sS}){
               c.em&&ce("div",{className:"mem-em"},c.em),
               ce("div",{className:"mem-word"},c.text),
               c.hint&&ce("div",{className:"mem-hint"},c.hint),
-              ce("div",{style:{fontSize:9,color:c.type==="bg"?"#14b8a6":"#8b5cf6",fontWeight:600,marginTop:3}},c.type==="bg"?"BG":"NL"))));
+              ce("div",{style:{fontSize:9,color:c.type==="bg"?"var(--accent,#14b8a6)":"#8b5cf6",fontWeight:600,marginTop:3}},c.type==="bg"?"BG":"NL"))));
       })));
 }
 
@@ -2443,7 +2452,7 @@ function Flashcards({go,st,sS,initMode}){
       ce("button",{className:"btn "+(fcMode==="random"?"btn-g":"btn-t"),style:{fontSize:12,padding:"4px 12px"},onClick:function(){sFcMode("random");sCards(getCards("random"));sI(0);sF(false);sD(false);sSc(0);}},"\u{1f500} Random"),
       ce("button",{className:"btn "+(fcMode==="hard"?"btn-g":"btn-t"),style:{fontSize:12,padding:"4px 12px",position:"relative"},onClick:function(){sFcMode("hard");var hc=getCards("hard");sCards(hc);sI(0);sF(false);sD(false);sSc(0);}},"\u{1f525} Moeilijk",getHardWords(st.errs||{},aw).length>0&&ce("span",{style:{background:"#ef4444",color:"#fff",borderRadius:99,fontSize:10,padding:"1px 5px",marginLeft:4}},getHardWords(st.errs||{},aw).length))),
     ce("div",{className:"dots",style:{margin:"8px 0"}},cards.map(function(c,i){
-      return ce("div",{key:i,className:"dot",style:{background:i<idx?"#10b981":i===idx?"#14b8a6":"#e2e8f0"}});})),
+      return ce("div",{key:i,className:"dot",style:{background:i<idx?"#10b981":i===idx?"var(--accent,#14b8a6)":"#e2e8f0"}});})),
     ce("div",{className:"fc-deck"},
       ce("div",{className:"fc-card"+(flipped?" flipped":""),onClick:function(){sF(!flipped);}},
         ce("div",{className:"fc-inner"},
@@ -2617,7 +2626,7 @@ function NumbersModule({go,st,sS}){
           ce("div",{className:"num-sm"},nm.bg));
       })),
       sel&&ce("div",{className:"card",style:{marginTop:12,textAlign:"center",padding:16}},
-        ce("div",{style:{fontSize:32,fontWeight:800,color:"#0d9488"}},NUMBERS.find(function(n){return n.n===sel;}).bg),
+        ce("div",{style:{fontSize:32,fontWeight:800,color:"var(--accent,#0d9488)"}},NUMBERS.find(function(n){return n.n===sel;}).bg),
         ce("div",{style:{fontSize:14,color:"#64748b",marginTop:4}},"["+NUMBERS.find(function(n){return n.n===sel;}).p+"]"),
         ce("div",{style:{fontSize:18,marginTop:4}},NUMBERS.find(function(n){return n.n===sel;}).nl),
         ce("button",{className:"btn btn-g",style:{marginTop:8},onClick:function(){speak(NUMBERS.find(function(n){return n.n===sel;}).bg);}},"\u{1f50a} Luister")),
@@ -2644,7 +2653,7 @@ function NumbersModule({go,st,sS}){
       ce("div",{className:"h2"},"\u{1f522} Getallen Quiz"),
       ce("span",{className:"sub"},(qIdx+1)+"/"+qNums.length)),
     ce("div",{className:"ctr",style:{margin:"20px 0"}},
-      ce("div",{style:{fontSize:48,fontWeight:800,color:"#0d9488"}},qn.n)),
+      ce("div",{style:{fontSize:48,fontWeight:800,color:"var(--accent,#0d9488)"}},qn.n)),
     ce("div",{className:"sy3"},opts.map(function(o){
       var cls="qo";
       if(qSel!==null){cls+=" "+(o.n===qn.n?"qo-ok":o.n===qSel?"qo-no":"qo-x");}
@@ -2723,7 +2732,7 @@ function LetterTrace({go,st,sS}){
     var x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
     var y=(e.touches?e.touches[0].clientY:e.clientY)-r.top;
     ctx.beginPath();ctx.moveTo(x,y);
-    ctx.lineWidth=6;ctx.lineCap="round";ctx.strokeStyle="#0d9488";
+    ctx.lineWidth=6;ctx.lineCap="round";ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#0d9488";
   }
   function draw(e){
     if(!drawing)return;
@@ -2742,7 +2751,7 @@ function LetterTrace({go,st,sS}){
       ce("span",{className:"sub"},(li+1)+"/"+letters.length)),
     ce("div",{className:"ctr"},
       ce("div",{style:{fontSize:14,color:"#64748b",marginBottom:6}},"Teken de letter:"),
-      ce("div",{style:{fontSize:64,fontWeight:800,color:"#0d9488"}},letter.u),
+      ce("div",{style:{fontSize:64,fontWeight:800,color:"var(--accent,#0d9488)"}},letter.u),
       ce("div",{style:{fontSize:13,color:"#64748b"}},"\""+letter.du+"\"")),
     ce("div",{className:"lt-canvas-wrap",style:{margin:"12px auto",display:"block",width:260}},
       ce("div",{className:"lt-guide"},letter.u),
@@ -2826,7 +2835,7 @@ function ParentDash({go,st,sS}){
         ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.wl+"/"+tw),ce("div",{className:"pd-lbl"},"Woorden geleerd"),
           ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.wl/tw*100)+"%",background:"#10b981"}}))),
         ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},st.ll+"/"+tl),ce("div",{className:"pd-lbl"},"Letters geleerd"),
-          ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.ll/tl*100)+"%",background:"#14b8a6"}}))),
+          ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(st.ll/tl*100)+"%",background:"var(--accent,#14b8a6)"}}))),
         ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},eb+"/"+BADGES.length),ce("div",{className:"pd-lbl"},"Badges behaald"),
           ce("div",{className:"pd-bar-wrap"},ce("div",{className:"pd-bar",style:{width:Math.round(eb/BADGES.length*100)+"%",background:"#f59e0b"}}))),
         ce("div",{className:"pd-card"},ce("div",{className:"pd-val"},(st.lsn||0)),ce("div",{className:"pd-lbl"},"Lessen afgerond"))),
@@ -2865,9 +2874,9 @@ function ParentDash({go,st,sS}){
           weekData.days.map(function(d){
             var h=Math.max(4,Math.round(d.xp/weekData.maxXP*80));
             var isToday=d.key===new Date().toISOString().slice(0,10);
-            return ce("div",{key:d.key,className:"pd-week-bar",style:{height:h+"px",background:isToday?"linear-gradient(to top,#14b8a6,#2dd4bf)":"linear-gradient(to top,#e2e8f0,#cbd5e1)"}},
+            return ce("div",{key:d.key,className:"pd-week-bar",style:{height:h+"px",background:isToday?"linear-gradient(to top,var(--accent,#14b8a6),#2dd4bf)":"linear-gradient(to top,#e2e8f0,#cbd5e1)"}},
               d.xp>0&&ce("div",{className:"pd-week-bar-val"},d.xp),
-              ce("div",{className:"pd-week-bar-label",style:{fontWeight:isToday?700:400,color:isToday?"#14b8a6":"#94a3b8"}},d.label));
+              ce("div",{className:"pd-week-bar-label",style:{fontWeight:isToday?700:400,color:isToday?"var(--accent,#14b8a6)":"#94a3b8"}},d.label));
           })),
         ce("div",{style:{textAlign:"center",fontSize:11,color:"#94a3b8",marginTop:20}},"XP per dag de afgelopen 7 dagen")),
       ce("div",{className:"pd-section"},
@@ -2917,7 +2926,7 @@ function ParentDash({go,st,sS}){
               ce("div",{style:{width:40,height:40,borderRadius:"50%",background:th.colors.accent,margin:"0 auto 6px",border:active?"3px solid #1e293b":"2px solid #e2e8f0"}}),
               ce("div",{style:{fontSize:12,fontWeight:600,color:open?"#1e293b":"#94a3b8"}},th.name),
               !open&&ce("div",{style:{fontSize:10,color:"#94a3b8"}},"🔒 "+th.desc),
-              active&&ce("div",{style:{fontSize:10,color:"#14b8a6",fontWeight:600}},"✓ Actief"));
+              active&&ce("div",{style:{fontSize:10,color:"var(--accent,#14b8a6)",fontWeight:600}},"✓ Actief"));
           }))),
       ce("div",{className:"pd-section"},
         ce("div",{className:"pd-section-title"},"🧸 Bonus Avatars"),
@@ -3279,7 +3288,7 @@ function Lesson({go,st,sS,modId}){
       ce("div",{style:{background:"#f0fdfa",borderRadius:16,padding:16,textAlign:"center",border:"1px solid #ccfbf1",marginTop:12}},
         ce("div",{style:{fontSize:11,color:"#64748b",marginBottom:4}},"\ud83c\udfd7\ufe0f Bouw de zin"),
         ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
-          ce("div",{style:{fontSize:24,fontWeight:700,color:"#0d9488"}},q.prompt),
+          ce("div",{style:{fontSize:24,fontWeight:700,color:"var(--accent,#0d9488)"}},q.prompt),
           ce(SpeakBtn,{text:q.prompt,size:"md"}))),
       ce("div",{className:"sb-sentence",style:{minHeight:48}},
         sbAns.length===0&&ce("span",{style:{color:"#94a3b8",fontSize:13}},"Tik op de woorden..."),
@@ -3453,6 +3462,27 @@ function App(){
     prevXPRef.current=st.xp;
   },[st.xp]);
 
+  // Auto-persist unlocked bonus avatars in st.uAvatars (once earned, always kept)
+  uE(function(){
+    var current=st.uAvatars||[];
+    var newList=current.slice();
+    var changed=false;
+    BONUS_AVATARS.forEach(function(av){
+      if(newList.indexOf(av.emoji)<0){
+        // Check if currently earned by stats (not via uAvatars persistence)
+        var r=av.req;if(!r)return;
+        var eb=typeof BADGES!=="undefined"?BADGES.filter(function(b){return b.rq(st);}).length:0;
+        var earned=true;
+        if(r.xp&&st.xp<r.xp)earned=false;
+        if(r.badges&&eb<r.badges)earned=false;
+        if(r.streak&&(st.strk||0)<r.streak)earned=false;
+        if(r.words&&(st.wl||0)<r.words)earned=false;
+        if(earned){newList.push(av.emoji);changed=true;}
+      }
+    });
+    if(changed)sS(function(p){return Object.assign({},p,{uAvatars:newList});});
+  },[st.xp,st.strk,st.wl]);
+
   // Apply theme colors
   var activeTheme=APP_THEMES.find(function(t){return t.id===(st.theme||"default");})||APP_THEMES[0];
 
@@ -3529,6 +3559,14 @@ try{
   else{ReactDOM.render(ce(App),root);}
 }catch(err){
   document.getElementById("root").innerHTML="<div style='padding:20px;font-family:sans-serif'><h2>Er ging iets mis</h2><p>"+err.message+"</p></div>";
+}
+</script>
+<script>
+// Register Service Worker for offline support
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('./sw.js').catch(function(){});
+  });
 }
 </script>
 </body>
