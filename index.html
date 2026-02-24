@@ -696,6 +696,37 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .dark .inst-safari-steps{color:#cbd5e1}
 .dark .inst-safari-close{color:#64748b}
 .dark .inst-safari-close:hover{color:#94a3b8}
+/* Sticker Album */
+:root{--stk-land:#d1fae5;--stk-border:#6ee7b7;--stk-label:#1e293b;--stk-count:#64748b;--stk-cell-bg:#fff;--stk-cell-border:#e2e8f0;--stk-locked-bg:#f1f5f9;--stk-name-c:#475569;--stk-desc-c:#94a3b8;--stk-sil-c:#cbd5e1}
+.stk-map{width:100%;max-height:140px;border-radius:16px;background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border:1px solid #ccfbf1;padding:8px;margin-bottom:8px}
+.stk-page-hdr{display:flex;align-items:center;gap:8px;margin:8px 0}
+.stk-city{font-size:16px;font-weight:700;margin-top:2px}
+.stk-progress{font-size:11px;color:var(--stk-count);margin-top:2px}
+.stk-nav{background:none;border:1px solid #e2e8f0;border-radius:50%;width:32px;height:32px;font-size:12px;cursor:pointer;color:#64748b;display:flex;align-items:center;justify-content:center}
+.stk-nav:disabled{opacity:.3;cursor:default}
+.stk-pbar-wrap{height:4px;background:#e2e8f0;border-radius:4px;margin-bottom:12px;overflow:hidden}
+.stk-pbar{height:100%;border-radius:4px;transition:width .4s}
+.stk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+.stk-cell{background:var(--stk-cell-bg);border:2px dashed var(--stk-cell-border);border-radius:14px;padding:12px 8px;text-align:center;transition:all .3s}
+.stk-earned{border-style:solid;border-color:#6ee7b7;background:linear-gradient(135deg,#f0fdfa,#ecfdf5);animation:stkPop .4s ease}
+@keyframes stkPop{0%{transform:scale(.8);opacity:.5}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.stk-sticker{font-size:32px;line-height:1;margin-bottom:4px}
+.stk-locked{filter:grayscale(1) opacity(.3)}
+.stk-silhouette{font-size:28px;color:var(--stk-sil-c)}
+.stk-emoji{filter:drop-shadow(0 2px 4px rgba(0,0,0,.15))}
+.stk-name{font-size:11px;font-weight:600;color:var(--stk-name-c);margin-top:4px}
+.stk-name-on{color:#047857}
+.stk-desc{font-size:9px;color:var(--stk-desc-c);margin-top:2px}
+.stk-dots{display:flex;justify-content:center;gap:6px;margin-top:16px}
+.stk-dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:all .2s}
+.stk-dot-on{width:10px;height:10px;transform:translateY(-1px)}
+/* Dark mode sticker album */
+.dark{--stk-land:#1e3a2f;--stk-border:#065f46;--stk-label:#e2e8f0;--stk-count:#94a3b8;--stk-cell-bg:#334155;--stk-cell-border:#475569;--stk-locked-bg:#1e293b;--stk-name-c:#cbd5e1;--stk-desc-c:#64748b;--stk-sil-c:#475569}
+.dark .stk-map{background:linear-gradient(135deg,#1e293b,#0f172a);border-color:#334155}
+.dark .stk-nav{border-color:#475569;color:#94a3b8}
+.dark .stk-pbar-wrap{background:#475569}
+.dark .stk-earned{border-color:#059669;background:linear-gradient(135deg,#064e3b,#1e293b)}
+.dark .stk-name-on{color:#34d399}
 </style>
 </head>
 <body>
@@ -1514,7 +1545,10 @@ function Home({go,st,sS,profiles,activeId}){
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#047857"}},"Rapport")),
       ce("button",{className:"card",onClick:()=>go("offlineaudio"),style:{textAlign:"center",padding:12,border:"1px solid #7dd3fc"}},
         ce("div",{style:{fontSize:24}},"📥"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#0369a1"}},"Offline Audio"))),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#0369a1"}},"Offline Audio")),
+      ce("button",{className:"card",onClick:()=>go("stickerwall"),style:{textAlign:"center",padding:12,border:"1px solid #f9a8d4"}},
+        ce("div",{style:{fontSize:24}},"🗺️"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#be185d"}},"Stickers"))),
     // Dark mode & Parent dashboard
     ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
@@ -5252,6 +5286,97 @@ function ProgressReport({go,st,sS,profiles,activeId}){
       lang==="bg"?"Споделете с баба и дядо! 👴👵":"Deel met opa en oma! 👴👵"));
 }
 
+// === STICKER ALBUM / TREASURE MAP ===
+var STICKER_PAGES=[
+  {name:"София",nameBg:"София",icon:"🏛️",region:"Capital",color:"#ef4444",
+   ids:["l1","fr","tr","nf","am","w10","w50","w100","w150","w200"]},
+  {name:"Пловдив",nameBg:"Пловдив",icon:"🏟️",region:"South",color:"#f59e0b",
+   ids:["q5","q20","qp","g1","gf5","c1","ic3","sb1","sb10","fc1"]},
+  {name:"Варна",nameBg:"Варна",icon:"🏖️",region:"Coast",color:"#3b82f6",
+   ids:["fc10","nm20","cw1","om1","lt10","dm1","ls1","ls10","ls25","ls50"]},
+  {name:"Велико Търново",nameBg:"В. Търново",icon:"🏰",region:"Mountains",color:"#10b981",
+   ids:["p3","all","m1","m5","h1","ws1","ws5","dc7","dc30","srs10"]},
+  {name:"Банско",nameBg:"Банско",icon:"⛷️",region:"Ski",color:"#8b5cf6",
+   ids:["w300","w500","w750","w1000","w1500","sp1","sp10","sp50","strk7","strk30"]},
+  {name:"Рила",nameBg:"Рила",icon:"🏔️",region:"Summit",color:"#ec4899",
+   ids:["strk100","cpA1","cpA2","cpB1","cpB2","b1s","b1m","b2s","b2m"]}
+];
+
+function StickerWall({go,st}){
+  const[page,sPage]=uS(0);
+  const earned=BADGES.filter(b=>b.rq(st)).map(b=>b.id);
+  const totalEarned=earned.length;
+  const pg=STICKER_PAGES[page];
+  const pgBadges=pg.ids.map(id=>BADGES.find(b=>b.id===id)).filter(Boolean);
+  const pgEarned=pgBadges.filter(b=>earned.includes(b.id)).length;
+
+  // Map SVG with locations
+  function MapHeader(){
+    var pts=[
+      {x:52,y:32},{x:62,y:55},{x:75,y:42},{x:42,y:52},{x:35,y:65},{x:50,y:70}
+    ];
+    return ce("svg",{viewBox:"0 0 100 100",className:"stk-map"},
+      // Bulgaria silhouette (simplified)
+      ce("path",{d:"M20,30 Q25,18 40,20 L55,18 Q70,17 80,25 L85,35 Q88,45 82,55 L75,60 Q65,68 55,72 L45,75 Q30,73 22,65 L18,50 Q16,40 20,30Z",
+        fill:"var(--stk-land)",stroke:"var(--stk-border)",strokeWidth:1.2}),
+      // Location dots
+      pts.map(function(p,i){
+        var sp=STICKER_PAGES[i];
+        var spEarned=sp.ids.filter(function(id){return earned.includes(id);}).length;
+        var pct=Math.round(spEarned/sp.ids.length*100);
+        var active=i===page;
+        return ce("g",{key:i,onClick:function(){sPage(i);},style:{cursor:"pointer"}},
+          // Glow for active
+          active&&ce("circle",{cx:p.x,cy:p.y,r:5,fill:sp.color,opacity:.25}),
+          ce("circle",{cx:p.x,cy:p.y,r:active?3.5:2.5,fill:pct===100?"#fbbf24":sp.color,
+            stroke:active?"#fff":"none",strokeWidth:active?.8:0}),
+          // Star if 100%
+          pct===100&&ce("text",{x:p.x,y:p.y-5,textAnchor:"middle",fontSize:4},"⭐"),
+          // Label
+          active&&ce("text",{x:p.x,y:p.y+7,textAnchor:"middle",fontSize:3.2,
+            fill:"var(--stk-label)",fontWeight:700},sp.nameBg));
+      })
+    );
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8}},
+      ce("button",{className:"back",onClick:function(){go("home");}},"\u2190"),
+      ce("h2",{className:"h2",style:{flex:1}},"Stickeralbum"),
+      ce("div",{style:{fontSize:12,color:"var(--stk-count)"}},
+        "\u{1f3c5} "+totalEarned+"/"+BADGES.length)),
+    // Map
+    MapHeader(),
+    // Page header
+    ce("div",{className:"stk-page-hdr"},
+      ce("button",{className:"stk-nav",disabled:page===0,onClick:function(){sPage(page-1);}},"\u25c0"),
+      ce("div",{style:{flex:1,textAlign:"center"}},
+        ce("span",{style:{fontSize:20}},pg.icon),
+        ce("div",{className:"stk-city",style:{color:pg.color}},pg.name),
+        ce("div",{className:"stk-progress"},pgEarned+"/"+pgBadges.length+" stickers")),
+      ce("button",{className:"stk-nav",disabled:page===STICKER_PAGES.length-1,onClick:function(){sPage(page+1);}},"\u25b6")),
+    // Progress bar for this page
+    ce("div",{className:"stk-pbar-wrap"},
+      ce("div",{className:"stk-pbar",style:{width:Math.round(pgEarned/pgBadges.length*100)+"%",background:pg.color}})),
+    // Sticker grid
+    ce("div",{className:"stk-grid"},
+      pgBadges.map(function(b){
+        var has=earned.includes(b.id);
+        return ce("div",{key:b.id,className:"stk-cell"+(has?" stk-earned":"")},
+          ce("div",{className:"stk-sticker"+(has?"":" stk-locked")},
+            has?ce("span",{className:"stk-emoji"},b.ic):ce("span",{className:"stk-silhouette"},"?")),
+          ce("div",{className:"stk-name"+(has?" stk-name-on":"")},has?b.nm:"???"),
+          has&&ce("div",{className:"stk-desc"},b.ds));
+      })),
+    // Page dots
+    ce("div",{className:"stk-dots"},
+      STICKER_PAGES.map(function(sp,i){
+        return ce("span",{key:i,className:"stk-dot"+(i===page?" stk-dot-on":""),
+          style:{background:i===page?sp.color:undefined},
+          onClick:function(){sPage(i);}});
+      })));
+}
+
 // === OFFLINE AUDIO CACHE ===
 function OfflineAudio({go,st,sS}){
   var DB_NAME="bg-leren-audio";
@@ -5614,7 +5739,8 @@ function App(){
     scr==="rhythm"&&ce(RhythmGame,{go,st,sS}),
     scr==="wotd"&&ce(WotdNotify,{go,st,sS}),
     scr==="report"&&ce(ProgressReport,{go,st,sS,profiles,activeId}),
-    scr==="offlineaudio"&&ce(OfflineAudio,{go,st,sS}));
+    scr==="offlineaudio"&&ce(OfflineAudio,{go,st,sS}),
+    scr==="stickerwall"&&ce(StickerWall,{go,st}));
 }
 
 try{
