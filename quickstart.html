@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Български за деца — Quick Start</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;background:#f8fafc;color:#1e293b;max-width:800px;margin:0 auto;padding:24px 20px}
+
+  .hero{text-align:center;padding:32px 16px;background:linear-gradient(135deg,#f0fdfa,#ecfdf5);border-radius:20px;border:2px solid #99f6e4;margin-bottom:28px}
+  .hero h1{font-size:28px;font-weight:800;color:#134e4a}
+  .hero .flag{font-size:48px;margin-bottom:8px}
+  .hero p{color:#0f766e;font-size:14px;margin-top:6px}
+
+  h2{font-size:17px;font-weight:700;color:#334155;margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+  h2 .em{font-size:22px}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+  @media(max-width:500px){.grid{grid-template-columns:1fr}}
+
+  .card{background:#fff;border-radius:14px;padding:14px 16px;border:1px solid #e2e8f0;transition:box-shadow .2s}
+  .card:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .card .icon{font-size:22px;margin-bottom:4px}
+  .card .name{font-size:14px;font-weight:700;color:#0f172a}
+  .card .desc{font-size:12px;color:#64748b;margin-top:2px;line-height:1.4}
+
+  .tip{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1px solid #fde68a;border-radius:14px;padding:14px 16px;margin:16px 0;font-size:13px;color:#92400e;line-height:1.5}
+  .tip strong{color:#78350f}
+
+  .journey{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:16px;margin:12px 0}
+  .step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f1f5f9}
+  .step:last-child{border-bottom:none}
+  .step .num{width:28px;height:28px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+  .step .txt{font-size:13px;line-height:1.5}
+  .step .txt strong{color:#0f766e}
+
+  .badge-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .badge{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:99px;padding:3px 10px;font-size:11px;font-weight:600;color:#166534}
+  .badge.lock{background:#fef9c3;border-color:#fde68a;color:#92400e}
+
+  .section-label{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin:20px 0 8px}
+
+  .footer{text-align:center;color:#94a3b8;font-size:11px;margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="flag">🇧🇬</div>
+  <h1>Български за деца</h1>
+  <p>Bulgaars leren als gezin — alles in één app</p>
+</div>
+
+<!-- FIRST STEPS -->
+<h2><span class="em">🚀</span> Eerste keer? Doe dit</h2>
+<div class="journey">
+  <div class="step">
+    <div class="num">1</div>
+    <div class="txt"><strong>Maak je profiel</strong> — Kies een avatar en naam. Iedereen krijgt z'n eigen voortgang.</div>
+  </div>
+  <div class="step">
+    <div class="num">2</div>
+    <div class="txt"><strong>Start met het alfabet</strong> — Leer de 30 Cyrillische letters in 4 groepen. Dit is de basis voor alles.</div>
+  </div>
+  <div class="step">
+    <div class="num">3</div>
+    <div class="txt"><strong>Doe je eerste les</strong> — Tik op de paarse <em>Les starten</em> knop. Je leert ~12 woorden per les met luister-, spreek- en schrijfoefeningen.</div>
+  </div>
+  <div class="step">
+    <div class="num">4</div>
+    <div class="txt"><strong>Speel een spelletje</strong> — Quiz, Memory en Getallen zijn meteen open. De rest ontgrendel je vanzelf!</div>
+  </div>
+</div>
+
+<!-- LEARNING PATH -->
+<h2><span class="em">📚</span> Leerpad (woordenschat)</h2>
+<div class="grid">
+  <div class="card">
+    <div class="icon">🔤</div>
+    <div class="name">Cyrillisch Alfabet</div>
+    <div class="desc">30 letters in 4 groepen — schrijven, luisteren, herkennen</div>
+  </div>
+  <div class="card">
+    <div class="icon">👪</div>
+    <div class="name">Familie & Begroetingen</div>
+    <div class="desc">Баба bellen — hallo, tot ziens, hoe gaat het</div>
+  </div>
+  <div class="card">
+    <div class="icon">🍽️</div>
+    <div class="name">Eten & Drinken</div>
+    <div class="desc">Bestellen in Bulgarije — op de markt, in een restaurant</div>
+  </div>
+  <div class="card">
+    <div class="icon">🏠</div>
+    <div class="name">Thuis & School</div>
+    <div class="desc">Dagelijkse dingen — kamer, speelgoed, in de klas</div>
+  </div>
+  <div class="card">
+    <div class="icon">🌈</div>
+    <div class="name">Kleuren & Getallen</div>
+    <div class="desc">Rood, blauw, 1 tot 100 — en alles ertussenin</div>
+  </div>
+  <div class="card">
+    <div class="icon">🐾</div>
+    <div class="name">Dieren & Natuur</div>
+    <div class="desc">Op de boerderij en in het bos</div>
+  </div>
+</div>
+<div class="tip">
+  💡 <strong>Modules worden stap voor stap ontgrendeld.</strong> Je hoeft niet alles meteen te doen — volg gewoon het pad. Er zijn ook B1/B2 modules voor later!
+</div>
+
+<!-- PRACTICE TOOLS -->
+<h2><span class="em">🛠️</span> Oefen-tools</h2>
+<div class="grid">
+  <div class="card">
+    <div class="icon">📝</div>
+    <div class="name">Les starten</div>
+    <div class="desc">Interactieve les met luister-, spreek- en bouwvragen + mini-game aan het eind</div>
+  </div>
+  <div class="card">
+    <div class="icon">📇</div>
+    <div class="name">Flashcards</div>
+    <div class="desc">Veeg door woordkaarten — markeer moeilijke woorden</div>
+  </div>
+  <div class="card">
+    <div class="icon">📖</div>
+    <div class="name">Grammatica invullen</div>
+    <div class="desc">Vul de juiste vorm in — werkwoorden, naamvallen</div>
+  </div>
+  <div class="card">
+    <div class="icon">💬</div>
+    <div class="name">Dialogen</div>
+    <div class="desc">Speel echte gesprekken na — in de winkel, op school</div>
+  </div>
+  <div class="card">
+    <div class="icon">🎤</div>
+    <div class="name">Uitspraak oefenen</div>
+    <div class="desc">Spreek het woord uit — de app luistert en checkt</div>
+  </div>
+  <div class="card">
+    <div class="icon">🔍</div>
+    <div class="name">Woordenboek</div>
+    <div class="desc">Zoek elk woord op — met uitspraak en voorbeeld</div>
+  </div>
+</div>
+
+<!-- GAMES -->
+<h2><span class="em">🎮</span> Spelletjes</h2>
+<div class="grid">
+  <div class="card">
+    <div class="icon">🎯</div>
+    <div class="name">Quiz</div>
+    <div class="desc">Kies het juiste antwoord — altijd beschikbaar</div>
+    <div class="badge-row"><span class="badge">altijd open</span></div>
+  </div>
+  <div class="card">
+    <div class="icon">🃏</div>
+    <div class="name">Memory</div>
+    <div class="desc">Vind de Bulgaars-Nederlands paren</div>
+    <div class="badge-row"><span class="badge lock">🔓 10 woorden</span></div>
+  </div>
+  <div class="card">
+    <div class="icon">😠</div>
+    <div class="name">Galgje</div>
+    <div class="desc">Raad het woord letter voor letter</div>
+    <div class="badge-row"><span class="badge lock">🔓 15 woorden</span></div>
+  </div>
+  <div class="card">
+    <div class="icon">🔎</div>
+    <div class="name">Woordzoeker</div>
+    <div class="desc">Vind verborgen woorden in het rooster</div>
+    <div class="badge-row"><span class="badge lock">🔓 20 woorden</span></div>
+  </div>
+  <div class="card">
+    <div class="icon">🏗️</div>
+    <div class="name">Zinnen bouwen</div>
+    <div class="desc">Zet woorden in de juiste volgorde</div>
+    <div class="badge-row"><span class="badge lock">🔓 1 les</span></div>
+  </div>
+  <div class="card">
+    <div class="icon">⚡</div>
+    <div class="name">Speed Round</div>
+    <div class="desc">Hoeveel woorden ken je in 60 seconden?</div>
+    <div class="badge-row"><span class="badge lock">🔓 30 woorden + 2 lessen</span></div>
+  </div>
+  <div class="card">
+    <div class="icon">🔢</div>
+    <div class="name">Getallen</div>
+    <div class="desc">Leer tellen in het Bulgaars</div>
+    <div class="badge-row"><span class="badge">altijd open</span></div>
+  </div>
+  <div class="card">
+    <div class="icon">🏁</div>
+    <div class="name">Familie Quiz</div>
+    <div class="desc">Speel samen! Buzz in, kies categorie, speel een toernooi</div>
+    <div class="badge-row"><span class="badge">2 spelers</span></div>
+  </div>
+</div>
+
+<!-- DISCOVER -->
+<h2><span class="em">🌍</span> Ontdek Bulgarije</h2>
+<div class="grid">
+  <div class="card">
+    <div class="icon">📖</div>
+    <div class="name">Verhalen</div>
+    <div class="desc">Korte verhalen in het Bulgaars met vertaling</div>
+  </div>
+  <div class="card">
+    <div class="icon">🧙</div>
+    <div class="name">Sprookjes</div>
+    <div class="desc">Echte Bulgaarse volksverhalen — scene voor scene</div>
+  </div>
+  <div class="card">
+    <div class="icon">🌍</div>
+    <div class="name">Cultuur</div>
+    <div class="desc">Tradities, feestdagen, geografie, bekende Bulgaren</div>
+  </div>
+  <div class="card">
+    <div class="icon">🧙‍♂️</div>
+    <div class="name">Spreekwoorden</div>
+    <div class="desc">Bulgaarse wijsheden met Nederlandse equivalenten</div>
+  </div>
+  <div class="card">
+    <div class="icon">🎵</div>
+    <div class="name">Liedjes</div>
+    <div class="desc">Bulgaarse kinderliedjes — luister en lees mee</div>
+  </div>
+  <div class="card">
+    <div class="icon">🎉</div>
+    <div class="name">Feestdagen</div>
+    <div class="desc">Баба Марта, Великден en meer</div>
+  </div>
+</div>
+
+<!-- EXTRA TOOLS -->
+<h2><span class="em">✨</span> Extra's</h2>
+<div class="grid">
+  <div class="card">
+    <div class="icon">🌙</div>
+    <div class="name">Slaapstand</div>
+    <div class="desc">Luister naar een sprookje in het donker — het scherm dimt langzaam</div>
+  </div>
+  <div class="card">
+    <div class="icon">🎯</div>
+    <div class="name">Dagelijkse uitdaging</div>
+    <div class="desc">Elke dag een nieuwe set vragen</div>
+  </div>
+  <div class="card">
+    <div class="icon">🏆</div>
+    <div class="name">Badges & XP</div>
+    <div class="desc">Verdien badges voor mijlpalen — eerste les, 100 woorden, streak</div>
+  </div>
+  <div class="card">
+    <div class="icon">✏️</div>
+    <div class="name">Letters schrijven</div>
+    <div class="desc">Teken Cyrillische letters met je vinger</div>
+  </div>
+  <div class="card">
+    <div class="icon">💌</div>
+    <div class="name">Brief aan Баба</div>
+    <div class="desc">Schrijf een berichtje in het Bulgaars</div>
+  </div>
+  <div class="card">
+    <div class="icon">📊</div>
+    <div class="name">Ouder-dashboard</div>
+    <div class="desc">Bekijk voortgang, streak, moeilijke woorden</div>
+  </div>
+</div>
+
+<div class="tip">
+  📱 <strong>Installeer als app:</strong> Open de website in Chrome of Safari, tik op "Toevoegen aan beginscherm". Dan werkt het ook offline!
+</div>
+
+<div class="footer">
+  Български за деца v22 — gemaakt met ❤️ voor het hele gezin
+</div>
+
+</body>
+</html>

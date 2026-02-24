@@ -797,6 +797,21 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 @keyframes bed-zzz{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.5)}}
 .bed-dim-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;pointer-events:none;z-index:50;transition:opacity .5s ease}
 
+/* Help Guide */
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:400px){.help-grid{grid-template-columns:1fr}}
+.help-card{background:#fff;border-radius:14px;padding:14px 16px;border:1px solid #e2e8f0;text-align:left}
+.help-card .hc-icon{font-size:22px;margin-bottom:4px}
+.help-card .hc-name{font-size:14px;font-weight:700;color:#0f172a}
+.help-card .hc-desc{font-size:12px;color:#64748b;margin-top:2px;line-height:1.4}
+.help-tip{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1px solid #fde68a;border-radius:14px;padding:14px 16px;margin:16px 0;font-size:13px;color:#92400e;line-height:1.5}
+.help-step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f1f5f9}
+.help-step:last-child{border-bottom:none}
+.help-num{width:28px;height:28px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.help-badge{display:inline-block;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:99px;padding:2px 8px;font-size:11px;font-weight:600;color:#166534;margin-top:6px}
+.help-badge.hb-lock{background:#fef9c3;border-color:#fde68a;color:#92400e}
+.help-section{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin:20px 0 8px}
+
 /* Family Quiz */
 .fq-bg{padding:24px 16px;min-height:100vh}
 .fq-setup{text-align:center}
@@ -1711,9 +1726,10 @@ function Home({go,st,sS,profiles,activeId}){
         ce("div",{style:{fontSize:24}},"\u{1f3c1}"),
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Familie Quiz"))),
     // Dark mode & Parent dashboard
-    ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
+    ce("div",{style:{display:"flex",justifyContent:"center",gap:10,marginTop:12,flexWrap:"wrap"}},
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
-      ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>go("parentdash")},"\u{1f4ca} Ouder-dashboard")),
+      ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>go("parentdash")},"\u{1f4ca} Ouder-dashboard"),
+      ce("button",{style:{background:"none",border:"1px solid #99f6e4",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#0f766e",cursor:"pointer"},onClick:()=>go("help")},"\u2753 Hoe werkt het?")),
     // PWA install button
     canInstall&&ce("button",{className:"inst-banner",onClick:function(){
       var p=window._pwaInstallPrompt;if(!p)return;
@@ -6225,6 +6241,93 @@ function BedtimeMode({go,st,sS}){
         }))));
 }
 
+// === HELP / QUICK START GUIDE ===
+function HelpGuide({go}){
+  function hc(icon,name,desc,extra){
+    return ce("div",{className:"help-card"},
+      ce("div",{className:"hc-icon"},icon),
+      ce("div",{className:"hc-name"},name),
+      ce("div",{className:"hc-desc"},desc),
+      extra||null);
+  }
+  function badge(text,lock){return ce("span",{className:"help-badge"+(lock?" hb-lock":"")},text);}
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"\u2190 Home")),
+    // Hero
+    ce("div",{style:{textAlign:"center",padding:"24px 16px",background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)",borderRadius:20,border:"2px solid #99f6e4",marginBottom:20}},
+      ce("div",{style:{fontSize:48}},"\u{1f1e7}\u{1f1ec}"),
+      ce("h2",{className:"h1",style:{marginTop:8}},"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438 \u0437\u0430 \u0434\u0435\u0446\u0430"),
+      ce("p",{className:"sub",style:{marginTop:4}},"Bulgaars leren als gezin \u2014 alles in \u00e9\u00e9n app")),
+    // First steps
+    ce("h3",{className:"h3"},"\u{1f680} Eerste keer? Doe dit"),
+    ce("div",{style:{background:"#fff",borderRadius:14,border:"1px solid #e2e8f0",padding:16}},
+      ce("div",{className:"help-step"},
+        ce("div",{className:"help-num"},"1"),
+        ce("div",{style:{fontSize:13,lineHeight:1.5}},ce("strong",null,"Maak je profiel")," \u2014 Kies een avatar en naam. Iedereen krijgt z\u2019n eigen voortgang.")),
+      ce("div",{className:"help-step"},
+        ce("div",{className:"help-num"},"2"),
+        ce("div",{style:{fontSize:13,lineHeight:1.5}},ce("strong",null,"Start met het alfabet")," \u2014 Leer de 30 Cyrillische letters in 4 groepen. Dit is de basis.")),
+      ce("div",{className:"help-step"},
+        ce("div",{className:"help-num"},"3"),
+        ce("div",{style:{fontSize:13,lineHeight:1.5}},ce("strong",null,"Doe je eerste les")," \u2014 Tik op de paarse ",ce("em",null,"Les starten")," knop. ~12 woorden per les met luister-, spreek- en schrijfoefeningen.")),
+      ce("div",{className:"help-step"},
+        ce("div",{className:"help-num"},"4"),
+        ce("div",{style:{fontSize:13,lineHeight:1.5}},ce("strong",null,"Speel een spelletje")," \u2014 Quiz, Memory en Getallen zijn meteen open. De rest ontgrendel je vanzelf!"))),
+    // Learning path
+    ce("h3",{className:"h3",style:{marginTop:20}},"\u{1f4da} Leerpad"),
+    ce("div",{className:"help-grid"},
+      hc("\u{1f524}","Cyrillisch Alfabet","30 letters in 4 groepen \u2014 schrijven, luisteren, herkennen"),
+      hc("\u{1f46a}","Familie & Begroetingen","\u0411\u0430\u0431\u0430 bellen \u2014 hallo, tot ziens, hoe gaat het"),
+      hc("\u{1f37d}\ufe0f","Eten & Drinken","Bestellen in Bulgarije \u2014 markt, restaurant"),
+      hc("\u{1f3e0}","Thuis & School","Dagelijkse dingen \u2014 kamer, speelgoed, in de klas"),
+      hc("\u{1f308}","Kleuren & Getallen","Rood, blauw, 1 tot 100"),
+      hc("\u{1f43e}","Dieren & Natuur","Op de boerderij en in het bos")),
+    ce("div",{className:"help-tip"},
+      ce("strong",null,"\u{1f4a1} Modules worden stap voor stap ontgrendeld.")," Je hoeft niet alles meteen te doen \u2014 volg gewoon het pad. Er zijn ook B1/B2 modules voor later!"),
+    // Practice tools
+    ce("h3",{className:"h3",style:{marginTop:20}},"\u{1f6e0}\ufe0f Oefen-tools"),
+    ce("div",{className:"help-grid"},
+      hc("\u{1f4dd}","Les starten","Interactieve les met luister-, spreek- en bouwvragen + mini-game aan het eind"),
+      hc("\u{1f4c7}","Flashcards","Veeg door woordkaarten \u2014 markeer moeilijke woorden"),
+      hc("\u{1f4d6}","Grammatica invullen","Vul de juiste vorm in \u2014 werkwoorden, naamvallen"),
+      hc("\u{1f4ac}","Dialogen","Speel echte gesprekken na \u2014 winkel, school"),
+      hc("\u{1f3a4}","Uitspraak oefenen","Spreek het woord uit \u2014 de app luistert en checkt"),
+      hc("\u{1f50d}","Woordenboek","Zoek elk woord op \u2014 met uitspraak en voorbeeld")),
+    // Games
+    ce("h3",{className:"h3",style:{marginTop:20}},"\u{1f3ae} Spelletjes"),
+    ce("div",{className:"help-grid"},
+      hc("\u{1f3af}","Quiz","Kies het juiste antwoord",badge("altijd open")),
+      hc("\u{1f0cf}","Memory","Vind de Bulgaars-Nederlands paren",badge("\u{1f513} 10 woorden",true)),
+      hc("\u{1f620}","Galgje","Raad het woord letter voor letter",badge("\u{1f513} 15 woorden",true)),
+      hc("\u{1f50e}","Woordzoeker","Vind verborgen woorden in het rooster",badge("\u{1f513} 20 woorden",true)),
+      hc("\u{1f3d7}\ufe0f","Zinnen bouwen","Zet woorden in de juiste volgorde",badge("\u{1f513} 1 les",true)),
+      hc("\u26a1","Speed Round","Hoeveel woorden in 60 seconden?",badge("\u{1f513} 30 woorden + 2 lessen",true)),
+      hc("\u{1f522}","Getallen","Leer tellen in het Bulgaars",badge("altijd open")),
+      hc("\u{1f3c1}","Familie Quiz","Speel samen! Buzz in, toernooi modus",badge("2 spelers"))),
+    // Discover
+    ce("h3",{className:"h3",style:{marginTop:20}},"\u{1f30d} Ontdek Bulgarije"),
+    ce("div",{className:"help-grid"},
+      hc("\u{1f4d6}","Verhalen","Korte verhalen in het Bulgaars met vertaling"),
+      hc("\u{1f9d9}","Sprookjes","Echte Bulgaarse volksverhalen \u2014 scene voor scene"),
+      hc("\u{1f30d}","Cultuur","Tradities, feestdagen, geografie, bekende Bulgaren"),
+      hc("\u{1f9d9}\u200d\u2642\ufe0f","Spreekwoorden","Bulgaarse wijsheden met Nederlandse equivalenten"),
+      hc("\u{1f3b5}","Liedjes","Bulgaarse kinderliedjes \u2014 luister en lees mee"),
+      hc("\u{1f389}","Feestdagen","\u0411\u0430\u0431\u0430 \u041c\u0430\u0440\u0442\u0430, \u0412\u0435\u043b\u0438\u043a\u0434\u0435\u043d en meer")),
+    // Extras
+    ce("h3",{className:"h3",style:{marginTop:20}},"\u2728 Extra\u2019s"),
+    ce("div",{className:"help-grid"},
+      hc("\u{1f319}","Slaapstand","Luister naar een sprookje in het donker \u2014 het scherm dimt langzaam"),
+      hc("\u{1f3af}","Dagelijkse uitdaging","Elke dag een nieuwe set vragen"),
+      hc("\u{1f3c6}","Badges & XP","Verdien badges voor mijlpalen \u2014 eerste les, 100 woorden, streak"),
+      hc("\u270f\ufe0f","Letters schrijven","Teken Cyrillische letters met je vinger"),
+      hc("\u{1f48c}","Brief aan \u0411\u0430\u0431\u0430","Schrijf een berichtje in het Bulgaars"),
+      hc("\u{1f4ca}","Ouder-dashboard","Bekijk voortgang, streak, moeilijke woorden")),
+    ce("div",{className:"help-tip"},
+      ce("strong",null,"\u{1f4f1} Installeer als app:")," Open de website in Chrome of Safari, tik op \u201cToevoegen aan beginscherm\u201d. Dan werkt het ook offline!"),
+    ce("div",{style:{textAlign:"center",marginTop:24,paddingTop:16,borderTop:"1px solid #e2e8f0"}},
+      ce("button",{className:"btn btn-t",onClick:function(){go("home");}},"\u{1f3e0} Aan de slag!")));
+}
+
 // === SESSION 21: FAMILY QUIZ ===
 function FamilyQuiz({go,st,sS,profiles,activeId}){
   var[phase,sPhase]=uS("setup"); // setup, playing, answer, result
@@ -6709,7 +6812,8 @@ function App(){
     scr==="stickerwall"&&ce(StickerWall,{go,st}),
     scr==="prongame"&&ce(PronGame,{go,st,sS}),
     scr==="bedtime"&&ce(BedtimeMode,{go,st,sS}),
-    scr==="familyquiz"&&ce(FamilyQuiz,{go,st,sS,profiles,activeId}));
+    scr==="familyquiz"&&ce(FamilyQuiz,{go,st,sS,profiles,activeId}),
+    scr==="help"&&ce(HelpGuide,{go}));
 }
 
 try{
