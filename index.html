@@ -159,6 +159,34 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .hm-fig{text-align:center;font-size:13px;color:#64748b;margin:8px 0}
 .hm-hint-box{background:#fef3c7;border-radius:12px;padding:10px 14px;font-size:13px;color:#92400e;text-align:center}
 
+/* Profile picker */
+.pp-bg{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,#ecfdf5 0%,#f0fdfa 40%,#f5f3ff 100%)}
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:360px;margin:20px auto}
+.pp-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 12px;border-radius:16px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;transition:all .2s}
+.pp-card:hover{border-color:#a78bfa;transform:translateY(-2px);box-shadow:0 4px 12px rgba(139,92,246,.15)}
+.pp-card.pp-active{border-color:#10b981;background:#ecfdf5}
+.pp-avatar{font-size:40px;line-height:1}
+.pp-name{font-size:13px;font-weight:600;color:#1e293b;text-align:center;word-break:break-word}
+.pp-xp{font-size:11px;color:#64748b}
+.pp-new{border:2px dashed #cbd5e1;background:#f8fafc}
+.pp-new:hover{border-color:#14b8a6;background:#f0fdfa}
+.pp-avatars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:300px;margin:12px auto}
+.pp-ava-btn{font-size:28px;padding:8px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;transition:all .15s;text-align:center}
+.pp-ava-btn:hover{border-color:#a78bfa;background:#f5f3ff}
+.pp-ava-btn.pp-ava-sel{border-color:#8b5cf6;background:#ede9fe}
+/* Family scoreboard on home */
+.fs-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:#fff;transition:background .2s}
+.fs-row.fs-me{background:#ecfdf5;border:1px solid #a7f3d0}
+.fs-ava{font-size:24px;line-height:1}
+.fs-info{flex:1;min-width:0}
+.fs-name{font-size:13px;font-weight:600;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-stat{font-size:11px;color:#64748b}
+.fs-xp{font-size:14px;font-weight:700;color:#0d9488;white-space:nowrap}
+/* Nav avatar button */
+.nav-ava{display:flex;align-items:center;gap:4px;padding:2px 10px 2px 4px;border-radius:99px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-size:11px;font-weight:600;color:#1e293b;transition:all .15s;line-height:1.3}
+.nav-ava:hover{border-color:#14b8a6;background:#f0fdfa}
+.nav-ava span.nav-ava-em{font-size:18px}
+
 /* Module progress */
 .mod-prog{display:flex;align-items:center;gap:6px;margin-top:4px}
 .mod-prog-bar{flex:1;height:4px;background:#f1f5f9;border-radius:99px;overflow:hidden}
@@ -244,6 +272,16 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .dark body{background:#1e293b;color:#e2e8f0}
 .dark .mem-face{border-color:#475569;background:#334155}
 .dark .mem-front{background:#334155}
+.dark .pp-bg{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%)}
+.dark .pp-card{background:#334155;border-color:#475569;color:#e2e8f0}
+.dark .pp-card:hover{border-color:#a78bfa}
+.dark .pp-name{color:#f1f5f9}
+.dark .pp-new{background:#1e293b;border-color:#475569}
+.dark .pp-ava-btn{background:#334155;border-color:#475569;color:#e2e8f0}
+.dark .fs-row{background:#334155}
+.dark .fs-row.fs-me{background:#064e3b;border-color:#065f46}
+.dark .fs-name{color:#f1f5f9}
+.dark .nav-ava{background:#334155;border-color:#475569;color:#e2e8f0}
 
 /* Flashcards */
 .fc-deck{perspective:800px;width:100%;max-width:340px;margin:0 auto}
@@ -526,9 +564,157 @@ function MicButton(props){
   },listening?"\ud83d\udd34":"\ud83c\udf99\ufe0f");
 }
 
+// === PROFILE MANAGEMENT ===
+var PROFILE_AVATARS=["🐱","🦁","🐻","🦊","🐰","🐼","🦄","🐸","🦋","🐙","🐳","🦜"];
+var DEFAULT_STATE={xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:"",sr:0};
+
+function loadProfiles(){
+  try{
+    var s=localStorage.getItem("bg-leren-profiles");
+    if(s)return JSON.parse(s);
+  }catch(e){}
+  // Migration: check if old "bg-leren" key exists
+  try{
+    var old=localStorage.getItem("bg-leren");
+    if(old){
+      var oldSt=JSON.parse(old);
+      var id="speler1";
+      var profiles={active:id,list:[{id:id,name:"Speler 1",avatar:"🐱",created:new Date().toISOString().slice(0,10)}]};
+      localStorage.setItem("bg-leren-"+id,JSON.stringify(oldSt));
+      localStorage.setItem("bg-leren-profiles",JSON.stringify(profiles));
+      return profiles;
+    }
+  }catch(e){}
+  return null; // No profiles yet → show picker
+}
+
+function saveProfiles(profiles){
+  try{localStorage.setItem("bg-leren-profiles",JSON.stringify(profiles));}catch(e){}
+}
+
+function loadProfileState(profileId){
+  try{
+    var s=localStorage.getItem("bg-leren-"+profileId);
+    if(s){var p=JSON.parse(s);return Object.assign({},DEFAULT_STATE,p);}
+  }catch(e){}
+  return Object.assign({},DEFAULT_STATE);
+}
+
+function saveProfileState(profileId,st){
+  try{localStorage.setItem("bg-leren-"+profileId,JSON.stringify(st));}catch(e){}
+  // Also keep legacy key in sync for backwards compatibility
+  try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}
+}
+
+function getAllProfileStats(profiles){
+  if(!profiles||!profiles.list)return[];
+  return profiles.list.map(function(p){
+    var s=loadProfileState(p.id);
+    return{id:p.id,name:p.name,avatar:p.avatar,xp:s.xp||0,wl:s.wl||0,strk:s.strk||0,badges:BADGES.filter(function(b){return b.rq(s);}).length};
+  }).sort(function(a,b){return b.xp-a.xp;});
+}
+
+// Profile Picker component
+function ProfilePicker({onSelect,profiles,setProfiles}){
+  var[creating,sCreating]=uS(false);
+  var[name,sName]=uS("");
+  var[avatar,sAvatar]=uS(PROFILE_AVATARS[0]);
+
+  var handleCreate=function(){
+    if(!name.trim())return;
+    var id=name.trim().toLowerCase().replace(/[^a-z0-9а-яё]/g,"").slice(0,20)||("p"+Date.now());
+    // Avoid duplicate ids
+    var existing=profiles?profiles.list.map(function(p){return p.id;}):[];
+    if(existing.indexOf(id)>=0)id=id+Date.now().toString(36).slice(-3);
+    var newProfile={id:id,name:name.trim(),avatar:avatar,created:new Date().toISOString().slice(0,10)};
+    var newProfiles=profiles?{active:id,list:profiles.list.concat([newProfile])}:{active:id,list:[newProfile]};
+    saveProfiles(newProfiles);
+    saveProfileState(id,Object.assign({},DEFAULT_STATE));
+    setProfiles(newProfiles);
+    onSelect(id);
+  };
+
+  var handlePick=function(id){
+    var np=Object.assign({},profiles,{active:id});
+    saveProfiles(np);
+    setProfiles(np);
+    onSelect(id);
+  };
+
+  var handleDelete=function(id,e){
+    e.stopPropagation();
+    var prof=profiles.list.find(function(p){return p.id===id;});
+    if(!confirm("Weet je zeker dat je het profiel van "+(prof?prof.name:id)+" wilt verwijderen? Alle voortgang gaat verloren."))return;
+    var newList=profiles.list.filter(function(p){return p.id!==id;});
+    try{localStorage.removeItem("bg-leren-"+id);}catch(x){}
+    var np={active:newList.length>0?newList[0].id:"",list:newList};
+    saveProfiles(np);
+    setProfiles(np);
+  };
+
+  if(creating){
+    return ce("div",{className:"pp-bg"},
+      ce("div",{style:{textAlign:"center",maxWidth:360}},
+        ce("div",{style:{fontSize:48,marginBottom:8}},avatar),
+        ce("h2",{style:{fontSize:20,fontWeight:700,color:"#1e293b",marginBottom:4}},"Nieuw profiel"),
+        ce("p",{style:{fontSize:13,color:"#64748b",marginBottom:16}},"Kies een avatar en vul je naam in"),
+        ce("div",{className:"pp-avatars"},PROFILE_AVATARS.map(function(a){
+          return ce("button",{key:a,className:"pp-ava-btn"+(a===avatar?" pp-ava-sel":""),onClick:function(){sAvatar(a);}},a);
+        })),
+        ce("input",{type:"text",value:name,onChange:function(e){sName(e.target.value);},
+          placeholder:"Je naam...",maxLength:15,
+          onKeyDown:function(e){if(e.key==="Enter")handleCreate();},
+          style:{width:"100%",padding:"12px 16px",borderRadius:12,border:"2px solid #e2e8f0",fontSize:16,textAlign:"center",marginTop:16,outline:"none"}}),
+        ce("div",{style:{display:"flex",gap:12,justifyContent:"center",marginTop:16}},
+          ce("button",{className:"btn btn-g",onClick:function(){sCreating(false);sName("");}},"Terug"),
+          ce("button",{className:"btn btn-t",onClick:handleCreate,disabled:!name.trim()},"Aanmaken"))));
+  }
+
+  var list=profiles?profiles.list:[];
+  return ce("div",{className:"pp-bg"},
+    ce("div",{style:{textAlign:"center"}},
+      ce("div",{style:{fontSize:48,marginBottom:8}},"\u{1f1e7}\u{1f1ec}"),
+      ce("h1",{style:{fontSize:24,fontWeight:800,color:"#0d9488",marginBottom:4}},"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438 \u0437\u0430 \u0434\u0435\u0446\u0430"),
+      ce("p",{style:{fontSize:14,color:"#64748b"}},"Wie ben jij?")),
+    ce("div",{className:"pp-grid"},
+      list.map(function(p){
+        return ce("div",{key:p.id,className:"pp-card"+(profiles.active===p.id?" pp-active":""),onClick:function(){handlePick(p.id);}},
+          ce("div",{className:"pp-avatar"},p.avatar),
+          ce("div",{className:"pp-name"},p.name),
+          ce("div",{className:"pp-xp"},loadProfileState(p.id).xp+" XP"),
+          ce("button",{onClick:function(e){handleDelete(p.id,e);},
+            style:{fontSize:10,color:"#94a3b8",background:"none",border:"none",marginTop:4,cursor:"pointer"}},"\u2715 verwijder"));
+      }),
+      list.length<6&&ce("div",{className:"pp-card pp-new",onClick:function(){sCreating(true);}},
+        ce("div",{className:"pp-avatar"},"+"),
+        ce("div",{className:"pp-name",style:{color:"#64748b"}},"Nieuw profiel"))),
+    list.length>0&&ce("div",{style:{textAlign:"center",marginTop:16}},
+      ce("button",{className:"btn btn-t",onClick:function(){handlePick(profiles.active||list[0].id);}},"Ga verder als "+(list.find(function(p){return p.id===(profiles.active||list[0].id);})||list[0]).name)));
+}
+
+// Family Scoreboard for Home screen
+function FamilyScore({profiles,activeId,go}){
+  if(!profiles||!profiles.list||profiles.list.length<2)return null;
+  var stats=getAllProfileStats(profiles);
+  return ce("div",{style:{marginTop:8}},
+    ce("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}},
+      ce("div",{style:{fontSize:12,fontWeight:600,color:"#64748b"}},"\u{1f3c6} Familie Scorebord"),
+      ce("button",{style:{fontSize:11,color:"#0d9488",background:"none",border:"none",cursor:"pointer",textDecoration:"underline"},onClick:function(){go("profiles");}},"Profiel wisselen")),
+    ce("div",{style:{display:"flex",flexDirection:"column",gap:6}},
+      stats.map(function(s,i){
+        return ce("div",{key:s.id,className:"fs-row"+(s.id===activeId?" fs-me":"")},
+          ce("div",{style:{fontSize:13,fontWeight:700,color:i===0?"#f59e0b":"#94a3b8",width:18,textAlign:"center"}},i===0?"\u{1f451}":(i+1)),
+          ce("div",{className:"fs-ava"},s.avatar),
+          ce("div",{className:"fs-info"},
+            ce("div",{className:"fs-name"},s.name),
+            ce("div",{className:"fs-stat"},s.wl+" woorden \u2022 "+s.badges+" badges \u2022 \u{1f525}"+s.strk)),
+          ce("div",{className:"fs-xp"},"\u26a1 "+s.xp));
+      })));
+}
+
 // === COMPONENTS ===
 
-function Nav({scr,go,st,sS}){
+function Nav({scr,go,st,sS,profile}){
   var lvls=["all","A1","A2","B1","B2"];
   var lvColors={"all":"#64748b","A1":"#059669","A2":"#b45309","B1":"#6d28d9","B2":"#db2777"};
   var curLv=st.lv||"all";
@@ -536,8 +722,10 @@ function Nav({scr,go,st,sS}){
   return ce("div",{className:"nav"},
     ce("div",{className:"nav-left"},
       scr!=="home"&&ce("button",{className:"back-btn",onClick:()=>go("home")},"\u2190"),
-      ce("span",{className:"nav-title"},"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438"),
-      ce("span",{className:"nav-sub"},"\u0437\u0430 \u0434\u0435\u0446\u0430")),
+      profile&&ce("button",{className:"nav-ava",onClick:function(){go("profiles");},title:"Profiel wisselen"},
+        ce("span",{className:"nav-ava-em"},profile.avatar),profile.name),
+      !profile&&ce("span",{className:"nav-title"},"\u0411\u044a\u043b\u0433\u0430\u0440\u0441\u043a\u0438"),
+      !profile&&ce("span",{className:"nav-sub"},"\u0437\u0430 \u0434\u0435\u0446\u0430")),
     ce("div",{className:"nav-right"},
       ce("button",{onClick:cycleLv,title:"Niveau filter",style:{fontSize:11,padding:"4px 10px",background:"none",border:"2px solid "+lvColors[curLv],borderRadius:99,cursor:"pointer",fontWeight:700,color:lvColors[curLv],lineHeight:1.2}},curLv==="all"?"Alles":curLv),
       ce("button",{onClick:()=>sS(function(p){return{...p,dm:!p.dm};}),style:{fontSize:16,padding:"4px 8px",background:"none",border:"1px solid "+(st.dm?"#475569":"#e2e8f0"),borderRadius:8,cursor:"pointer",lineHeight:1}},st.dm?"\u2600\ufe0f":"\u{1f319}"),
@@ -633,7 +821,7 @@ function checkStreak(st,sS){
   sS(function(p){return Object.assign({},p,{strk:newStrk,lastDay:today});});
 }
 
-function Home({go,st,sS}){
+function Home({go,st,sS,profiles,activeId}){
   const tl=ALPHA.reduce((s,g)=>s+g.ls.length,0);
   const tw=allWords(MODS).length;
   const lp=Math.round(st.ll/tl*100);
@@ -658,6 +846,7 @@ function Home({go,st,sS}){
         ce("div",{style:{background:"#fff",borderRadius:12,padding:10,textAlign:"center"}},
           ce("div",{style:{fontSize:18,fontWeight:700,color:"#8b5cf6"}},eb+"/"+BADGES.length),
           ce("div",{style:{fontSize:10,color:"#64748b"}},"Badges")))),
+    ce(FamilyScore,{profiles:profiles,activeId:activeId,go:go}),
     !bgVoice&&speechReady&&ce("div",{style:{background:"#fef3c7",border:"1px solid #fde68a",borderRadius:12,padding:12,fontSize:12,color:"#92400e"}},
       "\u{1f50a} Geen Bulgaarse stem gevonden. Op Mac: Systeeminstellingen \u2192 Toegankelijkheid \u2192 Gesproken materiaal \u2192 Beheer stemmen \u2192 zoek 'Bulgarian'. Op Chrome werkt het meestal automatisch."),
     bgVoice&&ce("div",{style:{background:"#ecfdf5",border:"1px solid #a7f3d0",borderRadius:12,padding:10,fontSize:12,color:"#047857",display:"flex",alignItems:"center",gap:6}},
@@ -837,7 +1026,7 @@ function Home({go,st,sS}){
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>go("parentdash")},"\u{1f4ca} Ouder-dashboard")),
     ce("div",{style:{textAlign:"center",marginTop:12}},
-      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){sS({xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:"",sr:0});try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
+      ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){var fresh=Object.assign({},DEFAULT_STATE);sS(fresh);if(activeId){saveProfileState(activeId,fresh);}try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
       ce("span",null,"\u2728"),
       ce("div",null,
@@ -2921,9 +3110,16 @@ function CheckpointTest({go,st,sS,level}){
 
 function App(){
   const[scr,sScr]=uS("home");
-  const loadSt=()=>{try{var s=localStorage.getItem("bg-leren");if(s){var p=JSON.parse(s);return{xp:p.xp||0,sk:p.sk||1,ll:p.ll||0,wl:p.wl||0,li:p.li||[],wi:p.wi||[],gd:p.gd||[],qo:p.qo||0,qb:p.qb||0,gl:p.gl||0,cl:p.cl||0,mc:p.mc||0,hw:p.hw||0,dc:p.dc||"",dw:p.dw||0,wsg:p.wsg||0,sbg:p.sbg||0,fc:p.fc||0,gf:p.gf||0,ic:p.ic||0,nt:p.nt||0,cw:p.cw||0,dm:p.dm||false,lt:p.lt||0,om:p.om||0,srs:p.srs||{},lv:p.lv||"all",cp:p.cp||{},lsn:p.lsn||0,sp:p.sp||0,errs:p.errs||{},strk:p.strk||0,lastDay:p.lastDay||"",sr:p.sr||0};}}catch(e){}return{xp:0,sk:1,ll:0,wl:0,li:[],wi:[],gd:[],qo:0,qb:0,gl:0,cl:0,mc:0,hw:0,dc:"",dw:0,wsg:0,sbg:0,fc:0,gf:0,ic:0,nt:0,cw:0,dm:false,lt:0,om:0,srs:{},lv:"all",cp:{},lsn:0,sp:0,errs:{},strk:0,lastDay:"",sr:0};};
-  const[st,sS]=uS(loadSt);
-  uE(()=>{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}},[st]);
+  const[profiles,sProfiles]=uS(function(){return loadProfiles();});
+  const[activeId,sActiveId]=uS(function(){return profiles?profiles.active:null;});
+  const[st,sS]=uS(function(){return activeId?loadProfileState(activeId):Object.assign({},DEFAULT_STATE);});
+
+  // Save state whenever it changes (profile-aware)
+  uE(()=>{
+    if(activeId){saveProfileState(activeId,st);}
+    else{try{localStorage.setItem("bg-leren",JSON.stringify(st));}catch(e){}}
+  },[st,activeId]);
+
   // Auto-seed SRS for learned words
   uE(()=>{
     if(!st.wi||st.wi.length===0)return;
@@ -2939,8 +3135,32 @@ function App(){
     if(changed)sS(function(p){return Object.assign({},p,{srs:newSrs});});
   },[st.wi.length]);
   // Daily streak tracking
-  uE(function(){checkStreak(st,sS);},[]);
-  const go=(s)=>sScr(s);
+  uE(function(){checkStreak(st,sS);},[activeId]);
+
+  const go=function(s){
+    if(s==="profiles"){sScr("profiles");return;}
+    sScr(s);
+  };
+
+  // Switch to a profile
+  var switchProfile=function(id){
+    sActiveId(id);
+    sS(loadProfileState(id));
+    sScr("home");
+  };
+
+  // If no profiles exist and no legacy data, show profile creation
+  // If profiles exist but none selected, show picker
+  if(!profiles||!activeId||scr==="profiles"){
+    return ce("div",{className:"app"+(st.dm?" dark":"")},
+      ce(ProfilePicker,{
+        onSelect:switchProfile,
+        profiles:profiles,
+        setProfiles:sProfiles
+      }));
+  }
+
+  var profile=profiles.list.find(function(p){return p.id===activeId;})||null;
 
   // Find module
   const modId=scr.startsWith("mod:")?scr.slice(4):null;
@@ -2948,8 +3168,8 @@ function App(){
   const agIdx=scr.startsWith("ag:")?parseInt(scr.slice(3)):null;
 
   return ce("div",{className:"app"+(st.dm?" dark":"")},
-    ce(Nav,{scr,go,st,sS}),
-    scr==="home"&&ce(Home,{go,st,sS}),
+    ce(Nav,{scr,go,st,sS,profile}),
+    scr==="home"&&ce(Home,{go,st,sS,profiles,activeId}),
     mod&&mod.type==="alpha"&&ce(AlphaList,{go,st}),
     mod&&mod.type!=="alpha"&&ce(ModScreen,{mod,go,st,sS}),
     agIdx!==null&&ce(AlphaGrp,{gi:agIdx,go,st,sS}),
