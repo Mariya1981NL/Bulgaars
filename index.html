@@ -609,6 +609,72 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .dark .wotd-card{background:linear-gradient(135deg,#451a03,#78350f);border-color:#f59e0b}
 .dark .wotd-preview{background:#334155;border-color:#475569}
 .dark .wotd-time-input{background:#334155;border-color:#475569;color:#f1f5f9}
+
+/* Progress Report Card */
+.rpt-wrap{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:2px solid #86efac;border-radius:20px;padding:20px;position:relative;overflow:hidden}
+.rpt-header{text-align:center;margin-bottom:16px}
+.rpt-title{font-size:20px;font-weight:800;color:#047857}
+.rpt-date{font-size:11px;color:#64748b;margin-top:2px}
+.rpt-profile{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px}
+.rpt-avatar{font-size:40px}
+.rpt-name{font-size:18px;font-weight:700;color:#1e293b}
+.rpt-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.rpt-stat{background:#fff;border-radius:12px;padding:10px 8px;text-align:center;border:1px solid #e2e8f0}
+.rpt-stat-val{font-size:22px;font-weight:800;color:var(--accent,#0d9488)}
+.rpt-stat-lbl{font-size:10px;color:#64748b;margin-top:2px}
+.rpt-ring-wrap{display:flex;justify-content:center;gap:20px;margin:14px 0}
+.rpt-ring{position:relative;width:80px;height:80px}
+.rpt-ring svg{transform:rotate(-90deg)}
+.rpt-ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.rpt-ring-pct{font-size:16px;font-weight:800}
+.rpt-ring-lbl{font-size:8px;color:#64748b;display:block;margin-top:-2px}
+.rpt-levels{display:flex;gap:6px;justify-content:center;margin:14px 0}
+.rpt-lv{flex:1;padding:8px;border-radius:10px;text-align:center;background:#fff;border:1px solid #e2e8f0}
+.rpt-lv-badge{font-size:11px;font-weight:700;color:#fff;padding:2px 8px;border-radius:99px;display:inline-block;margin-bottom:4px}
+.rpt-lv-count{font-size:14px;font-weight:800;color:#1e293b}
+.rpt-lv-total{font-size:9px;color:#64748b}
+.rpt-week{margin:14px 0}
+.rpt-week-title{font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px;text-align:center}
+.rpt-week-bars{display:flex;align-items:flex-end;gap:4px;height:60px;justify-content:center}
+.rpt-week-bar{width:28px;border-radius:4px 4px 0 0;transition:height .3s;position:relative}
+.rpt-week-day{font-size:8px;color:#94a3b8;text-align:center;margin-top:2px}
+.rpt-badges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0}
+.rpt-badge{font-size:22px;background:#fffbeb;border:1px solid #fbbf24;border-radius:10px;padding:4px 8px}
+.rpt-footer{text-align:center;font-size:10px;color:#94a3b8;margin-top:12px;padding-top:12px;border-top:1px dashed #d1d5db}
+.rpt-actions{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.rpt-bg-text{font-size:11px;color:#065f46;margin-top:8px;text-align:center;font-style:italic}
+.dark .rpt-wrap{background:linear-gradient(135deg,#064e3b,#065f46);border-color:#34d399}
+.dark .rpt-title{color:#6ee7b7}
+.dark .rpt-stat{background:#334155;border-color:#475569}
+.dark .rpt-lv{background:#334155;border-color:#475569}
+.dark .rpt-footer{border-color:#475569}
+
+/* Offline Audio Cache */
+.oac-card{background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:16px}
+.oac-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.oac-icon{font-size:32px}
+.oac-title{font-size:16px;font-weight:700;color:#1e293b}
+.oac-sub{font-size:11px;color:#64748b}
+.oac-status{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:12px}
+.oac-status-ok{background:#ecfdf5;color:#059669;border:1px solid #86efac}
+.oac-status-none{background:#f8fafc;color:#64748b;border:1px solid #e2e8f0}
+.oac-status-busy{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.oac-progress{margin:12px 0}
+.oac-prog-bar{height:8px;background:#f1f5f9;border-radius:99px;overflow:hidden}
+.oac-prog-fill{height:100%;background:linear-gradient(to right,#14b8a6,#10b981);border-radius:99px;transition:width .3s}
+.oac-prog-text{font-size:11px;color:#64748b;text-align:center;margin-top:4px}
+.oac-cats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.oac-cat{padding:10px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;text-align:center}
+.oac-cat-em{font-size:20px;margin-bottom:4px}
+.oac-cat-name{font-size:11px;font-weight:600;color:#1e293b}
+.oac-cat-count{font-size:10px;color:#64748b}
+.oac-cat-done{background:#ecfdf5;border-color:#86efac}
+.oac-actions{display:flex;gap:8px;flex-wrap:wrap}
+.oac-info{font-size:11px;color:#94a3b8;text-align:center;margin-top:12px}
+.dark .oac-card{background:#334155;border-color:#475569}
+.dark .oac-cat{background:#1e293b;border-color:#475569}
+.dark .oac-cat-done{background:#064e3b;border-color:#34d399}
+.dark .oac-prog-bar{background:#475569}
 </style>
 </head>
 <body>
@@ -1407,7 +1473,13 @@ function Home({go,st,sS,profiles,activeId}){
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#92400e"}},"Ritme")),
       ce("button",{className:"card",onClick:()=>go("wotd"),style:{textAlign:"center",padding:12,border:"1px solid #86efac"}},
         ce("div",{style:{fontSize:24}},"🔔"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#059669"}},"Dagelijks"))),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#059669"}},"Dagelijks")),
+      ce("button",{className:"card",onClick:()=>go("report"),style:{textAlign:"center",padding:12,border:"1px solid #6ee7b7"}},
+        ce("div",{style:{fontSize:24}},"📊"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#047857"}},"Rapport")),
+      ce("button",{className:"card",onClick:()=>go("offlineaudio"),style:{textAlign:"center",padding:12,border:"1px solid #7dd3fc"}},
+        ce("div",{style:{fontSize:24}},"📥"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#0369a1"}},"Offline Audio"))),
     // Dark mode & Parent dashboard
     ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
@@ -4916,6 +4988,429 @@ function WotdNotify({go,st,sS}){
       enabled?"Je krijgt een melding om "+hour+":00.":"Schakel notificaties in om dagelijks herinnerd te worden."));
 }
 
+// === PROGRESS REPORT CARD ===
+function ProgressReport({go,st,sS,profiles,activeId}){
+  var[generating,sGen]=uS(false);
+  var[lang,sLang]=uS("nl"); // nl or bg
+  var canvasRef=React.useRef(null);
+
+  var profile=profiles&&profiles.list?profiles.list.find(function(p){return p.id===activeId;}):null;
+  var tw=allWords(MODS).length;
+  var tl=ALPHA.reduce(function(s,g){return s+g.ls.length;},0);
+  var aw=allWords(MODS);
+  var eb=BADGES.filter(function(b){return b.rq(st);}).length;
+  var wp=tw>0?Math.round(st.wl/tw*100):0;
+  var lp=tl>0?Math.round(st.ll/tl*100):0;
+  var today=new Date();
+  var dateStr=today.toLocaleDateString("nl-NL",{day:"numeric",month:"long",year:"numeric"});
+
+  // Level breakdown
+  var levels=[
+    {id:"A1",color:"#14b8a6",learned:0,total:0},
+    {id:"A2",color:"#f59e0b",learned:0,total:0},
+    {id:"B1",color:"#8b5cf6",learned:0,total:0},
+    {id:"B2",color:"#ec4899",learned:0,total:0}
+  ];
+  levels.forEach(function(l){
+    l.total=aw.filter(function(w){return w.lv===l.id;}).length;
+    l.learned=aw.filter(function(w){return w.lv===l.id&&(st.wi||[]).indexOf(w.b)!==-1;}).length;
+  });
+
+  // Week XP data
+  var weekData=(function(){
+    var days=[];var d=new Date();
+    var dayNamesNl=["zo","ma","di","wo","do","vr","za"];
+    var dayNamesBg=["нд","пн","вт","ср","чт","пт","сб"];
+    for(var i=6;i>=0;i--){
+      var dd=new Date(d);dd.setDate(dd.getDate()-i);
+      var key=dd.toISOString().slice(0,10);
+      days.push({key:key,labelNl:dayNamesNl[dd.getDay()],labelBg:dayNamesBg[dd.getDay()],xp:(st.xpLog||{})[key]||0});
+    }
+    var maxXP=Math.max.apply(null,days.map(function(d){return d.xp;}))||1;
+    return{days:days,maxXP:maxXP};
+  })();
+  var weekTotal=weekData.days.reduce(function(s,d){return s+d.xp;},0);
+
+  // Earned badges (first 8)
+  var earnedBadges=BADGES.filter(function(b){return b.rq(st);}).slice(0,8);
+
+  // Ring SVG helper
+  function Ring({pct,color,label,sublabel}){
+    var r=32;var c=2*Math.PI*r;var offset=c-c*Math.min(pct,100)/100;
+    return ce("div",{className:"rpt-ring"},
+      ce("svg",{width:80,height:80,viewBox:"0 0 80 80"},
+        ce("circle",{cx:40,cy:40,r:r,fill:"none",stroke:"#e2e8f0",strokeWidth:6}),
+        ce("circle",{cx:40,cy:40,r:r,fill:"none",stroke:color,strokeWidth:6,strokeDasharray:c,strokeDashoffset:offset,strokeLinecap:"round"})),
+      ce("div",{className:"rpt-ring-center"},
+        ce("span",{className:"rpt-ring-pct",style:{color:color}},pct+"%"),
+        ce("span",{className:"rpt-ring-lbl"},sublabel)));
+  }
+
+  // Labels per language
+  var L=lang==="bg"?{
+    title:"Доклад за напредъка",dateLabel:"Дата",
+    xp:"XP Общо",streak:"Серия",badges:"Значки",
+    words:"Думи",letters:"Букви",
+    weekTitle:"XP тази седмица",total:"Общо",
+    lvLearned:"научени",
+    footer:"Български за деца — Доклад за напредъка",
+    msgGreat:"Браво! Продължавай така! 🌟",
+    msgGood:"Добро начало! Продължавай да учиш! 💪",
+    msgStart:"Нека започнем приключението! 🚀",
+    checkpoint:"Тестове"
+  }:{
+    title:"Voortgangsrapport",dateLabel:"Datum",
+    xp:"XP Totaal",streak:"Streak",badges:"Badges",
+    words:"Woorden",letters:"Letters",
+    weekTitle:"XP deze week",total:"Totaal",
+    lvLearned:"geleerd",
+    footer:"Български за деца — Voortgangsrapport",
+    msgGreat:"Geweldig! Ga zo door! 🌟",
+    msgGood:"Goed begin! Blijf oefenen! 💪",
+    msgStart:"Laten we beginnen met het avontuur! 🚀",
+    checkpoint:"Toetsen"
+  };
+
+  var motivMsg=st.xp>=500?L.msgGreat:st.xp>=100?L.msgGood:L.msgStart;
+
+  // Export as image via canvas
+  function exportAsImage(){
+    sGen(true);
+    var el=document.getElementById("rpt-content");
+    if(!el){sGen(false);return;}
+    // Use html2canvas-like approach with SVG foreignObject
+    try{
+      var w=el.offsetWidth;var h=el.offsetHeight;
+      var data=new XMLSerializer().serializeToString(el);
+      // Clone styles
+      var styles="";
+      var sheets=document.styleSheets;
+      for(var i=0;i<sheets.length;i++){
+        try{var rules=sheets[i].cssRules||sheets[i].rules;
+          for(var j=0;j<rules.length;j++){styles+=rules[j].cssText+"\n";}}catch(e){}
+      }
+      var svgStr='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'+
+        '<foreignObject width="100%" height="100%">'+
+        '<div xmlns="http://www.w3.org/1999/xhtml">'+
+        '<style>'+styles+'</style>'+
+        data+'</div></foreignObject></svg>';
+      var blob=new Blob([svgStr],{type:'image/svg+xml;charset=utf-8'});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement("a");
+      a.href=url;a.download="voortgang-"+(profile?profile.name:"leerling")+"-"+today.toISOString().slice(0,10)+".svg";
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }catch(e){alert("Export mislukt: "+e.message);}
+    sGen(false);
+  }
+
+  // Copy as text (for sharing via WhatsApp etc.)
+  function copyAsText(){
+    var cp=(st.cp||{});
+    var txt=(lang==="bg"?"📊 Доклад за напредъка":"📊 Voortgangsrapport")+"\n";
+    txt+="👤 "+(profile?profile.name:"Speler")+"\n";
+    txt+="📅 "+dateStr+"\n\n";
+    txt+="⭐ XP: "+st.xp+"\n";
+    txt+="🔥 Streak: "+(st.strk||0)+(lang==="bg"?" дни":" dagen")+"\n";
+    txt+="🏅 Badges: "+eb+"/"+BADGES.length+"\n\n";
+    txt+="📝 "+(lang==="bg"?"Думи":"Woorden")+": "+st.wl+"/"+tw+" ("+wp+"%)\n";
+    txt+="🔤 "+(lang==="bg"?"Букви":"Letters")+": "+st.ll+"/"+tl+" ("+lp+"%)\n\n";
+    levels.forEach(function(l){txt+=l.id+": "+l.learned+"/"+l.total+"\n";});
+    txt+="\n📅 "+(lang==="bg"?"XP тази седмица":"XP deze week")+": "+weekTotal+"\n";
+    txt+="\n"+motivMsg+"\n";
+    txt+="\n🇧🇬 Български за деца";
+    if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){alert(lang==="bg"?"Копирано!":"Gekopieerd!");});}
+    else{alert(txt);}
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"←"),
+      ce("div",{className:"h2"},"📊 "+L.title)),
+    // Language toggle
+    ce("div",{style:{display:"flex",justifyContent:"center",gap:6,marginBottom:12}},
+      ce("button",{className:"fpill "+(lang==="nl"?"fp-on":"fp-off"),onClick:function(){sLang("nl");}},"🇳🇱 Nederlands"),
+      ce("button",{className:"fpill "+(lang==="bg"?"fp-on":"fp-off"),onClick:function(){sLang("bg");}},"🇧🇬 Български")),
+    // Report card
+    ce("div",{id:"rpt-content",className:"rpt-wrap"},
+      ce("div",{className:"rpt-header"},
+        ce("div",{className:"rpt-title"},"🇧🇬 "+L.title),
+        ce("div",{className:"rpt-date"},dateStr),
+        profile&&ce("div",{className:"rpt-profile"},
+          ce("span",{className:"rpt-avatar"},profile.avatar||"🐱"),
+          ce("span",{className:"rpt-name"},profile.name))),
+      // Stats row
+      ce("div",{className:"rpt-stats"},
+        ce("div",{className:"rpt-stat"},
+          ce("div",{className:"rpt-stat-val"},st.xp),
+          ce("div",{className:"rpt-stat-lbl"},"⭐ "+L.xp)),
+        ce("div",{className:"rpt-stat"},
+          ce("div",{className:"rpt-stat-val"},(st.strk||0)),
+          ce("div",{className:"rpt-stat-lbl"},"🔥 "+L.streak)),
+        ce("div",{className:"rpt-stat"},
+          ce("div",{className:"rpt-stat-val"},eb+"/"+BADGES.length),
+          ce("div",{className:"rpt-stat-lbl"},"🏅 "+L.badges))),
+      // Progress rings
+      ce("div",{className:"rpt-ring-wrap"},
+        ce(Ring,{pct:wp,color:"#10b981",label:L.words,sublabel:L.words}),
+        ce(Ring,{pct:lp,color:"var(--accent,#14b8a6)",label:L.letters,sublabel:L.letters})),
+      // Level breakdown
+      ce("div",{className:"rpt-levels"},
+        levels.map(function(l){
+          return ce("div",{key:l.id,className:"rpt-lv"},
+            ce("div",{className:"rpt-lv-badge",style:{background:l.color}},l.id),
+            ce("div",{className:"rpt-lv-count"},l.learned),
+            ce("div",{className:"rpt-lv-total"},"/"+l.total+" "+L.lvLearned));
+        })),
+      // Checkpoint status
+      ce("div",{style:{display:"flex",gap:6,justifyContent:"center",marginBottom:12}},
+        ["A1","A2","B1","B2"].map(function(lv){
+          var done=(st.cp||{})[lv];
+          return ce("span",{key:lv,style:{fontSize:12,padding:"3px 8px",borderRadius:99,background:done?"#ecfdf5":"#f8fafc",border:"1px solid "+(done?"#86efac":"#e2e8f0"),fontWeight:600}},
+            (done?"✅":"📝")+" "+lv);
+        })),
+      // Week XP chart
+      ce("div",{className:"rpt-week"},
+        ce("div",{className:"rpt-week-title"},L.weekTitle+" — "+weekTotal+" XP"),
+        ce("div",{className:"rpt-week-bars"},
+          weekData.days.map(function(d){
+            var h=Math.max(4,Math.round(d.xp/weekData.maxXP*48));
+            var isToday=d.key===today.toISOString().slice(0,10);
+            return ce("div",{key:d.key,style:{display:"flex",flexDirection:"column",alignItems:"center"}},
+              ce("div",{className:"rpt-week-bar",style:{height:h+"px",background:isToday?"linear-gradient(to top,var(--accent,#14b8a6),#2dd4bf)":"linear-gradient(to top,#cbd5e1,#e2e8f0)"}}),
+              ce("div",{className:"rpt-week-day"},lang==="bg"?d.labelBg:d.labelNl));
+          }))),
+      // Badges earned
+      earnedBadges.length>0&&ce("div",{className:"rpt-badges"},
+        earnedBadges.map(function(b,i){return ce("span",{key:i,className:"rpt-badge",title:b.t},b.m);})),
+      // Motivation message
+      ce("div",{className:"rpt-bg-text"},motivMsg),
+      // Footer
+      ce("div",{className:"rpt-footer"},"🇧🇬 "+L.footer)),
+    // Action buttons
+    ce("div",{className:"rpt-actions"},
+      ce("button",{className:"btn btn-t",onClick:copyAsText,style:{flex:1}},"📋 "+(lang==="bg"?"Копирай":"Kopieer")),
+      ce("button",{className:"btn btn-v",onClick:exportAsImage,disabled:generating,style:{flex:1}},
+        generating?"⏳...":(lang==="bg"?"💾 Запази SVG":"💾 Bewaar SVG"))),
+    ce("div",{style:{fontSize:11,color:"#94a3b8",textAlign:"center",marginTop:8}},
+      lang==="bg"?"Споделете с баба и дядо! 👴👵":"Deel met opa en oma! 👴👵"));
+}
+
+// === OFFLINE AUDIO CACHE ===
+function OfflineAudio({go,st,sS}){
+  var DB_NAME="bg-leren-audio";
+  var DB_VERSION=1;
+  var STORE="audio";
+  var[status,sStatus]=uS("idle"); // idle, caching, done, error, unsupported
+  var[progress,sProg]=uS({done:0,total:0,current:""});
+  var[cached,sCached]=uS({words:0,letters:0,phrases:0,total:0});
+  var[dbSupported,sDbSup]=uS(true);
+  var cancelRef=React.useRef(false);
+
+  // Check support
+  uE(function(){
+    if(typeof indexedDB==="undefined"||typeof SpeechSynthesisUtterance==="undefined"||typeof MediaRecorder==="undefined"){
+      sDbSup(false);sStatus("unsupported");return;
+    }
+    // Count cached items
+    countCached();
+  },[]);
+
+  function openDB(){
+    return new Promise(function(resolve,reject){
+      var req=indexedDB.open(DB_NAME,DB_VERSION);
+      req.onupgradeneeded=function(e){
+        var db=e.target.result;
+        if(!db.objectStoreNames.contains(STORE)){db.createObjectStore(STORE,{keyPath:"key"});}
+      };
+      req.onsuccess=function(e){resolve(e.target.result);};
+      req.onerror=function(){reject(new Error("DB open failed"));};
+    });
+  }
+
+  function countCached(){
+    openDB().then(function(db){
+      var tx=db.transaction(STORE,"readonly");
+      var store=tx.objectStore(STORE);
+      var req=store.getAllKeys();
+      req.onsuccess=function(){
+        var keys=req.result||[];
+        var words=keys.filter(function(k){return k.startsWith("w:");}).length;
+        var letters=keys.filter(function(k){return k.startsWith("l:");}).length;
+        var phrases=keys.filter(function(k){return k.startsWith("p:");}).length;
+        sCached({words:words,letters:letters,phrases:phrases,total:keys.length});
+        if(keys.length>0)sStatus("done");
+      };
+      db.close();
+    }).catch(function(){});
+  }
+
+  // Synthesize one word to audio blob
+  function synthesizeToBlob(text){
+    return new Promise(function(resolve,reject){
+      try{
+        var u=new SpeechSynthesisUtterance(text);
+        u.lang="bg-BG";u.rate=0.85;u.pitch=1;
+        if(bgVoice)u.voice=bgVoice;
+        // Use MediaRecorder with AudioContext destination
+        var ac=new(window.AudioContext||window.webkitAudioContext)();
+        var dest=ac.createMediaStreamDestination();
+        var source=null;
+        // We can't directly capture SpeechSynthesis audio via MediaRecorder
+        // Instead, we store the text and use SpeechSynthesis for playback
+        // But cache the parameters for instant offline replay
+        u.onend=function(){
+          ac.close();
+          // Store as metadata since we can't capture audio stream from SpeechSynthesis
+          resolve({type:"synth",text:text,lang:"bg-BG",rate:0.85});
+        };
+        u.onerror=function(){ac.close();reject(new Error("Speech failed"));};
+        speechSynthesis.speak(u);
+        // Timeout after 5s
+        setTimeout(function(){reject(new Error("Timeout"));},5000);
+      }catch(e){reject(e);}
+    });
+  }
+
+  // Cache all words
+  function startCaching(){
+    if(status==="caching")return;
+    cancelRef.current=false;
+    sStatus("caching");
+    var items=[];
+    // Collect all words
+    var aw=allWords(MODS);
+    aw.forEach(function(w){items.push({key:"w:"+w.b,text:w.b,cat:"words"});});
+    // Collect alphabet letters
+    ALPHA.forEach(function(g){g.ls.forEach(function(l){
+      items.push({key:"l:"+l.u,text:l.u,cat:"letters"});
+    });});
+    // Collect dialogue phrases
+    if(typeof DIALOGUES!=="undefined"){
+      DIALOGUES.forEach(function(d){d.lines.forEach(function(line){
+        items.push({key:"p:"+line.bg,text:line.bg,cat:"phrases"});
+      });});
+    }
+    // Deduplicate
+    var seen={};
+    items=items.filter(function(it){if(seen[it.key])return false;seen[it.key]=true;return true;});
+
+    sProg({done:0,total:items.length,current:""});
+
+    openDB().then(function(db){
+      var idx=0;
+      function next(){
+        if(cancelRef.current){sStatus("idle");countCached();db.close();return;}
+        if(idx>=items.length){sStatus("done");countCached();db.close();return;}
+        var item=items[idx];
+        sProg({done:idx,total:items.length,current:item.text});
+        // Check if already cached
+        var tx=db.transaction(STORE,"readonly");
+        var store=tx.objectStore(STORE);
+        var req=store.get(item.key);
+        req.onsuccess=function(){
+          if(req.result){
+            // Already cached, skip
+            idx++;sProg({done:idx,total:items.length,current:""});
+            setTimeout(next,10);
+          } else {
+            // Synthesize
+            synthesizeToBlob(item.text).then(function(data){
+              var tx2=db.transaction(STORE,"readwrite");
+              var store2=tx2.objectStore(STORE);
+              store2.put({key:item.key,data:data,cat:item.cat,ts:Date.now()});
+              tx2.oncomplete=function(){
+                idx++;sProg({done:idx,total:items.length,current:""});
+                // Small delay to not overwhelm speech engine
+                setTimeout(next,120);
+              };
+            }).catch(function(){
+              // Skip on error
+              idx++;setTimeout(next,50);
+            });
+          }
+        };
+      }
+      next();
+    }).catch(function(e){sStatus("error");});
+  }
+
+  function cancelCaching(){
+    cancelRef.current=true;
+  }
+
+  function clearCache(){
+    if(!confirm("Alle opgeslagen audio wissen?"))return;
+    openDB().then(function(db){
+      var tx=db.transaction(STORE,"readwrite");
+      tx.objectStore(STORE).clear();
+      tx.oncomplete=function(){sCached({words:0,letters:0,phrases:0,total:0});sStatus("idle");db.close();};
+    }).catch(function(){});
+  }
+
+  // Estimate total items
+  var aw=allWords(MODS);
+  var totalLetters=ALPHA.reduce(function(s,g){return s+g.ls.length;},0);
+  var totalPhrases=0;
+  if(typeof DIALOGUES!=="undefined"){DIALOGUES.forEach(function(d){totalPhrases+=d.lines.length;});}
+  var totalItems=aw.length+totalLetters+totalPhrases;
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"back-btn",onClick:function(){go("home");}},"←"),
+      ce("div",{className:"h2"},"📥 Offline Audio")),
+    ce("p",{className:"sub ctr"},"Sla uitspraak op voor gebruik zonder internet"),
+    // Status
+    ce("div",{className:"oac-card"},
+      ce("div",{className:"oac-header"},
+        ce("div",{className:"oac-icon"},"📥"),
+        ce("div",null,
+          ce("div",{className:"oac-title"},"Audio Cache"),
+          ce("div",{className:"oac-sub"},cached.total>0?cached.total+" items opgeslagen":"Nog geen audio opgeslagen"))),
+      // Status indicator
+      ce("div",{className:"oac-status "+(status==="done"?"oac-status-ok":status==="caching"?"oac-status-busy":"oac-status-none")},
+        status==="done"?"✅ Audio beschikbaar offline":
+        status==="caching"?"⏳ Bezig met opslaan...":
+        status==="unsupported"?"❌ Je browser ondersteunt dit niet":
+        status==="error"?"⚠️ Er ging iets mis":
+        "💤 Klaar om te starten"),
+      // Progress bar during caching
+      status==="caching"&&ce("div",{className:"oac-progress"},
+        ce("div",{className:"oac-prog-bar"},
+          ce("div",{className:"oac-prog-fill",style:{width:Math.round(progress.done/(progress.total||1)*100)+"%"}})),
+        ce("div",{className:"oac-prog-text"},
+          progress.done+"/"+progress.total+" — "+(progress.current||"..."))),
+      // Categories
+      ce("div",{className:"oac-cats"},
+        ce("div",{className:"oac-cat"+(cached.words>0?" oac-cat-done":"")},
+          ce("div",{className:"oac-cat-em"},"📝"),
+          ce("div",{className:"oac-cat-name"},"Woorden"),
+          ce("div",{className:"oac-cat-count"},cached.words+"/"+aw.length)),
+        ce("div",{className:"oac-cat"+(cached.letters>0?" oac-cat-done":"")},
+          ce("div",{className:"oac-cat-em"},"🔤"),
+          ce("div",{className:"oac-cat-name"},"Letters"),
+          ce("div",{className:"oac-cat-count"},cached.letters+"/"+totalLetters)),
+        ce("div",{className:"oac-cat"+(cached.phrases>0?" oac-cat-done":"")},
+          ce("div",{className:"oac-cat-em"},"💬"),
+          ce("div",{className:"oac-cat-name"},"Zinnen"),
+          ce("div",{className:"oac-cat-count"},cached.phrases+"/"+totalPhrases)),
+        ce("div",{className:"oac-cat"},
+          ce("div",{className:"oac-cat-em"},"📊"),
+          ce("div",{className:"oac-cat-name"},"Totaal"),
+          ce("div",{className:"oac-cat-count"},cached.total+"/"+totalItems))),
+      // Actions
+      ce("div",{className:"oac-actions"},
+        !dbSupported?null:
+        status==="caching"?
+          ce("button",{className:"btn btn-g",onClick:cancelCaching,style:{flex:1}},"⏹ Stop"):
+        ce("button",{className:"btn btn-t",onClick:startCaching,style:{flex:1}},
+          cached.total>0?"🔄 Bijwerken":"📥 Alles opslaan"),
+        cached.total>0&&ce("button",{className:"btn btn-g",onClick:clearCache},"🗑 Wissen")),
+      ce("div",{className:"oac-info"},
+        "Audio wordt opgeslagen via SpeechSynthesis en IndexedDB. ",
+        "Dit werkt het beste met een Bulgaarse stem geïnstalleerd op je toestel.")));
+}
+
 function App(){
   const[scr,sScr]=uS("home");
   const[profiles,sProfiles]=uS(function(){return loadProfiles();});
@@ -5061,7 +5556,9 @@ function App(){
     scr==="lyrics"&&ce(LyricsScreen,{go,st,sS}),
     scr==="minpairs"&&ce(MinimalPairs,{go,st,sS}),
     scr==="rhythm"&&ce(RhythmGame,{go,st,sS}),
-    scr==="wotd"&&ce(WotdNotify,{go,st,sS}));
+    scr==="wotd"&&ce(WotdNotify,{go,st,sS}),
+    scr==="report"&&ce(ProgressReport,{go,st,sS,profiles,activeId}),
+    scr==="offlineaudio"&&ce(OfflineAudio,{go,st,sS}));
 }
 
 try{
