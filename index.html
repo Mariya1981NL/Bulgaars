@@ -434,6 +434,65 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .cq-opt:hover:not(:disabled){border-color:var(--accent,#14b8a6);background:#f0fdfa}
 .cq-ok{background:#ecfdf5!important;border-color:#34d399!important;color:#065f46!important}
 .cq-no{background:#fef2f2!important;border-color:#f87171!important;color:#991b1b!important}
+
+/* Proverbs */
+.prov-card{background:#fff;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;transition:all .3s}
+.prov-header{padding:16px 20px;background:linear-gradient(135deg,#fef3c7,#fffbeb);border-bottom:1px solid #fde68a;position:relative}
+.prov-bg{font-size:18px;font-weight:700;color:#92400e;line-height:1.4}
+.prov-pron{font-size:12px;color:#b45309;font-style:italic;margin-top:4px}
+.prov-body{padding:16px 20px}
+.prov-literal{font-size:14px;color:#64748b;font-style:italic;margin-bottom:8px}
+.prov-equiv{font-size:15px;font-weight:600;color:#1e293b;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px}
+.prov-note{font-size:12px;color:#78716c;margin-top:10px;padding:8px 12px;background:#faf5ff;border-radius:8px;border:1px solid #e9d5ff}
+.prov-cat-pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;background:#fef3c7;color:#92400e;margin-right:6px}
+.prov-nav{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.dark .prov-card{background:#334155;border-color:#475569}
+.dark .prov-header{background:linear-gradient(135deg,#451a03,#78350f)}
+.dark .prov-bg{color:#fbbf24}
+.dark .prov-body{color:#e2e8f0}
+.dark .prov-equiv{background:#064e3b;border-color:#065f46;color:#ecfdf5}
+.dark .prov-note{background:#1e1b4b;border-color:#312e81;color:#c7d2fe}
+
+/* Holiday Calendar */
+.hol-timeline{position:relative;padding-left:32px}
+.hol-line{position:absolute;left:14px;top:0;bottom:0;width:2px;background:#e2e8f0}
+.hol-item{position:relative;margin-bottom:12px;cursor:pointer;transition:all .2s}
+.hol-dot{position:absolute;left:-24px;top:12px;width:12px;height:12px;border-radius:50%;border:2px solid #e2e8f0;background:#fff;z-index:1;transition:all .3s}
+.hol-dot-next{background:var(--accent,#14b8a6);border-color:var(--accent,#14b8a6);box-shadow:0 0 0 4px rgba(20,184,166,.2)}
+.hol-dot-past{background:#94a3b8;border-color:#94a3b8}
+.hol-card{background:#fff;border-radius:12px;border:1px solid #e2e8f0;padding:12px 14px;transition:all .2s}
+.hol-card:hover{border-color:var(--accent,#14b8a6);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.hol-card-next{border-color:var(--accent,#14b8a6);background:linear-gradient(135deg,#f0fdfa,#ecfdf5);box-shadow:0 2px 8px rgba(20,184,166,.12)}
+.hol-card-past{opacity:.6}
+.hol-date{font-size:11px;font-weight:600;color:var(--accent,#0d9488);text-transform:uppercase;letter-spacing:.5px}
+.hol-title{font-size:14px;font-weight:700;color:#1e293b;margin-top:2px;display:flex;align-items:center;gap:6px}
+.hol-desc{font-size:12px;color:#64748b;margin-top:4px;line-height:1.4}
+.hol-greeting{font-size:13px;color:#1e293b;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;margin-top:6px}
+.hol-countdown{display:inline-block;padding:2px 8px;background:var(--accent,#14b8a6);color:#fff;border-radius:99px;font-size:10px;font-weight:700;margin-left:6px}
+.dark .hol-line{background:#475569}
+.dark .hol-dot{background:#334155;border-color:#475569}
+.dark .hol-card{background:#334155;border-color:#475569}
+.dark .hol-card-next{background:linear-gradient(135deg,#064e3b,#065f46);border-color:#10b981}
+.dark .hol-title{color:#f1f5f9}
+.dark .hol-greeting{background:#451a03;border-color:#78350f;color:#fbbf24}
+
+/* Family Vocabulary Wall */
+.fw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.fw-card{background:#fff;border-radius:14px;border:2px solid;padding:12px;text-align:center;cursor:pointer;transition:all .2s;position:relative;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fw-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.fw-word{font-size:16px;font-weight:700;color:#1e293b;line-height:1.2}
+.fw-nl{font-size:12px;color:#64748b;margin-top:2px}
+.fw-note{font-size:10px;color:#94a3b8;margin-top:4px;font-style:italic;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fw-who{position:absolute;top:6px;right:8px;font-size:14px}
+.fw-add{border:2px dashed #cbd5e1;background:#f8fafc;color:#94a3b8;font-size:28px;font-weight:300;cursor:pointer}
+.fw-add:hover{border-color:var(--accent,#14b8a6);background:#f0fdfa;color:var(--accent,#14b8a6)}
+.fw-colors{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.fw-color-btn{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .15s}
+.fw-color-btn:hover{transform:scale(1.15)}
+.fw-color-sel{border-color:#1e293b;transform:scale(1.15)}
+.dark .fw-card{background:#334155}
+.dark .fw-word{color:#f1f5f9}
+.dark .fw-add{background:#1e293b;border-color:#475569}
 </style>
 </head>
 <body>
@@ -451,6 +510,8 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <script src="data-words-b2.js"></script>
 <script src="data-fairytales.js"></script>
 <script src="data-missions.js"></script>
+<script src="data-proverbs.js"></script>
+<script src="data-holidays.js"></script>
 <script>
 const R=React,ce=R.createElement,{useState:uS,useEffect:uE}=R;
 
@@ -1204,7 +1265,16 @@ function Home({go,st,sS,profiles,activeId}){
         ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},"Zoeken")),
       ce("button",{className:"card",onClick:()=>go("badges"),style:{textAlign:"center",padding:12}},
         ce("div",{style:{fontSize:24}},"\u{1f3c6}"),
-        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},eb+"/"+BADGES.length))),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12}},eb+"/"+BADGES.length)),
+      ce("button",{className:"card",onClick:()=>go("proverbs"),style:{textAlign:"center",padding:12,border:"1px solid #fde68a"}},
+        ce("div",{style:{fontSize:24}},"\u{1f9d9}\u200d\u2642\ufe0f"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#92400e"}},"Spreekwoorden")),
+      ce("button",{className:"card",onClick:()=>go("holidays"),style:{textAlign:"center",padding:12,border:"1px solid #a7f3d0"}},
+        ce("div",{style:{fontSize:24}},"\u{1f5d3}\ufe0f"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"var(--accent,#0d9488)"}},"Feestdagen")),
+      ce("button",{className:"card",onClick:()=>go("famwall"),style:{textAlign:"center",padding:12,border:"1px solid #c4b5fd"}},
+        ce("div",{style:{fontSize:24}},"\u{1f9f2}"),
+        ce("div",{className:"card-t",style:{marginTop:4,fontSize:12,color:"#6d28d9"}},"Woordenmuur"))),
     // Dark mode & Parent dashboard
     ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
@@ -3719,6 +3789,311 @@ function CheckpointTest({go,st,sS,level}){
     shown&&ce("div",{style:{textAlign:"center",fontSize:13,fontWeight:500,color:sel===q.answer?"#059669":"#dc2626",marginTop:8}},sel===q.answer?"\u2713 Correct":"Antwoord: "+q.answer));
 }
 
+// === PROVERBS MODULE ===
+function ProverbsScreen({go,st,sS}){
+  var[idx,sIdx]=uS(0);
+  var[cat,sCat]=uS("all");
+  var[showEquiv,sShowEquiv]=uS(false);
+  var[mode,sMode]=uS("browse"); // "browse" or "quiz"
+  var[quizOpts,sQuizOpts]=uS([]);
+  var[quizSel,sQuizSel]=uS(null);
+
+  var filtered=cat==="all"?PROVERBS:PROVERBS.filter(function(p){return p.cat===cat;});
+  var prov=filtered[idx%filtered.length];
+
+  // Quiz mode: pick 4 options (1 correct + 3 random)
+  function genQuiz(p){
+    var others=PROVERBS.filter(function(x){return x.id!==p.id;});
+    var picks=sh(others).slice(0,3).map(function(x){return{text:x.nlEquiv,correct:false};});
+    picks.push({text:p.nlEquiv,correct:true});
+    sQuizOpts(sh(picks));
+    sQuizSel(null);
+  }
+
+  function nextProv(){
+    var ni=(idx+1)%filtered.length;
+    sIdx(ni);sShowEquiv(false);sQuizSel(null);
+    if(mode==="quiz")genQuiz(filtered[ni%filtered.length]);
+  }
+
+  function prevProv(){
+    var ni=idx<=0?filtered.length-1:idx-1;
+    sIdx(ni);sShowEquiv(false);sQuizSel(null);
+    if(mode==="quiz")genQuiz(filtered[ni%filtered.length]);
+  }
+
+  function startQuiz(){sMode("quiz");sIdx(0);genQuiz(filtered[0]);sShowEquiv(false);}
+
+  if(!prov)return ce("div",{className:"scr sy ctr"},ce("p",null,"Geen spreekwoorden gevonden."));
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},
+      ce("h2",{className:"h2"},"Spreekwoorden & Gezegden"),
+      ce("p",{className:"sub"},"Bulgaarse wijsheid vergeleken met Nederlands")),
+    // Category filter
+    ce("div",{className:"fp"},
+      (typeof PROVERB_CATS!=="undefined"?PROVERB_CATS:[{id:"all",name:"Alles",em:"📚"}]).map(function(c){
+        return ce("button",{key:c.id,className:"fpill "+(cat===c.id?"fp-on":"fp-off"),onClick:function(){sCat(c.id);sIdx(0);sShowEquiv(false);sQuizSel(null);if(mode==="quiz"){var f=c.id==="all"?PROVERBS:PROVERBS.filter(function(p){return p.cat===c.id;});if(f.length>0)genQuiz(f[0]);}}},c.em+" "+c.name);
+      })),
+    // Mode toggle
+    ce("div",{style:{display:"flex",justifyContent:"center",gap:8,marginTop:4}},
+      ce("button",{className:"btn "+(mode==="browse"?"btn-t":"btn-g"),onClick:function(){sMode("browse");sShowEquiv(false);}},"📖 Bladeren"),
+      ce("button",{className:"btn "+(mode==="quiz"?"btn-v":"btn-g"),onClick:startQuiz},"🧩 Quiz")),
+    // Counter
+    ce("div",{className:"ctr",style:{fontSize:12,color:"#94a3b8",marginTop:4}},(idx%filtered.length+1)+"/"+filtered.length),
+    // Proverb card
+    ce("div",{className:"prov-card"},
+      ce("div",{className:"prov-header"},
+        ce("div",{style:{display:"flex",alignItems:"center",gap:8}},
+          ce("span",{style:{fontSize:28}},prov.em),
+          ce("div",{style:{flex:1}},
+            ce("div",{className:"prov-bg"},prov.bg),
+            ce("div",{className:"prov-pron"},prov.pron))),
+        ce(SpeakBtn,{text:prov.bg,size:"sm"})),
+      ce("div",{className:"prov-body"},
+        ce("div",{className:"prov-cat-pill"},(PROVERB_CATS.find(function(c){return c.id===prov.cat;})||{em:"📚",name:prov.cat}).em+" "+(PROVERB_CATS.find(function(c){return c.id===prov.cat;})||{name:prov.cat}).name),
+        ce("div",{className:"prov-literal",style:{marginTop:8}},"Letterlijk: \""+prov.nlLiteral+"\""),
+        mode==="browse"?
+          ce("div",null,
+            !showEquiv?
+              ce("button",{className:"btn btn-t",style:{width:"100%",marginTop:8},onClick:function(){sShowEquiv(true);}},"🇳🇱 Toon Nederlands equivalent"):
+              ce("div",null,
+                ce("div",{className:"prov-equiv",style:{marginTop:8}},"🇳🇱 "+prov.nlEquiv),
+                ce("div",{className:"prov-note"},"💡 "+prov.note))):
+          // Quiz mode
+          ce("div",{style:{marginTop:8}},
+            ce("p",{style:{fontSize:13,fontWeight:600,color:"#6d28d9",marginBottom:8}},"Welk Nederlands gezegde past hierbij?"),
+            ce("div",{className:"sy3"},quizOpts.map(function(opt,oi){
+              var chosen=quizSel!==null;
+              var isThis=quizSel===oi;
+              var cls="qo"+(chosen?(opt.correct?" qo-ok":(isThis?" qo-no":" qo-x")):"");
+              return ce("button",{key:oi,className:cls,disabled:chosen,onClick:function(){
+                sQuizSel(oi);
+                if(opt.correct){playSound("correct");sS(function(p){return Object.assign({},p,{xp:p.xp+15});});}
+                else playSound("wrong");
+              }},opt.text,chosen&&opt.correct?" ✓":"");
+            })),
+            quizSel!==null&&ce("div",{className:"prov-note",style:{marginTop:8}},"💡 "+prov.note)))),
+    // Navigation
+    ce("div",{className:"prov-nav"},
+      ce("button",{className:"btn btn-g",onClick:prevProv},"← Vorige"),
+      ce("button",{className:"btn btn-g",onClick:nextProv},"Volgende →")));
+}
+
+// === HOLIDAY CALENDAR ===
+function HolidayCalendar({go,st}){
+  var today=new Date();
+  var todayMD=(today.getMonth()+1<10?"0":"")+(today.getMonth()+1)+"-"+(today.getDate()<10?"0":"")+today.getDate();
+  var todayYear=today.getFullYear();
+  var[expanded,sExpanded]=uS(null);
+
+  // Calculate days until a holiday
+  function daysUntil(dateStr){
+    if(!dateStr||dateStr.indexOf("00")>=0)return null; // moveable
+    var parts=dateStr.split("-");
+    var m=parseInt(parts[0])-1;
+    var d=parseInt(parts[1]);
+    var target=new Date(todayYear,m,d);
+    if(target<today){target=new Date(todayYear+1,m,d);}
+    var diff=Math.ceil((target-today)/(1000*60*60*24));
+    return diff;
+  }
+
+  // Find next upcoming holiday
+  var nextHolIdx=-1;var minDays=999;
+  BG_HOLIDAYS.forEach(function(h,i){
+    var d=daysUntil(h.date);
+    if(d!==null&&d>=0&&d<minDays){minDays=d;nextHolIdx=i;}
+  });
+
+  // Sort: upcoming first, then past
+  var sorted=BG_HOLIDAYS.map(function(h,i){
+    var d=daysUntil(h.date);
+    return{h:h,i:i,days:d,isNext:i===nextHolIdx,isPast:d!==null&&d<0};
+  });
+  // Put moveable holidays at end; otherwise sort by days
+  sorted.sort(function(a,b){
+    if(a.days===null&&b.days===null)return 0;
+    if(a.days===null)return 1;
+    if(b.days===null)return 1;
+    if(a.days<0&&b.days>=0)return 1;
+    if(a.days>=0&&b.days<0)return -1;
+    return a.days-b.days;
+  });
+
+  var monthNames=["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
+
+  function formatDate(dateStr){
+    if(!dateStr||dateStr.indexOf("00")>=0)return null;
+    var parts=dateStr.split("-");
+    return parseInt(parts[1])+" "+monthNames[parseInt(parts[0])-1];
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},
+      ce("h2",{className:"h2"},"🗓️ Bulgaarse Feestdagen"),
+      ce("p",{className:"sub"},"Alle belangrijke Bulgaarse feest- en gedenkdagen")),
+    // Next holiday highlight
+    nextHolIdx>=0&&ce("div",{style:{background:"linear-gradient(135deg,#f0fdfa,#ecfdf5)",border:"2px solid var(--accent,#14b8a6)",borderRadius:16,padding:16,textAlign:"center",marginBottom:8}},
+      ce("div",{style:{fontSize:11,fontWeight:600,color:"var(--accent,#0d9488)",textTransform:"uppercase",letterSpacing:1}},"Volgende feestdag"),
+      ce("div",{style:{fontSize:32,margin:"6px 0"}},BG_HOLIDAYS[nextHolIdx].em),
+      ce("div",{style:{fontSize:18,fontWeight:700,color:"#1e293b"}},BG_HOLIDAYS[nextHolIdx].bg),
+      ce("div",{style:{fontSize:14,color:"#64748b",marginTop:2}},BG_HOLIDAYS[nextHolIdx].nl),
+      ce("div",{style:{marginTop:6}},
+        minDays===0?ce("span",{style:{background:"#10b981",color:"#fff",padding:"4px 14px",borderRadius:99,fontSize:13,fontWeight:700}},"🎉 Vandaag!"):
+        ce("span",{style:{background:"var(--accent,#14b8a6)",color:"#fff",padding:"4px 14px",borderRadius:99,fontSize:13,fontWeight:700}},"Over "+minDays+" dag"+(minDays!==1?"en":""))),
+      BG_HOLIDAYS[nextHolIdx].greeting&&ce("div",{style:{marginTop:8}},
+        ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:8}},
+          ce("span",{style:{fontSize:15,fontWeight:600,color:"#134e4a"}},BG_HOLIDAYS[nextHolIdx].greeting.bg),
+          ce(SpeakBtn,{text:BG_HOLIDAYS[nextHolIdx].greeting.bg,size:"sm"})),
+        ce("div",{style:{fontSize:11,color:"#64748b",fontStyle:"italic"}},BG_HOLIDAYS[nextHolIdx].greeting.pron))),
+    // Timeline
+    ce("div",{className:"hol-timeline"},
+      ce("div",{className:"hol-line"}),
+      sorted.map(function(item){
+        var h=item.h;var isNext=item.isNext;var isPast=item.isPast;
+        var isOpen=expanded===h.id;
+        var dateLabel=formatDate(h.date)||(h.moveableNote||"Wisselende datum");
+
+        return ce("div",{key:h.id,className:"hol-item",onClick:function(){sExpanded(isOpen?null:h.id);}},
+          ce("div",{className:"hol-dot"+(isNext?" hol-dot-next":"")+(isPast?" hol-dot-past":"")}),
+          ce("div",{className:"hol-card"+(isNext?" hol-card-next":"")+(isPast?" hol-card-past":"")},
+            ce("div",{className:"hol-date"},dateLabel,
+              isNext&&item.days!==null&&ce("span",{className:"hol-countdown"},item.days===0?"Vandaag!":"Nog "+item.days+" dag"+(item.days!==1?"en":""))),
+            ce("div",{className:"hol-title"},ce("span",null,h.em)," ",h.bg," — ",h.nl),
+            isOpen&&ce("div",null,
+              ce("div",{className:"hol-desc"},h.desc),
+              h.greeting&&ce("div",{className:"hol-greeting"},
+                ce("div",{style:{display:"flex",alignItems:"center",gap:8}},
+                  ce("span",{style:{fontWeight:600}},h.greeting.bg),
+                  ce(SpeakBtn,{text:h.greeting.bg,size:"sm"})),
+                ce("div",{style:{fontSize:11,color:"#94a3b8",fontStyle:"italic",marginTop:2}},h.greeting.pron+" — "+h.greeting.nl)),
+              h.isMoveable&&ce("div",{style:{fontSize:11,color:"#94a3b8",marginTop:4,fontStyle:"italic"}},"📅 "+h.moveableNote))));
+      })));
+}
+
+// === FAMILY VOCABULARY WALL ===
+var FW_COLORS=["#fbbf24","#34d399","#818cf8","#f472b6","#fb923c","#38bdf8"];
+
+function FamilyWall({go,st,sS,profiles,activeId}){
+  var[adding,sAdding]=uS(false);
+  var[search,sSearch]=uS("");
+  var[selWord,sSelWord]=uS(null);
+  var[note,sNote]=uS("");
+  var[color,sColor]=uS(FW_COLORS[0]);
+
+  // Load family wall from localStorage
+  var wallKey="bg-leren-famwall";
+  var[wall,sWall]=uS(function(){
+    try{var s=localStorage.getItem(wallKey);if(s)return JSON.parse(s);}catch(e){}
+    return[];
+  });
+
+  function saveWall(newWall){
+    sWall(newWall);
+    try{localStorage.setItem(wallKey,JSON.stringify(newWall));}catch(e){}
+  }
+
+  // Get current profile info
+  var profile=profiles&&profiles.list?profiles.list.find(function(p){return p.id===activeId;}):null;
+  var profileName=profile?profile.name:"Speler";
+  var profileAvatar=profile?profile.avatar:"🐱";
+
+  function addWord(){
+    if(!selWord)return;
+    var item={
+      id:Date.now().toString(36),
+      bg:selWord.b,
+      nl:selWord.n,
+      em:selWord.m,
+      pron:selWord.p,
+      note:note.trim(),
+      color:color,
+      by:profileName,
+      avatar:profileAvatar,
+      date:new Date().toISOString().slice(0,10)
+    };
+    saveWall([item].concat(wall));
+    sAdding(false);sSelWord(null);sNote("");sSearch("");
+  }
+
+  function removeWord(id){
+    saveWall(wall.filter(function(w){return w.id!==id;}));
+  }
+
+  // Search words
+  var searchResults=[];
+  if(search.length>=2){
+    var q=search.toLowerCase();
+    var aw=allWords(MODS,"all");
+    searchResults=aw.filter(function(w){
+      return w.b.toLowerCase().indexOf(q)>=0||w.n.toLowerCase().indexOf(q)>=0||w.e.toLowerCase().indexOf(q)>=0;
+    }).slice(0,8);
+  }
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"ctr"},
+      ce("h2",{className:"h2"},"🧲 Familie Woordenmuur"),
+      ce("p",{className:"sub"},"Pin je favoriete woorden op de koelkast!")),
+    // Stats
+    wall.length>0&&ce("div",{style:{textAlign:"center",fontSize:12,color:"#64748b",marginBottom:4}},wall.length+" woord"+(wall.length!==1?"en":"")+" op de muur"),
+    // Add word
+    !adding?
+      ce("div",{style:{textAlign:"center"}},
+        ce("button",{className:"btn btn-t",onClick:function(){sAdding(true);}},"+ Woord toevoegen")):
+      ce("div",{style:{background:"#fff",borderRadius:16,border:"1px solid #e2e8f0",padding:16}},
+        ce("div",{style:{fontWeight:600,fontSize:14,marginBottom:8}},"Zoek een woord"),
+        ce("input",{type:"text",value:search,onChange:function(e){sSearch(e.target.value);sSelWord(null);},
+          placeholder:"Zoek in het Bulgaars of Nederlands...",
+          style:{width:"100%",padding:"10px 14px",borderRadius:10,border:"2px solid #e2e8f0",fontSize:14,outline:"none"}}),
+        searchResults.length>0&&!selWord&&ce("div",{style:{marginTop:8,maxHeight:200,overflowY:"auto"}},
+          searchResults.map(function(w){
+            return ce("button",{key:w.b,onClick:function(){sSelWord(w);sSearch(w.b);},
+              style:{width:"100%",padding:"8px 12px",borderRadius:8,border:"1px solid #f1f5f9",background:"#fff",textAlign:"left",cursor:"pointer",marginBottom:4,display:"flex",alignItems:"center",gap:8}},
+              ce("span",{style:{fontSize:18}},w.m),
+              ce("div",null,
+                ce("div",{style:{fontWeight:600,fontSize:13}},w.b),
+                ce("div",{style:{fontSize:11,color:"#64748b"}},w.n)));
+          })),
+        selWord&&ce("div",{style:{marginTop:8}},
+          ce("div",{style:{display:"flex",alignItems:"center",gap:8,padding:10,background:"#ecfdf5",borderRadius:10,border:"1px solid #a7f3d0"}},
+            ce("span",{style:{fontSize:24}},selWord.m),
+            ce("div",null,
+              ce("div",{style:{fontWeight:700,fontSize:15}},selWord.b),
+              ce("div",{style:{fontSize:12,color:"#64748b"}},selWord.n)),
+            ce(SpeakBtn,{text:selWord.b,size:"sm"})),
+          ce("input",{type:"text",value:note,onChange:function(e){sNote(e.target.value);},
+            placeholder:"Notitie (optioneel)...",maxLength:50,
+            style:{width:"100%",padding:"8px 12px",borderRadius:8,border:"1px solid #e2e8f0",fontSize:13,marginTop:8,outline:"none"}}),
+          ce("div",{style:{fontSize:12,color:"#64748b",marginTop:6}},"Kleur:"),
+          ce("div",{className:"fw-colors"},FW_COLORS.map(function(c){
+            return ce("button",{key:c,className:"fw-color-btn"+(color===c?" fw-color-sel":""),
+              style:{background:c},onClick:function(){sColor(c);}});
+          })),
+          ce("div",{style:{display:"flex",gap:8,marginTop:10}},
+            ce("button",{className:"btn btn-g",onClick:function(){sAdding(false);sSelWord(null);sSearch("");sNote("");}},"Annuleren"),
+            ce("button",{className:"btn btn-t",onClick:addWord},"📌 Vastpinnen")))),
+    // Wall grid
+    ce("div",{className:"fw-grid",style:{marginTop:12}},
+      wall.map(function(w){
+        return ce("div",{key:w.id,className:"fw-card",style:{borderColor:w.color||"#e2e8f0",background:"linear-gradient(135deg,"+w.color+"10,"+w.color+"05)"}},
+          ce("div",{className:"fw-who",title:"Toegevoegd door "+w.by},w.avatar),
+          ce("div",{style:{fontSize:22,marginBottom:2}},w.em),
+          ce("div",{style:{display:"flex",alignItems:"center",gap:4}},
+            ce("div",{className:"fw-word"},w.bg),
+            ce(SpeakBtn,{text:w.bg,size:"sm"})),
+          ce("div",{className:"fw-nl"},w.nl),
+          w.note&&ce("div",{className:"fw-note"},'"'+w.note+'"'),
+          ce("button",{onClick:function(e){e.stopPropagation();removeWord(w.id);},
+            style:{position:"absolute",bottom:4,right:6,fontSize:10,color:"#94a3b8",background:"none",border:"none",cursor:"pointer",padding:"2px 4px"}},"✕"));
+      }),
+      // Prompt to add if empty
+      wall.length===0&&ce("div",{style:{gridColumn:"span 2",textAlign:"center",padding:24,color:"#94a3b8"}},
+        ce("div",{style:{fontSize:36,marginBottom:8}},"🧲"),
+        ce("div",{style:{fontSize:14}},"De muur is nog leeg!"),
+        ce("div",{style:{fontSize:12}},"Voeg je eerste woord toe."))));
+}
+
 function App(){
   const[scr,sScr]=uS("home");
   const[profiles,sProfiles]=uS(function(){return loadProfiles();});
@@ -3856,7 +4231,10 @@ function App(){
     scr==="fairytales"&&ce(FairyTales,{go,st,sS}),
     scr==="culturequiz"&&ce(CultureQuiz,{go,st,sS}),
     scr==="speed"&&ce(SpeedRound,{go,st,sS}),
-    scr.startsWith("speed:")&&ce(SpeedRound,{go,st,sS,modId:scr.slice(6)}));
+    scr.startsWith("speed:")&&ce(SpeedRound,{go,st,sS,modId:scr.slice(6)}),
+    scr==="proverbs"&&ce(ProverbsScreen,{go,st,sS}),
+    scr==="holidays"&&ce(HolidayCalendar,{go,st}),
+    scr==="famwall"&&ce(FamilyWall,{go,st,sS,profiles,activeId}));
 }
 
 try{
