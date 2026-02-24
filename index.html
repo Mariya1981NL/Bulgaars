@@ -671,10 +671,20 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .oac-cat-done{background:#ecfdf5;border-color:#86efac}
 .oac-actions{display:flex;gap:8px;flex-wrap:wrap}
 .oac-info{font-size:11px;color:#94a3b8;text-align:center;margin-top:12px}
+/* Install button */
+.inst-banner{background:linear-gradient(135deg,#0d9488,#14b8a6);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;border:none;width:100%;margin-top:12px;box-shadow:0 2px 8px rgba(13,148,136,.3);transition:transform .15s,box-shadow .15s}
+.inst-banner:hover{transform:scale(1.02);box-shadow:0 4px 12px rgba(13,148,136,.4)}
+.inst-banner:active{transform:scale(.98)}
+.inst-icon{font-size:28px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
+.inst-text{flex:1;text-align:left}
+.inst-title{font-size:14px;font-weight:700;color:#fff}
+.inst-sub{font-size:11px;color:rgba(255,255,255,.85);margin-top:2px}
+.inst-arrow{font-size:18px;color:rgba(255,255,255,.7)}
 .dark .oac-card{background:#334155;border-color:#475569}
 .dark .oac-cat{background:#1e293b;border-color:#475569}
 .dark .oac-cat-done{background:#064e3b;border-color:#34d399}
 .dark .oac-prog-bar{background:#475569}
+.dark .inst-banner{background:linear-gradient(135deg,#0f766e,#0d9488);box-shadow:0 2px 8px rgba(0,0,0,.4)}
 </style>
 </head>
 <body>
@@ -1222,6 +1232,17 @@ function Home({go,st,sS,profiles,activeId}){
   const lp=Math.round(st.ll/tl*100);
   const wp=Math.round(st.wl/tw*100);
   const eb=BADGES.filter(b=>b.rq(st)).length;
+  // PWA install button state
+  const[canInstall,sCanInstall]=uS(function(){return !!window._pwaInstallReady&&!window.matchMedia('(display-mode:standalone)').matches;});
+  uE(function(){
+    function onAvail(){sCanInstall(true);}
+    function onDone(){sCanInstall(false);}
+    window.addEventListener('pwa-install-available',onAvail);
+    window.addEventListener('pwa-installed',onDone);
+    // Already standalone? Hide button
+    if(window.matchMedia('(display-mode:standalone)').matches)sCanInstall(false);
+    return function(){window.removeEventListener('pwa-install-available',onAvail);window.removeEventListener('pwa-installed',onDone);};
+  },[]);
 
   return ce("div",{className:"scr sy"},
     ce("div",{className:"ctr"},ce("h1",{className:"h1"},"\u0414\u043e\u0431\u0440\u0435 \u0434\u043e\u0448\u043b\u0438! \u{1f1e7}\u{1f1ec}"),ce("p",{className:"sub",style:{marginTop:4}},"Bulgaars leren \u2014 kies een module")),
@@ -1484,6 +1505,16 @@ function Home({go,st,sS,profiles,activeId}){
     ce("div",{style:{display:"flex",justifyContent:"center",gap:12,marginTop:12}},
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>{sS(function(p){return{...p,dm:!p.dm};});}},st.dm?"\u2600\ufe0f Lichte modus":"\u{1f319} Donkere modus"),
       ce("button",{style:{background:"none",border:"1px solid #e2e8f0",borderRadius:99,padding:"6px 14px",fontSize:13,color:"#64748b",cursor:"pointer"},onClick:()=>go("parentdash")},"\u{1f4ca} Ouder-dashboard")),
+    // PWA install button
+    canInstall&&ce("button",{className:"inst-banner",onClick:function(){
+      var p=window._pwaInstallPrompt;if(!p)return;
+      p.prompt();p.userChoice.then(function(r){if(r.outcome==="accepted"){sCanInstall(false);}window._pwaInstallPrompt=null;window._pwaInstallReady=false;});
+    }},
+      ce("span",{className:"inst-icon"},"\u{1f4f2}"),
+      ce("div",{className:"inst-text"},
+        ce("div",{className:"inst-title"},"Download de app!"),
+        ce("div",{className:"inst-sub"},"Installeer op je telefoon of tablet")),
+      ce("span",{className:"inst-arrow"},"\u203a")),
     ce("div",{style:{textAlign:"center",marginTop:12}},
       ce("button",{style:{background:"none",border:"none",fontSize:11,color:"#94a3b8",cursor:"pointer",textDecoration:"underline"},onClick:()=>{if(confirm("Weet je zeker dat je alle voortgang wilt wissen?")){var fresh=Object.assign({},DEFAULT_STATE);sS(fresh);if(activeId){saveProfileState(activeId,fresh);}try{localStorage.removeItem("bg-leren");}catch(e){}}}},"Voortgang wissen")),
     ce("div",{className:"fact"},
@@ -5576,6 +5607,20 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   });
 }
+// Capture PWA install prompt for custom install button
+window._pwaInstallPrompt=null;
+window._pwaInstallReady=false;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  window._pwaInstallPrompt=e;
+  window._pwaInstallReady=true;
+  window.dispatchEvent(new Event('pwa-install-available'));
+});
+window.addEventListener('appinstalled',function(){
+  window._pwaInstallPrompt=null;
+  window._pwaInstallReady=false;
+  window.dispatchEvent(new Event('pwa-installed'));
+});
 </script>
 </body>
 </html>
