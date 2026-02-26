@@ -812,6 +812,36 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .help-badge.hb-lock{background:#fef9c3;border-color:#fde68a;color:#92400e}
 .help-section{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin:20px 0 8px}
 
+/* Zinnen Oefenen */
+.zo-prog{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:12px 0}
+.zo-prog-fill{height:100%;background:linear-gradient(90deg,#8b5cf6,#6d28d9);border-radius:99px;transition:width .3s}
+.zo-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #e2e8f0;margin:12px 0;text-align:center}
+.zo-type-badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;margin-bottom:8px}
+.zo-type-order{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.zo-type-fill{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.zo-type-translate{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.zo-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.zo-opt{padding:12px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;font-size:14px;cursor:pointer;transition:all .15s;font-weight:500}
+.zo-opt:hover{border-color:#a78bfa;background:#f5f3ff}
+.zo-opt-ok{border-color:#10b981;background:#ecfdf5;color:#065f46}
+.zo-opt-wrong{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+
+/* Woorden Typen */
+.wt-prompt{background:#fff;border-radius:16px;padding:24px;border:1px solid #e2e8f0;text-align:center;margin:12px 0}
+.wt-word{font-size:28px;font-weight:800;color:#1e293b;margin:8px 0}
+.wt-emoji{font-size:40px;margin-bottom:8px}
+.wt-dir{display:inline-block;padding:3px 12px;border-radius:99px;font-size:11px;font-weight:600;margin-bottom:12px}
+.wt-dir-nl{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.wt-dir-bg{background:#f5f3ff;color:#6d28d9;border:1px solid #c4b5fd}
+.wt-input{width:100%;padding:14px 16px;border-radius:14px;border:2px solid #e2e8f0;font-size:16px;text-align:center;outline:none;transition:border-color .2s;margin:8px 0}
+.wt-input:focus{border-color:#8b5cf6}
+.wt-input-ok{border-color:#10b981;background:#ecfdf5}
+.wt-input-wrong{border-color:#ef4444;background:#fef2f2}
+.wt-hint{font-size:13px;color:#f59e0b;margin-top:8px;font-weight:500}
+.wt-attempts{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.wt-dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;transition:background .2s}
+.wt-dot-used{background:#ef4444}
+
 /* Family Quiz */
 .fq-bg{padding:24px 16px;min-height:100vh}
 .fq-setup{text-align:center}
@@ -871,6 +901,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="data-words.js"></script>
 <script src="data-grammar.js"></script>
+<script src="data-sentences.js"></script>
 <script src="data-numbers.js"></script>
 <script src="data-dialogues.js"></script>
 <script src="data-stories.js"></script>
@@ -1412,7 +1443,9 @@ var GAME_TARGETS={
   wordsearch:{wl:20,lsn:0,label:"Leer 20 woorden"},
   sentences:{wl:10,lsn:1,label:"Voltooi 1 les"},
   numbers:{wl:0,lsn:0,label:null}, // always open
-  speed:{wl:30,lsn:2,label:"Leer 30 woorden & 2 lessen"}
+  speed:{wl:30,lsn:2,label:"Leer 30 woorden & 2 lessen"},
+  zinnen:{wl:10,lsn:1,label:"Voltooi 1 les"},
+  typen:{wl:15,lsn:0,label:"Leer 15 woorden"}
 };
 function isGameUnlocked(gameId,st2){
   var t=GAME_TARGETS[gameId];
@@ -1644,6 +1677,8 @@ function Home({go,st,sS,profiles,activeId}){
           {id:"hangman",route:"hangman",em:"\u{1f620}",name:"Galgje"},
           {id:"wordsearch",route:"wordsearch",em:"\u{1f50e}",name:"Woordzoeker"},
           {id:"sentences",route:"sentences",em:"\u{1f3d7}\ufe0f",name:"Zinnen"},
+          {id:"zinnen",route:"zinnen",em:"\u{1f4dd}",name:"Zinnen Oefenen"},
+          {id:"typen",route:"typen",em:"\u2328\ufe0f",name:"Woorden Typen"},
           {id:"numbers",route:"numbers",em:"\u{1f522}",name:"Getallen"},
           {id:"speed",route:"speed",em:"\u26a1",name:"Speed Round",border:"1px solid #c4b5fd",color:"#6d28d9"}
         ];
@@ -6241,6 +6276,288 @@ function BedtimeMode({go,st,sS}){
         }))));
 }
 
+// === ZINNEN OEFENEN (Sentence Practice) ===
+function ZinnenOefenen({go,st,sS}){
+  var exercises=typeof SENTENCE_EXERCISES!=="undefined"?SENTENCE_EXERCISES:[];
+  var rounds=10;
+  var[items,sItems]=uS(null);
+  var[idx,sIdx]=uS(0);
+  var[score,sScore]=uS(0);
+  var[feedback,sFeedback]=uS(null);
+  var[done,sDone]=uS(false);
+  // Word-order state
+  var[pool,sPool]=uS([]);
+  var[placed,sPlaced]=uS([]);
+  // Fill state
+  var[selOpt,sSelOpt]=uS(null);
+  // Translate state
+  var[typed,sTyped]=uS("");
+  var[showHint,sShowHint]=uS(false);
+
+  uE(function(){
+    if(!items&&exercises.length>0){
+      var picked=sh(exercises.slice()).slice(0,rounds);
+      sItems(picked);
+      initExercise(picked[0]);
+    }
+  },[]);
+
+  function initExercise(ex){
+    sFeedback(null);sSelOpt(null);sTyped("");sShowHint(false);
+    if(ex.type==="order"){
+      sPool(sh(ex.words.map(function(w,i){return{id:i,text:w};})));
+      sPlaced([]);
+    }
+  }
+
+  function handleCorrect(){
+    playSound("correct");sFeedback("correct");
+    sScore(function(s){return s+1;});
+    setTimeout(function(){advance();},1000);
+  }
+  function handleWrong(){
+    playSound("wrong");sFeedback("wrong");
+    setTimeout(function(){advance();},1500);
+  }
+  function advance(){
+    var ni=idx+1;
+    if(ni>=items.length){
+      sDone(true);
+      var xp=score*3;
+      sS(function(s){return Object.assign({},s,{xp:s.xp+xp,zoSess:(s.zoSess||0)+1,sbg:(s.sbg||0)+score});});
+      return;
+    }
+    sIdx(ni);initExercise(items[ni]);
+  }
+
+  // Word-order handlers
+  function placeWord(w){if(feedback)return;sPlaced(function(p){return p.concat([w]);});}
+  function removeWord(i){if(feedback)return;sPlaced(function(p){return p.filter(function(_,j){return j!==i;});});}
+  function checkOrder(){
+    var answer=placed.map(function(w){return w.text;}).join(" ");
+    if(answer===items[idx].b){handleCorrect();}else{
+      sFeedback("wrong");playSound("wrong");
+      setTimeout(function(){sFeedback(null);sPlaced([]);},1000);
+    }
+  }
+  // Fill handler
+  function pickFill(opt){
+    if(feedback)return;
+    sSelOpt(opt);
+    if(opt===items[idx].answer){handleCorrect();}else{handleWrong();}
+  }
+  // Translate handler
+  function checkTranslate(){
+    var clean=function(s){return s.toLowerCase().replace(/[^а-яьъa-zа-яёії\s]/gi,"").trim();};
+    if(clean(typed)===clean(items[idx].b)){handleCorrect();}else{handleWrong();}
+  }
+  function kbPress(ch){sTyped(function(t){return t+ch.toLowerCase();});}
+  function kbBack(){sTyped(function(t){return t.slice(0,-1);});}
+  function kbSpace(){sTyped(function(t){return t+" ";});}
+
+  if(exercises.length===0){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:48}},"😕"),
+      ce("h2",{className:"h1"},"Geen zinnen beschikbaar"),
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"← Home"));
+  }
+  if(!items)return null;
+
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:56}},score>=8?"🌟":score>=5?"👏":"💪"),
+      ce("h2",{className:"h1"},score>=8?"Fantastisch!":score>=5?"Goed gedaan!":"Blijf oefenen!"),
+      ce("div",{style:{fontSize:28,fontWeight:700,color:"#6d28d9",margin:"8px 0"}},score+"/"+items.length+" goed"),
+      ce("p",{style:{color:"#64748b",marginTop:4,fontSize:13}},"+"+(score*3)+" XP verdiend!"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:16}},
+        ce("button",{className:"btn btn-v",onClick:function(){sScore(0);sIdx(0);sDone(false);sItems(null);}},"\uD83D\uDD04 Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));
+  }
+
+  var ex=items[idx];
+  var placedIds=placed.map(function(w){return w.id;});
+  var progress=((idx)/items.length)*100;
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"← Home"),
+      ce("span",{style:{fontSize:13,color:"#64748b"}},"Oefening "+(idx+1)+"/"+items.length+" | Score: "+score)),
+    ce("div",{className:"zo-prog"},ce("div",{className:"zo-prog-fill",style:{width:progress+"%"}})),
+
+    // WORD ORDER
+    ex.type==="order"&&ce("div",{className:"zo-card"},
+      ce("div",{className:"zo-type-badge zo-type-order"},"🔀 Woordvolgorde"),
+      ce("p",{style:{fontSize:14,color:"#64748b",margin:"8px 0"}},"Zet de woorden in de juiste volgorde"),
+      ce("p",{style:{fontSize:15,fontWeight:600,color:"#1e293b",margin:"8px 0"}},ex.n),
+      ce("div",{className:"sb-sentence"+(feedback==="correct"?" sb-correct":"")+(feedback==="wrong"?" sb-wrong":"")},
+        placed.length===0?ce("span",{style:{color:"#94a3b8",fontSize:13}},"Tik op woorden..."):
+        placed.map(function(w,i){return ce("button",{key:"p"+w.id,className:"sb-word sb-in-slot",onClick:function(){removeWord(i);}},w.text);})),
+      ce("div",{className:"sb-pool"},
+        pool.filter(function(w){return placedIds.indexOf(w.id)<0;}).map(function(w){
+          return ce("button",{key:"w"+w.id,className:"sb-word",onClick:function(){placeWord(w);}},w.text);
+        })),
+      placed.length===pool.length&&!feedback&&ce("button",{className:"btn btn-v",style:{marginTop:12},onClick:checkOrder},"Controleer ✓")),
+
+    // FILL IN THE BLANK
+    ex.type==="fill"&&ce("div",{className:"zo-card"},
+      ce("div",{className:"zo-type-badge zo-type-fill"},"📝 Invullen"),
+      ce("p",{style:{fontSize:14,color:"#64748b",margin:"8px 0"}},"Kies het juiste woord"),
+      ce("p",{style:{fontSize:18,fontWeight:700,color:"#1e293b",margin:"12px 0"}},ex.b.replace("___","______")),
+      ce("p",{style:{fontSize:13,color:"#64748b"}},ex.n),
+      ce("div",{className:"zo-opts"},
+        ex.opts.map(function(opt){
+          var cls="zo-opt";
+          if(feedback&&opt===ex.answer)cls+=" zo-opt-ok";
+          if(feedback==="wrong"&&selOpt===opt&&opt!==ex.answer)cls+=" zo-opt-wrong";
+          return ce("button",{key:opt,className:cls,onClick:function(){pickFill(opt);}},opt);
+        }))),
+
+    // TRANSLATE
+    ex.type==="translate"&&ce("div",{className:"zo-card"},
+      ce("div",{className:"zo-type-badge zo-type-translate"},"🌐 Vertalen"),
+      ce("p",{style:{fontSize:14,color:"#64748b",margin:"8px 0"}},"Typ de Bulgaarse vertaling"),
+      ce("p",{style:{fontSize:20,fontWeight:700,color:"#1e293b",margin:"12px 0"}},ex.n),
+      feedback==="wrong"&&ce("p",{style:{fontSize:14,color:"#ef4444",margin:"4px 0"}},"Antwoord: "+ex.b),
+      !feedback&&ce("div",null,
+        ce("input",{className:"wt-input",value:typed,readOnly:true,placeholder:"Typ hier..."}),
+        ce("div",{className:"oma-kb"},
+          CYRILLIC_KB.map(function(ch){return ce("button",{key:ch,className:"oma-key",onClick:function(){kbPress(ch);}},ch);}),
+          ce("button",{className:"oma-key",onClick:kbSpace,style:{gridColumn:"span 2"}},"⎵"),
+          ce("button",{className:"oma-key",onClick:kbBack},"⌫")),
+        !showHint&&ex.hint&&ce("button",{style:{background:"none",border:"none",color:"#f59e0b",cursor:"pointer",fontSize:12,marginTop:8},onClick:function(){sShowHint(true);}},"💡 Hint"),
+        showHint&&ce("p",{style:{fontSize:12,color:"#f59e0b",marginTop:8}},ex.hint),
+        typed.length>0&&ce("button",{className:"btn btn-v",style:{marginTop:12},onClick:checkTranslate},"Controleer ✓"))),
+
+    feedback==="correct"&&ce("div",{style:{textAlign:"center",color:"#10b981",fontWeight:700,fontSize:16,marginTop:8}},"✓ Goed zo!"));
+}
+
+// === WOORDEN TYPEN (Word Typing Practice) ===
+function WoordenTypen({go,st,sS}){
+  var[items,sItems]=uS(null);
+  var[idx,sIdx]=uS(0);
+  var[score,sScore]=uS(0);
+  var[typed,sTyped]=uS("");
+  var[attempts,sAttempts]=uS(0);
+  var[feedback,sFeedback]=uS(null);
+  var[done,sDone]=uS(false);
+  var[showAnswer,sShowAnswer]=uS(false);
+  var maxAttempts=3;
+  var rounds=10;
+
+  uE(function(){
+    if(!items){
+      // Collect learned words
+      var wi=st.wi||[];
+      var allW=allWords(MODS);
+      var learned=allW.filter(function(w){return wi.indexOf(w.b)>=0;});
+      // Fallback if not enough learned
+      if(learned.length<5)learned=allW.slice(0,rounds);
+      var picked=sh(learned.slice()).slice(0,rounds);
+      // Assign random direction: "nl2bg" or "bg2nl"
+      var withDir=picked.map(function(w){
+        return Object.assign({},w,{dir:Math.random()<0.5?"nl2bg":"bg2nl"});
+      });
+      sItems(withDir);
+    }
+  },[]);
+
+  function resetForNext(){
+    sTyped("");sAttempts(0);sFeedback(null);sShowAnswer(false);
+  }
+  function advance(){
+    var ni=idx+1;
+    if(ni>=items.length){
+      sDone(true);
+      var xp=score*3;
+      sS(function(s){return Object.assign({},s,{xp:s.xp+xp,wtSess:(s.wtSess||0)+1});});
+      return;
+    }
+    sIdx(ni);resetForNext();
+  }
+
+  function normalize(s){return s.toLowerCase().replace(/[^\wа-яьъёії ]/gi,"").replace(/\s+/g," ").trim();}
+
+  function checkAnswer(){
+    if(feedback)return;
+    var w=items[idx];
+    var expected=w.dir==="nl2bg"?w.b:w.n;
+    if(normalize(typed)===normalize(expected)){
+      playSound("correct");sFeedback("correct");sScore(function(s){return s+1;});
+      setTimeout(advance,1200);
+    } else {
+      playSound("wrong");
+      var newA=attempts+1;
+      sAttempts(newA);
+      if(newA>=maxAttempts){
+        sFeedback("reveal");sShowAnswer(true);
+        setTimeout(advance,2500);
+      } else {
+        sFeedback("wrong");
+        setTimeout(function(){sFeedback(null);},800);
+      }
+    }
+  }
+
+  function kbPress(ch){sTyped(function(t){return t+ch.toLowerCase();});}
+  function kbBack(){sTyped(function(t){return t.slice(0,-1);});}
+  function kbSpace(){sTyped(function(t){return t+" ";});}
+
+  if(!items)return null;
+
+  if(done){
+    return ce("div",{className:"scr sy ctr"},
+      ce("div",{style:{fontSize:56}},score>=8?"🌟":score>=5?"👏":"💪"),
+      ce("h2",{className:"h1"},score>=8?"Fantastisch!":score>=5?"Goed gedaan!":"Blijf oefenen!"),
+      ce("div",{style:{fontSize:28,fontWeight:700,color:"#6d28d9",margin:"8px 0"}},score+"/"+items.length+" goed"),
+      ce("p",{style:{color:"#64748b",marginTop:4,fontSize:13}},"+"+(score*3)+" XP verdiend!"),
+      ce("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:16}},
+        ce("button",{className:"btn btn-v",onClick:function(){sScore(0);sIdx(0);sDone(false);sItems(null);resetForNext();}},"\uD83D\uDD04 Opnieuw"),
+        ce("button",{className:"btn btn-g",onClick:function(){go("home");},style:{background:"#f1f5f9"}},"Home")));
+  }
+
+  var w=items[idx];
+  var prompt=w.dir==="nl2bg"?w.n:w.b;
+  var answer=w.dir==="nl2bg"?w.b:w.n;
+  var progress=(idx/items.length)*100;
+  var isCyrillic=w.dir==="nl2bg";
+
+  return ce("div",{className:"scr sy"},
+    ce("div",{className:"nr"},
+      ce("button",{className:"btn btn-g",onClick:function(){go("home");}},"← Home"),
+      ce("span",{style:{fontSize:13,color:"#64748b"}},"Woord "+(idx+1)+"/"+items.length+" | Score: "+score)),
+    ce("div",{className:"zo-prog"},ce("div",{className:"zo-prog-fill",style:{width:progress+"%"}})),
+
+    ce("div",{className:"wt-prompt"},
+      ce("div",{className:"wt-dir "+(isCyrillic?"wt-dir-bg":"wt-dir-nl")},isCyrillic?"NL → БГ":"БГ → NL"),
+      w.m&&ce("div",{className:"wt-emoji"},w.m),
+      ce("div",{className:"wt-word"},prompt),
+      ce("p",{style:{fontSize:13,color:"#94a3b8",marginTop:4}},"Typ de vertaling")),
+
+    // Attempts dots
+    ce("div",{className:"wt-attempts"},
+      Array.from({length:maxAttempts},function(_,i){
+        return ce("div",{key:i,className:"wt-dot"+(i<attempts?" wt-dot-used":"")});
+      })),
+
+    // Input area
+    feedback!=="reveal"&&ce("div",{style:{marginTop:12}},
+      isCyrillic?ce("div",null,
+        ce("input",{className:"wt-input"+(feedback==="correct"?" wt-input-ok":"")+(feedback==="wrong"?" wt-input-wrong":""),value:typed,readOnly:true,placeholder:"Typ in het Bulgaars..."}),
+        ce("div",{className:"oma-kb"},
+          CYRILLIC_KB.map(function(ch){return ce("button",{key:ch,className:"oma-key",onClick:function(){kbPress(ch);}},ch);}),
+          ce("button",{className:"oma-key",onClick:kbSpace,style:{gridColumn:"span 2"}},"⎵"),
+          ce("button",{className:"oma-key",onClick:kbBack},"⌫"))):
+      ce("input",{className:"wt-input"+(feedback==="correct"?" wt-input-ok":"")+(feedback==="wrong"?" wt-input-wrong":""),value:typed,onChange:function(e){sTyped(e.target.value);},placeholder:"Typ in het Nederlands...",onKeyDown:function(e){if(e.key==="Enter"&&typed.length>0)checkAnswer();}}),
+      typed.length>0&&!feedback&&ce("button",{className:"btn btn-v",style:{marginTop:12},onClick:checkAnswer},"Controleer ✓")),
+
+    // Feedback
+    feedback==="correct"&&ce("div",{style:{textAlign:"center",color:"#10b981",fontWeight:700,fontSize:16,marginTop:12}},"✓ Goed zo!"),
+    feedback==="wrong"&&ce("div",{style:{textAlign:"center",color:"#ef4444",fontSize:13,marginTop:8}},"Probeer opnieuw! ("+attempts+"/"+maxAttempts+")"),
+    showAnswer&&ce("div",{style:{textAlign:"center",marginTop:12}},
+      ce("p",{style:{color:"#ef4444",fontSize:13}},"Het juiste antwoord was:"),
+      ce("p",{style:{fontSize:20,fontWeight:700,color:"#1e293b",marginTop:4}},answer)));
+}
+
 // === HELP / QUICK START GUIDE ===
 function HelpGuide({go}){
   function hc(icon,name,desc,extra){
@@ -6813,6 +7130,8 @@ function App(){
     scr==="prongame"&&ce(PronGame,{go,st,sS}),
     scr==="bedtime"&&ce(BedtimeMode,{go,st,sS}),
     scr==="familyquiz"&&ce(FamilyQuiz,{go,st,sS,profiles,activeId}),
+    scr==="zinnen"&&ce(ZinnenOefenen,{go,st,sS}),
+    scr==="typen"&&ce(WoordenTypen,{go,st,sS}),
     scr==="help"&&ce(HelpGuide,{go}));
 }
 

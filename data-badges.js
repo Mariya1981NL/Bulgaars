@@ -63,4 +63,8 @@ var BADGES =[
 {id:"bed1",nm:"Dromenland",ic:"🌙",ds:"Eerste bedtijdverhaal geluisterd",rq:s=>(s.bedRead||0)>=1},
 {id:"bed5",nm:"Slaap Koning",ic:"😴",ds:"5 bedtijdverhalen geluisterd",rq:s=>(s.bedRead||0)>=5},
 {id:"fq1",nm:"Familie Quizzer",ic:"🏁",ds:"Eerste familie quiz gespeeld",rq:s=>(s.fqPlayed||0)>=1},
-{id:"fq5",nm:"Quiz Kampioen",ic:"🏆",ds:"5 familie quizzen gespeeld",rq:s=>(s.fqPlayed||0)>=5}];
+{id:"fq5",nm:"Quiz Kampioen",ic:"🏆",ds:"5 familie quizzen gespeeld",rq:s=>(s.fqPlayed||0)>=5},
+{id:"zo1",nm:"Zinnen Starter",ic:"📝",ds:"Eerste zinnen-sessie afgerond",rq:s=>(s.zoSess||0)>=1},
+{id:"zo5",nm:"Zinnen Meester",ic:"🏗️",ds:"5 zinnen-sessies afgerond",rq:s=>(s.zoSess||0)>=5},
+{id:"wt1",nm:"Typer",ic:"⌨️",ds:"Eerste typ-sessie afgerond",rq:s=>(s.wtSess||0)>=1},
+{id:"wt5",nm:"Typ Meester",ic:"💻",ds:"5 typ-sessies afgerond",rq:s=>(s.wtSess||0)>=5}];
